@@ -260,3 +260,60 @@ def point_symmetry(
                        col1=col, col2=instance.size+1-col)
 
     return asp_code
+
+
+def forbid_values(
+        forbidden_values: List[int]
+    ) -> str:
+    """
+    Returns the encoding that forbids the given values from appearing as
+    non-empty cells in the puzzle
+    """
+
+    asp_code = ""
+
+    for value in forbidden_values:
+        asp_code += "erase(C) :- cell(C), solution(C,{}).\n".format(
+            value
+        )
+
+    return asp_code
+
+
+def fill_cell(
+        instance: Instance,
+        cell,
+        value: int
+    ) -> str:
+    """
+    Returns the encoding that states that a given value should appear in the
+    puzzle in the given cell.
+    """
+
+    asp_code = """
+        solution({cell_enc},{value_enc}).
+        :- erase({cell_enc}).
+    """.format(
+        cell_enc=instance.cell_encoding(cell),
+        value_enc=value
+    )
+
+    return asp_code
+
+
+def open_cell(
+        instance: Instance,
+        cell
+    ) -> str:
+    """
+    Returns the encoding that states that a given cell should be left open in
+    the puzzle.
+    """
+
+    asp_code = """
+        erase({cell_enc}).
+    """.format(
+        cell_enc=instance.cell_encoding(cell)
+    )
+
+    return asp_code
