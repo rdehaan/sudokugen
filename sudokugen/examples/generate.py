@@ -141,8 +141,9 @@ def generate_example(num=1):
                         rules=[
                             encodings.basic_deduction,
                             encodings.lone_singles,
-                            encodings.hidden_singles
-                        ], should_solve=True)
+                            encodings.hidden_singles,
+                            encodings.stable_state_solved
+                        ])
                 ]
             )
         ]
@@ -179,14 +180,16 @@ def generate_example(num=1):
                             encodings.basic_deduction,
                             encodings.lone_singles,
                             encodings.hidden_singles,
-                            encodings.naked_pairs
-                        ], should_solve=True),
+                            encodings.naked_pairs,
+                            encodings.stable_state_solved
+                        ]),
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
                             encodings.lone_singles,
-                            encodings.hidden_singles
-                        ], should_solve=False)
+                            encodings.hidden_singles,
+                            encodings.stable_state_unsolved
+                        ])
                 ]
             )
         ]
@@ -219,8 +222,9 @@ def generate_example(num=1):
                             encodings.basic_deduction,
                             encodings.lone_singles,
                             encodings.hidden_singles,
-                            encodings.naked_pairs
-                        ], should_solve=True)
+                            encodings.naked_pairs,
+                            encodings.stable_state_solved
+                        ])
                 ]
             )
         ]
@@ -243,7 +247,7 @@ def generate_example(num=1):
     #   * lone singles
     #   * hidden singles
     # - where at least 110 cells are empty
-    # - giving a timeout of 30 seconds for solving
+    # - giving a timeout of 300 seconds for solving
     elif num == 9:
 
         instance = instances.KnightBombDozenDoku()
@@ -261,21 +265,23 @@ def generate_example(num=1):
                             encodings.basic_deduction,
                             encodings.lone_singles,
                             encodings.hidden_singles,
-                            encodings.naked_pairs
-                        ], should_solve=True),
+                            encodings.naked_pairs,
+                            encodings.stable_state_solved
+                        ]),
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
                             encodings.lone_singles,
-                            encodings.hidden_singles
-                        ], should_solve=False)
+                            encodings.hidden_singles,
+                            encodings.stable_state_unsolved
+                        ])
                 ]
             )
         ]
         found_solution = generate_puzzle(
             instance,
             constraints,
-            timeout=30
+            timeout=300
         )
 
     else:
@@ -285,4 +291,4 @@ def generate_example(num=1):
     if found_solution:
         print(found_solution.repr_pretty())
     else:
-        print("No puzzle could be found: {}".format(found_solution))
+        print("No puzzle could be found")

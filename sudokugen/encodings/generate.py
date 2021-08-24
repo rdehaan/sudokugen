@@ -173,14 +173,20 @@ def deduction_constraint(
 
     for strategy_num, strategy in enumerate(solving_strategies):
 
-        if strategy.should_solve:
-            strategy_name = "solve({})".format(strategy_num)
-            asp_code += ":- not all_derivable({}).\n".format(strategy_name)
-        else:
-            strategy_name = "nonsolve({})".format(strategy_num)
-            asp_code += ":- all_derivable({}).\n".format(strategy_name)
+        # if strategy.should_solve:
+        #     strategy_name = "solve({})".format(strategy_num)
+        #     asp_code += ":- not all_derivable({}).\n".format(strategy_name)
+        # else:
+        #     strategy_name = "nonsolve({})".format(strategy_num)
+        #     asp_code += ":- all_derivable({}).\n".format(strategy_name)
+
+        strategy_name = "strategy({})".format(strategy_num)
 
         asp_code += "deduction_mode({}).\n".format(strategy_name)
+
+        asp_code += ":- not stable_state({}).\n".format(
+            strategy_name
+        )
 
         all_rules.update(strategy.rules)
 

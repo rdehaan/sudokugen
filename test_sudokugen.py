@@ -1,7 +1,8 @@
 import argparse
 import sys
 
-from sudokugen import examples
+from sudokugen import examples, instances, encodings, generate_puzzle, \
+    repr_latex
 
 def main():
 
