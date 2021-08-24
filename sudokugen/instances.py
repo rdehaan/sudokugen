@@ -127,6 +127,22 @@ class SquareSudoku(Instance):
             output += "\n"
         return output[:-1]
 
+    def repr_list(self):
+        """
+        Provides a list representation of the puzzle of the instance.
+        """
+
+        if not self.puzzle:
+            return None
+
+        output_list = []
+        for row in range(1, self.size+1):
+            row_list = []
+            for col in range(1, self.size+1):
+                row_list.append(self.puzzle[(col, row)])
+            output_list.append(row_list)
+        return output_list
+
 
 class RectangleBlockSudoku(SquareSudoku):
     """
