@@ -18,30 +18,22 @@ def generate_basic(instance: Instance) -> str:
 
     # Declare the cells
     for cell in instance.cells:
-        asp_code += "cell({}).\n".format(instance.cell_encoding(cell))
+        asp_code += f"cell({instance.cell_encoding(cell)}).\n"
 
     # Declare the values
     for value in instance.values:
-        asp_code += "value({}).\n".format(instance.value_encoding(value))
+        asp_code += f"value({instance.value_encoding(value)}).\n"
 
     # Declare the (full) groups and their member cells
     for groupnum, (_, group) in enumerate(instance.groups):
-        asp_code += "group({}).\n".format(groupnum)
+        asp_code += f"group({groupnum}).\n"
         if len(group) == len(instance.values):
-            asp_code += "full_group({}).\n".format(groupnum)
+            asp_code += f"full_group({groupnum}).\n"
         for cell in group:
-            asp_code += "in_group({},{}).\n".format(
-                instance.cell_encoding(cell),
-                groupnum
-            )
+            asp_code += \
+                f"in_group({instance.cell_encoding(cell)},{groupnum}).\n"
 
     # Declare predicate that captures when cells are different
-    # for cell1, cell2 in itertools.product(instance.cells, repeat=2):
-    #     if cell1 != cell2:
-    #         asp_code += "different_cells({},{}).\n".format(
-    #             instance.cell_encoding(cell1),
-    #             instance.cell_encoding(cell2)
-    #         )
     asp_code += """
         different_cells(C1,C2) :-
             cell(C1), cell(C2), C1 != C2.
@@ -57,9 +49,6 @@ def generate_basic(instance: Instance) -> str:
     """
 
     # Declare predicate that captures when values are different
-    # for value1, value2 in itertools.product(instance.values, repeat=2):
-    #     if value1 != value2:
-    #         asp_code += "different_values({},{}).\n".format(value1, value2)
     asp_code += """
         different_values(V1,V2) :-
             value(V1), value(V2), V1 != V2.
@@ -159,14 +148,11 @@ def constrain_num_filled_cells(
     if minimum == 0 and maximum == instance.num_cells: # pylint: disable=R1705
         return ""
     elif minimum_erase == 0: #
-        return "{{ erase(C) : erase(C) }} {}.\n".format(maximum_erase)
+        return f"{{ erase(C) : erase(C) }} {maximum_erase}.\n"
     elif maximum_erase == instance.num_cells:
-        return "{} {{ erase(C) : erase(C) }}.\n".format(minimum_erase)
+        return f"{minimum_erase} {{ erase(C) : erase(C) }}.\n"
     else:
-        return "{} {{ erase(C) : erase(C) }} {}.\n".format(
-            minimum_erase,
-            maximum_erase
-        )
+        return f"{minimum_erase} {{ erase(C) : erase(C) }} {maximum_erase}.\n"
 
 
 def deduction_constraint(
@@ -184,36 +170,21 @@ def deduction_constraint(
 
     for strategy_num, strategy in enumerate(solving_strategies):
 
-        # if strategy.should_solve:
-        #     strategy_name = "solve({})".format(strategy_num)
-        #     asp_code += ":- not all_derivable({}).\n".format(strategy_name)
-        # else:
-        #     strategy_name = "nonsolve({})".format(strategy_num)
-        #     asp_code += ":- all_derivable({}).\n".format(strategy_name)
+        strategy_name = f"strategy({strategy_num})"
 
-        strategy_name = "strategy({})".format(strategy_num)
+        asp_code += f"deduction_mode({strategy_name}).\n"
 
-        asp_code += "deduction_mode({}).\n".format(strategy_name)
-
-        asp_code += ":- not stable_state({}).\n".format(
-            strategy_name
-        )
+        asp_code += ":- not stable_state({strategy_name}).\n"
 
         all_rules.update(strategy.rules)
 
         for rule in strategy.rules:
-            asp_code += "use_technique({},{}).\n".format(
-                strategy_name,
-                rule.name
-            )
+            asp_code += f"use_technique({strategy_name},{rule.name}).\n"
 
         for groupnum, (groupname, _) in enumerate(instance.groups):
             if ((strategy.groups and groupname in strategy.groups)
                     or not strategy.groups):
-                asp_code += "active_group({},{}).\n".format(
-                    strategy_name,
-                    groupnum
-                )
+                asp_code += f"active_group({strategy_name},{groupnum}).\n"
 
     for rule in all_rules:
         asp_code += rule.encoding
@@ -290,9 +261,7 @@ def forbid_values(
     asp_code = ""
 
     for value in forbidden_values:
-        asp_code += "erase(C) :- cell(C), solution(C,{}).\n".format(
-            value
-        )
+        asp_code += f"erase(C) :- cell(C), solution(C,{value}).\n"
 
     return asp_code
 
@@ -327,10 +296,6 @@ def open_cell(
     the puzzle.
     """
 
-    asp_code = """
-        erase({cell_enc}).
-    """.format(
-        cell_enc=instance.cell_encoding(cell)
-    )
+    asp_code = f"erase({instance.cell_encoding(cell)}).\n"
 
     return asp_code

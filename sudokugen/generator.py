@@ -45,7 +45,7 @@ def generate_puzzle(
         if not timeout:
             print("Solving..")
         else:
-            print("Solving (with timeout {}s)..".format(timeout))
+            print(f"Solving (with timeout {timeout}s)..")
 
     handle = control.solve(on_model=new_instance.extract_from_answer_set,
                            async_=True)

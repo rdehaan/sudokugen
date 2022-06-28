@@ -4,7 +4,7 @@ Module with examples for how to generate Sudoku puzzles
 
 from .. import instances, generate_puzzle, encodings
 
-def generate_example(num=1):
+def generate_example(num=1): # pylint: disable=too-many-branches
 
     # Example no. 1:
     # - Generate a regular 9x9 sudoku puzzle
@@ -329,7 +329,7 @@ def generate_example(num=1):
         )
 
     else:
-        print("Example #{} not found".format(num))
+        print(f"Example #{num} not found")
         return
 
     if found_solution:
