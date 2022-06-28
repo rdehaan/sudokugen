@@ -174,7 +174,7 @@ def deduction_constraint(
 
         asp_code += f"deduction_mode({strategy_name}).\n"
 
-        asp_code += ":- not stable_state({strategy_name}).\n"
+        asp_code += f":- not stable_state({strategy_name}).\n"
 
         all_rules.update(strategy.rules)
 
