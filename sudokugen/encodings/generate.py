@@ -72,6 +72,17 @@ def generate_basic(instance: Instance) -> str:
         { erase(C) } :- cell(C).
     """
 
+    #
+    asp_code += """
+        different_cells_in_group_ordered(C1,C2,G) :-
+            group(G), cell(C1), cell(C2),
+            in_group(C1,G), in_group(C2,G), C1 < C2.
+        value_in_pair(V1,V1,V2) :-
+            value(V1), value(V2), V1 < V2.
+        value_in_pair(V2,V1,V2) :-
+            value(V1), value(V2), V1 < V2.
+    """
+
     # Declare what to show
     asp_code += """
         #show solution/2.

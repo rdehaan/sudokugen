@@ -5,4 +5,7 @@ from .generate import generate_basic, unique_solution, \
     fill_cell, open_cell
 from .deduction import DeductionRule, SolvingStrategy, \
     basic_deduction, lone_singles, hidden_singles, naked_pairs, \
-    stable_state_solved, stable_state_unsolved
+    hidden_pairs, naked_triples, \
+    stable_state_solved, stable_state_unsolved, stable_state_trivial, \
+    stable_state_unsolved_naked_pairs, \
+    closed_under_lone_singles, closed_under_hidden_singles
