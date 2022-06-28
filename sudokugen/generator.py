@@ -13,7 +13,8 @@ def generate_puzzle(
         instance: Instance,
         constraints: List[str],
         timeout: Optional[int] = None,
-        verbose: Optional[bool] = None
+        verbose: Optional[bool] = None,
+        cl_arguments: Optional[List[str]] = None
     ) -> Optional[Instance]:
     """
     Takes a Sudoku instance, and generates a solution and puzzle if possible.
@@ -33,7 +34,7 @@ def generate_puzzle(
     # and let the instance deal with answer sets
     if verbose:
         print("Grounding..")
-    control = clingo.Control()
+    control = clingo.Control(arguments=cl_arguments)
     control.add("base", [], asp_code)
     control.ground([("base", [])])
 
