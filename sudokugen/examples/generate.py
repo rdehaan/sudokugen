@@ -284,6 +284,50 @@ def generate_example(num=1):
             timeout=300
         )
 
+    elif num == 10:
+
+        instance = instances.RegularSudoku(9)
+        constraints = [
+            encodings.constrain_num_filled_cells(
+                instance,
+                0,
+                instance.num_cells-10
+            ),
+            encodings.deduction_constraint(
+                instance,
+                [
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.closed_under_lone_singles,
+                            encodings.closed_under_hidden_singles,
+                            encodings.stable_state_trivial
+                        ]),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.lone_singles,
+                            encodings.hidden_singles,
+                            encodings.naked_triples,
+                            encodings.stable_state_solved
+                        ]),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.lone_singles,
+                            encodings.hidden_singles,
+                            encodings.stable_state_unsolved_naked_pairs,
+                        ])
+                ]
+            )
+        ]
+        found_solution = generate_puzzle(
+            instance,
+            constraints,
+            timeout=300,
+            verbose=True
+        )
+
     else:
         print("Example #{} not found".format(num))
         return
