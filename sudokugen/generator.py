@@ -14,7 +14,8 @@ def generate_puzzle(
         constraints: List[str],
         timeout: Optional[int] = None,
         verbose: Optional[bool] = None,
-        cl_arguments: Optional[List[str]] = None
+        cl_arguments: Optional[List[str]] = None,
+        custom_encoding: Optional[str] = None
     ) -> Optional[Instance]:
     """
     Takes a Sudoku instance, and generates a solution and puzzle if possible.
@@ -26,8 +27,12 @@ def generate_puzzle(
     asp_code = generate_basic(new_instance)
     asp_code += "".join(constraints)
 
+    # Add any custom encoding that is present
+    if custom_encoding:
+        asp_code += custom_encoding
+
     ### FOR DEBUGGING:
-    # with open("encoding.lp", "w") as file:
+    # with open("encoding.lp", "w", encoding="utf-8") as file:
     #     file.write(asp_code)
 
     # Call the ASP solver on the encoding,
