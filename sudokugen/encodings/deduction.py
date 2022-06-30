@@ -273,3 +273,19 @@ hidden_pairs = DeductionRule(
         derivable(Mode,value_only_in_two_cells_in_group(V2,C1,C2,G)).
     """
 )
+
+### TODO: develop this
+xy_wing = DeductionRule(
+    "xy_wing",
+    """
+        %TODO
+    """
+)
+
+### TODO: develop this
+x_wing = DeductionRule(
+    "x_wing",
+    """
+        %TODO
+    """
+)
