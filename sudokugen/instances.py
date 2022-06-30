@@ -29,11 +29,11 @@ class Instance:
         """
         Provides a basic string representation of the instance.
         """
-        output = "Cells: {}\n".format(self.cells)
-        output += "Values: {}\n".format(self.values)
-        output += "Groups: {}\n".format(self.groups)
-        output += "Solution: {}\n".format(self.solution)
-        output += "Puzzle: {}\n".format(self.puzzle)
+        output = f"Cells: {self.cells}\n"
+        output += f"Values: {self.values}\n"
+        output += f"Groups: {self.groups}\n"
+        output += f"Solution: {self.solution}\n"
+        output += f"Puzzle: {self.puzzle}\n"
         return output
 
     def repr_pretty(self) -> str:
@@ -84,15 +84,15 @@ class SquareSudoku(Instance):
         """
         Provides the term to represent a cell in the ASP encoding.
         """
-        return "cell({},{})".format(cell[0], cell[1])
+        return f"cell({cell[0]},{cell[1]})"
 
     def extract_from_answer_set(self, model):
         """
         Extracts the solution and puzzle members from an answer set.
         """
 
-        self.solution = dict()
-        self.puzzle = dict()
+        self.solution = {}
+        self.puzzle = {}
         erase_set = set()
 
         for atom in model.symbols(shown=True):
@@ -123,7 +123,7 @@ class SquareSudoku(Instance):
         output = ""
         for row in range(1, self.size+1):
             for col in range(1, self.size+1):
-                output += "{} ".format(self.puzzle[(col, row)])
+                output += f"{self.puzzle[(col, row)]} "
             output += "\n"
         return output[:-1]
 
@@ -180,7 +180,7 @@ class RectangleBlockSudoku(SquareSudoku):
         output = ""
         for row in range(1, self.size + 1):
             for col in range(1, self.size + 1):
-                output += "{} ".format(self.puzzle[(col, row)])
+                output += f"{self.puzzle[(col, row)]} "
                 if col % self._block_width == 0:
                     output += " "
             output += "\n"
@@ -222,7 +222,6 @@ class YSudoku(RegularSudoku):
     """
 
     def __init__(self, size: int = 9):
-        print("size: {}".format(size))
         if (size % 2) == 0:
             raise ValueError("size should be an odd number")
         super().__init__(size=size)
@@ -327,6 +326,7 @@ class CrossDoku(SquareSudoku):
         if not self.puzzle:
             return "[Not yet generated]"
 
+        # pylint: disable=consider-using-f-string
         output = ""
         output += "-{} -{} -{} +{} +{}\n".format(
             *[self.puzzle[(col, 1)] for col in range(1, 6)]
@@ -372,6 +372,7 @@ class TriangleDoku(SquareSudoku):
         if not self.puzzle:
             return "[Not yet generated]"
 
+        # pylint: disable=consider-using-f-string
         output = ""
         output += "-{} -{} -{} +{} +{} +{}\n".format(
             *[self.puzzle[(col, 1)] for col in range(1, 7)]
