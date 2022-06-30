@@ -171,7 +171,6 @@ hidden_singles = DeductionRule(
     """
 )
 
-### TODO: needs testing!
 naked_pairs = DeductionRule(
     "naked_pairs",
     """
@@ -209,7 +208,6 @@ naked_pairs = DeductionRule(
     """
 )
 
-### TODO: needs testing!
 naked_triples = DeductionRule(
     "naked_triples",
     """
@@ -271,6 +269,14 @@ hidden_pairs = DeductionRule(
         different_values(V,V1), different_values(V,V2),
         derivable(Mode,value_only_in_two_cells_in_group(V1,C1,C2,G)),
         derivable(Mode,value_only_in_two_cells_in_group(V2,C1,C2,G)).
+    """
+)
+
+### TODO: develop this
+locked_candidate = DeductionRule(
+    "locked_candidate",
+    """
+        %TODO
     """
 )
 
