@@ -3,7 +3,6 @@ Module with functionality to generate puzzles using ASP encodings
 """
 
 from typing import List
-# import itertools
 
 from .deduction import SolvingStrategy, basic_deduction
 from ..instances import Instance, SquareSudoku

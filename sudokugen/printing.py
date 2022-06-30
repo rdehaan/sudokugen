@@ -89,17 +89,16 @@ def repr_latex(
 
     Works only for RegularSudoku instances of size 9
     """
+    # pylint: disable=too-many-branches
 
     if not isinstance(instance, RegularSudoku):
-        raise TypeError("Wrong type found: {}".format(
-            type(instance)
-        ))
+        raise TypeError(f"Wrong type found: {type(instance)}")
     if instance.size != 9:
         raise ValueError("RegularSudoku.size should be 9")
 
     latex_repr = "\\drawsudoku%\n"
 
-    pencil = dict()
+    pencil = {}
     for row in range(1, 10):
         for col in range(1, 10):
             pencil[(col, row)] = list(range(1, 10))
@@ -114,7 +113,7 @@ def repr_latex(
                     except ValueError:
                         pass
 
-    cell_fill = dict()
+    cell_fill = {}
     for row in range(1, 10):
         for col in range(1, 10):
             value = instance.puzzle[(col, row)]
@@ -123,9 +122,7 @@ def repr_latex(
             else:
                 if show_pencil:
                     pencil_str = "".join(map(str, pencil[(col, row)]))
-                    cell_fill[(col, row)] = "\\pencil{{{}}}".format(
-                        pencil_str
-                    )
+                    cell_fill[(col, row)] = f"\\pencil{{{pencil_str}}}"
                 else:
                     cell_fill[(col, row)] = " "
 
