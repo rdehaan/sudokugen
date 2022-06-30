@@ -246,8 +246,6 @@ naked_triples = DeductionRule(
     """
 )
 
-# WORK IN PROGRESS! :-)
-### TODO: needs testing!
 hidden_pairs = DeductionRule(
     "hidden_pairs",
     """
@@ -279,6 +277,14 @@ hidden_pairs = DeductionRule(
         different_values(V,V1), different_values(V,V2),
         derivable(Mode,value_only_in_two_cells_in_group(V1,C1,C2,G)),
         derivable(Mode,value_only_in_two_cells_in_group(V2,C1,C2,G)).
+    """
+)
+
+### TODO: develop this
+hidden_triples = DeductionRule(
+    "hidden_triples",
+    """
+        %TODO
     """
 )
 
