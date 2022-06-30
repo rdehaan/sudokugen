@@ -405,7 +405,12 @@ class BombSudoku(SquareSudoku):
 
         # Add small groups for the neighboring constraints
         for (col, row) in self.cells:
-            neighbors = [(col, row+1), (col+1, row), (col+1, row+1), (col+1, row-1)]
+            neighbors = [
+                (col, row+1),
+                (col+1, row),
+                (col+1, row+1),
+                (col+1, row-1)
+            ]
             for neighbor in neighbors:
                 if neighbor in self.cells:
                     self.groups.append(("bomb", [(col, row), neighbor]))
@@ -439,7 +444,12 @@ class KnightSudoku(SquareSudoku):
 
         # Add small groups for the knight constraints
         for (col, row) in self.cells:
-            neighbors = [(col+1, row-2), (col+2, row-1), (col+2, row+1), (col+1, row+2)]
+            neighbors = [
+                (col+1, row-2),
+                (col+2, row-1),
+                (col+2, row+1),
+                (col+1, row+2)
+            ]
             for neighbor in neighbors:
                 if neighbor in self.cells:
                     self.groups.append(("knight", [(col, row), neighbor]))
