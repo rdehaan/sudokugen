@@ -257,9 +257,19 @@ hidden_pairs = DeductionRule(
         cell(C1), cell(C2),
         different_cells_in_group_ordered(C1,C2,G),
         in_group(C1,G), in_group(C2,G),
-        derivable(Mode,strike(C,W)) : value(W), in_group(C,G),
+        derivable(Mode,strike(C,V)) : in_group(C,G),
             different_cells(C,C1), different_cells(C,C2).
     derivable(Mode,strike(C1,V)) :-
+        use_technique(Mode,hidden_pairs),
+        deduction_mode(Mode), value(V), group(G), active_group(Mode,G),
+        cell(C1), in_group(C1,G),
+        cell(C2), in_group(C2,G),
+        different_cells(C1,C2),
+        value(V1), value(V2), V1 < V2,
+        different_values(V,V1), different_values(V,V2),
+        derivable(Mode,value_only_in_two_cells_in_group(V1,C1,C2,G)),
+        derivable(Mode,value_only_in_two_cells_in_group(V2,C1,C2,G)).
+    derivable(Mode,strike(C2,V)) :-
         use_technique(Mode,hidden_pairs),
         deduction_mode(Mode), value(V), group(G), active_group(Mode,G),
         cell(C1), in_group(C1,G),
