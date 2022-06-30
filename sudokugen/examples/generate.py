@@ -342,7 +342,72 @@ def generate_example(num=1): # pylint: disable=too-many-branches
         found_solution = generate_puzzle(
             instance,
             constraints,
-            timeout=240,
+            timeout=60,
+            verbose=True,
+            cl_arguments=["--parallel-mode=4"]
+        )
+
+    # Example no. 11:
+    # - Generate a regular 9x9 sudoku puzzle
+    # - that is closed under the deduction rules:
+    #   * lone singles
+    #   * hidden singles
+    # - that is solvable using the deduction rules:
+    #   * basic deduction
+    #   * lone singles
+    #   * hidden singles
+    #   * naked pairs
+    #   * hidden pairs
+    # (- and thus has a unique solution)
+    # - and that is *not* solvable using only the deduction rules:
+    #   * basic deduction
+    #   * lone singles
+    #   * hidden singles
+    #   * naked pairs
+    # - giving a timeout of 60 seconds for solving with 4 parallel threads
+    elif num == 11:
+
+        instance = instances.RegularSudoku(9)
+        constraints = [
+            encodings.constrain_num_filled_cells(
+                instance,
+                0,
+                instance.num_cells-10
+            ),
+            encodings.deduction_constraint(
+                instance,
+                [
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.closed_under_lone_singles,
+                            encodings.closed_under_hidden_singles,
+                            encodings.stable_state_trivial
+                        ]),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.lone_singles,
+                            encodings.hidden_singles,
+                            encodings.naked_pairs,
+                            encodings.hidden_pairs,
+                            encodings.stable_state_solved
+                        ]),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.lone_singles,
+                            encodings.hidden_singles,
+                            encodings.naked_pairs,
+                            encodings.stable_state_unsolved,
+                        ])
+                ]
+            )
+        ]
+        found_solution = generate_puzzle(
+            instance,
+            constraints,
+            timeout=60,
             verbose=True,
             cl_arguments=["--parallel-mode=4"]
         )
