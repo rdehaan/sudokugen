@@ -284,6 +284,23 @@ def generate_example(num=1): # pylint: disable=too-many-branches
             timeout=300
         )
 
+    # Example no. 10:
+    # - Generate a regular 9x9 sudoku puzzle
+    # - that is closed under the deduction rules:
+    #   * lone singles
+    #   * hidden singles
+    # - that is solvable using the deduction rules:
+    #   * basic deduction
+    #   * lone singles
+    #   * hidden singles
+    #   * naked triples
+    # (- and thus has a unique solution)
+    # - and that is *not* solvable using only the deduction rules:
+    #   * basic deduction
+    #   * lone singles
+    #   * hidden singles
+    #   * naked pairs
+    # - giving a timeout of 240 seconds for solving with 4 parallel threads
     elif num == 10:
 
         instance = instances.RegularSudoku(9)
@@ -316,7 +333,8 @@ def generate_example(num=1): # pylint: disable=too-many-branches
                             encodings.basic_deduction,
                             encodings.lone_singles,
                             encodings.hidden_singles,
-                            encodings.stable_state_unsolved_naked_pairs,
+                            encodings.naked_pairs,
+                            encodings.stable_state_unsolved,
                         ])
                 ]
             )
@@ -324,8 +342,9 @@ def generate_example(num=1): # pylint: disable=too-many-branches
         found_solution = generate_puzzle(
             instance,
             constraints,
-            timeout=300,
-            verbose=True
+            timeout=240,
+            verbose=True,
+            cl_arguments=["--parallel-mode=4"]
         )
 
     else:
