@@ -4,7 +4,9 @@ Module with examples for how to generate Sudoku puzzles
 
 from .. import instances, generate_puzzle, encodings
 
-def generate_example(num=1): # pylint: disable=too-many-branches
+def generate_example(num=1):
+    # pylint: disable=too-many-branches
+    # pylint: disable=too-many-statements
 
     # Example no. 1:
     # - Generate a regular 9x9 sudoku puzzle
