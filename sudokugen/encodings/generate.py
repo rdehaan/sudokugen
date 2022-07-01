@@ -298,3 +298,22 @@ def open_cell(
     asp_code = f"erase({instance.cell_encoding(cell)}).\n"
 
     return asp_code
+
+
+def symmetry_breaking_top_row(
+        instance: SquareSudoku
+    ) -> str:
+    """
+    Returns the symmetry breaking code that requires that the top row of the
+    solution of the puzzle contains the values in order (i.e., 1, 2, 3, ...).
+    """
+
+    asp_code = ""
+    row = 1
+    for col in range(1, instance.size+1):
+        cell = (col,row)
+        asp_code += f"""
+            :- not solution({instance.cell_encoding(cell)},{col}).
+        """
+
+    return asp_code
