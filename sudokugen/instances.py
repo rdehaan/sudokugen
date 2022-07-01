@@ -188,6 +188,20 @@ class RectangleBlockSudoku(SquareSudoku):
                 output += "\n"
         return output[:-2]
 
+    def repr_short(self):
+        """
+        Provides a short representation of the puzzle of the instance.
+        """
+
+        if not self.puzzle:
+            return "[Not yet generated]"
+
+        output = ""
+        for row in range(1, self.size + 1):
+            for col in range(1, self.size + 1):
+                output += f"{self.puzzle[(col, row)]}"
+        return output
+
 
 class RegularSudoku(RectangleBlockSudoku):
     """
