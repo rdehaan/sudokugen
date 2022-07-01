@@ -202,10 +202,14 @@ def left_right_symmetry(
     asp_code = ""
     for col in range(1, int(instance.size/2)+1):
         for row in range(1, instance.size+1):
-            asp_code += """
-                erase(cell({col1},{row})) :- erase(cell({col2},{row})).
-                erase(cell({col2},{row})) :- erase(cell({col1},{row})).
-            """.format(col1=col, col2=instance.size+1-col, row=row)
+            cell1 = (col,row)
+            cell2 = (instance.size+1-col,row)
+            asp_code += f"""
+                erase({instance.cell_encoding(cell1)}) :-
+                    erase({instance.cell_encoding(cell2)}).
+                erase({instance.cell_encoding(cell2)}) :-
+                    erase({instance.cell_encoding(cell1)}).
+            """
 
     return asp_code
 
@@ -221,10 +225,14 @@ def top_bottom_symmetry(
     asp_code = ""
     for col in range(1, instance.size+1):
         for row in range(1, int(instance.size/2)+1):
-            asp_code += """
-                erase(cell({col},{row1})) :- erase(cell({col},{row2})).
-                erase(cell({col},{row2})) :- erase(cell({col},{row1})).
-            """.format(row1=row, row2=instance.size+1-row, col=col)
+            cell1 = (col,row)
+            cell2 = (col,instance.size+1-row)
+            asp_code += f"""
+                erase({instance.cell_encoding(cell1)}) :-
+                    erase({instance.cell_encoding(cell2)}).
+                erase({instance.cell_encoding(cell2)}) :-
+                    erase({instance.cell_encoding(cell1)}).
+            """
 
     return asp_code
 
@@ -240,11 +248,14 @@ def point_symmetry(
     asp_code = ""
     for col in range(1, instance.size+1):
         for row in range(1, int(instance.size/2)+2):
-            asp_code += """
-                erase(cell({col1},{row1})) :- erase(cell({col2},{row2})).
-                erase(cell({col2},{row2})) :- erase(cell({col1},{row1})).
-            """.format(row1=row, row2=instance.size+1-row,
-                       col1=col, col2=instance.size+1-col)
+            cell1 = (col,row)
+            cell2 = (instance.size+1-col,instance.size+1-row)
+            asp_code += f"""
+                erase({instance.cell_encoding(cell1)}) :-
+                    erase({instance.cell_encoding(cell2)}).
+                erase({instance.cell_encoding(cell2)}) :-
+                    erase({instance.cell_encoding(cell1)}).
+            """
 
     return asp_code
 
@@ -275,13 +286,10 @@ def fill_cell(
     puzzle in the given cell.
     """
 
-    asp_code = """
-        solution({cell_enc},{value_enc}).
-        :- erase({cell_enc}).
-    """.format(
-        cell_enc=instance.cell_encoding(cell),
-        value_enc=value
-    )
+    asp_code = f"""
+        solution({instance.cell_encoding(cell)},{value}).
+        :- erase({instance.cell_encoding(cell)}).
+    """
 
     return asp_code
 
