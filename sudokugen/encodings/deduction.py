@@ -85,10 +85,10 @@ stable_state_unsolved_naked_pairs = DeductionRule(
     """
 )
 
-closed_under_lone_singles = DeductionRule(
-    "closed_under_lone_singles",
+closed_under_naked_singles = DeductionRule(
+    "closed_under_naked_singles",
     """
-    :- use_technique(Mode,closed_under_lone_singles),
+    :- use_technique(Mode,closed_under_naked_singles),
         cell(C), value(V), solution(C,V),
         derivable(Mode,strike(C,W)) : value(W), V != W;
         erase(C).
@@ -150,11 +150,11 @@ basic_deduction = DeductionRule(
     """
 )
 
-lone_singles = DeductionRule(
-    "lone_singles",
+naked_singles = DeductionRule(
+    "naked_singles",
     """
     derivable(Mode,solution(C,V1)) :-
-        use_technique(Mode,lone_singles),
+        use_technique(Mode,naked_singles),
         deduction_mode(Mode), value(V1), cell(C),
         derivable(Mode,strike(C,V2)) : different_values(V1,V2).
     """

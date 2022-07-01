@@ -142,7 +142,7 @@ def generate_example(num=1):
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
-                            encodings.lone_singles,
+                            encodings.naked_singles,
                             encodings.hidden_singles,
                             encodings.stable_state_solved
                         ])
@@ -180,7 +180,7 @@ def generate_example(num=1):
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
-                            encodings.lone_singles,
+                            encodings.naked_singles,
                             encodings.hidden_singles,
                             encodings.naked_pairs,
                             encodings.stable_state_solved
@@ -188,7 +188,7 @@ def generate_example(num=1):
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
-                            encodings.lone_singles,
+                            encodings.naked_singles,
                             encodings.hidden_singles,
                             encodings.stable_state_unsolved
                         ])
@@ -222,7 +222,7 @@ def generate_example(num=1):
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
-                            encodings.lone_singles,
+                            encodings.naked_singles,
                             encodings.hidden_singles,
                             encodings.naked_pairs,
                             encodings.stable_state_solved
@@ -265,7 +265,7 @@ def generate_example(num=1):
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
-                            encodings.lone_singles,
+                            encodings.naked_singles,
                             encodings.hidden_singles,
                             encodings.naked_pairs,
                             encodings.stable_state_solved
@@ -273,7 +273,7 @@ def generate_example(num=1):
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
-                            encodings.lone_singles,
+                            encodings.naked_singles,
                             encodings.hidden_singles,
                             encodings.stable_state_unsolved
                         ])
@@ -318,14 +318,14 @@ def generate_example(num=1):
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
-                            encodings.closed_under_lone_singles,
+                            encodings.closed_under_naked_singles,
                             encodings.closed_under_hidden_singles,
                             encodings.stable_state_trivial
                         ]),
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
-                            encodings.lone_singles,
+                            encodings.naked_singles,
                             encodings.hidden_singles,
                             encodings.naked_triples,
                             encodings.stable_state_solved
@@ -333,7 +333,7 @@ def generate_example(num=1):
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
-                            encodings.lone_singles,
+                            encodings.naked_singles,
                             encodings.hidden_singles,
                             encodings.naked_pairs,
                             encodings.stable_state_unsolved,
@@ -382,14 +382,14 @@ def generate_example(num=1):
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
-                            encodings.closed_under_lone_singles,
+                            encodings.closed_under_naked_singles,
                             encodings.closed_under_hidden_singles,
                             encodings.stable_state_trivial
                         ]),
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
-                            encodings.lone_singles,
+                            encodings.naked_singles,
                             encodings.hidden_singles,
                             encodings.naked_pairs,
                             encodings.hidden_pairs,
@@ -398,7 +398,7 @@ def generate_example(num=1):
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
-                            encodings.lone_singles,
+                            encodings.naked_singles,
                             encodings.hidden_singles,
                             encodings.naked_pairs,
                             encodings.stable_state_unsolved,

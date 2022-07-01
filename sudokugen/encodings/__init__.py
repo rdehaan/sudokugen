@@ -4,9 +4,9 @@ from .generate import generate_basic, unique_solution, \
     left_right_symmetry, top_bottom_symmetry, point_symmetry, forbid_values, \
     fill_cell, open_cell
 from .deduction import DeductionRule, SolvingStrategy, \
-    basic_deduction, lone_singles, hidden_singles, naked_pairs, \
+    basic_deduction, naked_singles, hidden_singles, naked_pairs, \
     hidden_pairs, naked_triples, \
     stable_state_solved, stable_state_unsolved, stable_state_trivial, \
     stable_state_unsolved_naked_pairs, \
-    closed_under_lone_singles, closed_under_hidden_singles, \
+    closed_under_naked_singles, closed_under_hidden_singles, \
     locked_candidate, xy_wing, x_wing
