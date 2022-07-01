@@ -9,4 +9,4 @@ from .deduction import DeductionRule, SolvingStrategy, \
     stable_state_solved, stable_state_unsolved, stable_state_trivial, \
     stable_state_unsolved_naked_pairs, \
     closed_under_lone_singles, closed_under_hidden_singles, \
-    xy_wing, x_wing
+    locked_candidate, xy_wing, x_wing

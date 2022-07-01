@@ -288,11 +288,17 @@ hidden_triples = DeductionRule(
     """
 )
 
-### TODO: develop this
 locked_candidate = DeductionRule(
     "locked_candidate",
     """
-        %TODO
+    derivable(Mode,strike(C1,V)) :-
+        use_technique(Mode,locked_candidate),
+        deduction_mode(Mode), value(V),
+        group(G1), active_group(Mode,G1),
+        group(G2), active_group(Mode,G2),
+        in_group(C1,G2), not in_group(C1,G1),
+        derivable(Mode,strike(C2,V)) :
+            cell(C2), in_group(C2,G1), not in_group(C2,G2).
     """
 )
 
