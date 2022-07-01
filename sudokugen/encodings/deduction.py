@@ -49,6 +49,24 @@ stable_state_unsolved = DeductionRule(
     """
 )
 
+### TODO: develop this
+stable_state_no_derivable = DeductionRule(
+    "ss_no_derivable",
+    """
+    stable_state(Mode) :- use_technique(Mode,ss_no_derivable).
+    """
+)
+
+### TODO: develop this
+def stable_state_num_derivable(lower, upper):
+    return DeductionRule(
+        f"ss_num_derivable({lower},{upper})",
+        f"""
+        stable_state(Mode) :-
+            use_technique(Mode,ss_num_derivable({lower},{upper})).
+        """
+    )
+
 stable_state_trivial = DeductionRule(
     "ss_trivial",
     """
@@ -82,6 +100,38 @@ stable_state_unsolved_naked_pairs = DeductionRule(
         not derivable(Mode,strike(C2,V1)),
         not derivable(Mode,strike(C2,V2)),
         not derivable(Mode,strike(C,V)).
+    """
+)
+
+### TODO: develop this
+stable_state_unsolved_hidden_pairs = DeductionRule(
+    "ss_unsolved_hidden_pairs",
+    """
+    %TODO
+    """
+)
+
+### TODO: develop this
+stable_state_unsolved_naked_triples = DeductionRule(
+    "ss_unsolved_naked_triples",
+    """
+    %TODO
+    """
+)
+
+### TODO: develop this
+stable_state_unsolved_hidden_triples = DeductionRule(
+    "ss_unsolved_hidden_triples",
+    """
+    %TODO
+    """
+)
+
+### TODO: develop this
+stable_state_unsolved_locked_candidate = DeductionRule(
+    "ss_unsolved_locked_candidate",
+    """
+    %TODO
     """
 )
 
@@ -257,11 +307,16 @@ hidden_pairs = DeductionRule(
         in_group(C1,G), in_group(C2,G),
         derivable(Mode,strike(C,V)) : in_group(C,G),
             different_cells(C,C1), different_cells(C,C2).
-    derivable(Mode,strike(C1,V)) :-
+    cell_in_pair(C1,C1,C2) :-
+        cell(C1), cell(C2), C1 < C2.
+    cell_in_pair(C2,C1,C2) :-
+        cell(C1), cell(C2), C1 < C2.
+    derivable(Mode,strike(C,V)) :-
         use_technique(Mode,hidden_pairs),
         deduction_mode(Mode), value(V), group(G), active_group(Mode,G),
         cell(C1), in_group(C1,G),
         cell(C2), in_group(C2,G),
+        cell_in_pair(C,C1,C2),
         different_cells(C1,C2),
         value(V1), value(V2), V1 < V2,
         different_values(V,V1), different_values(V,V2),
@@ -284,7 +339,36 @@ hidden_pairs = DeductionRule(
 hidden_triples = DeductionRule(
     "hidden_triples",
     """
-        %TODO
+    derivable(Mode,value_only_in_three_cells_in_group(V,C1,C2,C3,G)) :-
+        use_technique(Mode,hidden_triples),
+        deduction_mode(Mode), value(V), group(G), active_group(Mode,G),
+        cell(C1), cell(C2), cell(C3),
+        different_cells_in_group_ordered(C1,C2,G),
+        different_cells_in_group_ordered(C2,C3,G),
+        in_group(C1,G), in_group(C2,G), in_group(C3,G),
+        derivable(Mode,strike(C,V)) : in_group(C,G),
+            different_cells(C,C1),
+            different_cells(C,C2),
+            different_cells(C,C3).
+    cell_in_triple(C1,C1,C2,C3) :-
+        cell(C1), cell(C2), cell(C3), C1 < C2, C2 < C3.
+    cell_in_triple(C2,C1,C2,C3) :-
+        cell(C1), cell(C2), cell(C3), C1 < C2, C2 < C3.
+    cell_in_triple(C3,C1,C2,C3) :-
+        cell(C1), cell(C2), cell(C3), C1 < C2, C2 < C3.
+    derivable(Mode,strike(C,V)) :-
+        use_technique(Mode,hidden_triples),
+        deduction_mode(Mode), value(V), group(G), active_group(Mode,G),
+        cell(C1), in_group(C1,G),
+        cell(C2), in_group(C2,G),
+        cell(C3), in_group(C3,G),
+        cell_in_triple(C,C1,C2,C3),
+        different_cells(C1,C2), different_cells(C1,C3), different_cells(C2,C3),
+        value(V1), value(V2), value(V3), V1 < V2, V2 < V3,
+        different_values(V,V1), different_values(V,V2), different_values(V,V3),
+        derivable(Mode,value_only_in_three_cells_in_group(V1,C1,C2,C3,G)),
+        derivable(Mode,value_only_in_three_cells_in_group(V2,C1,C2,C3,G)),
+        derivable(Mode,value_only_in_three_cells_in_group(V3,C1,C2,C3,G)).
     """
 )
 
