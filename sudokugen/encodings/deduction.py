@@ -128,8 +128,8 @@ stable_state_unsolved_hidden_triples = DeductionRule(
 )
 
 ### TODO: develop this
-stable_state_unsolved_locked_candidate = DeductionRule(
-    "ss_unsolved_locked_candidate",
+stable_state_unsolved_locked_candidates = DeductionRule(
+    "ss_unsolved_locked_candidates",
     """
     %TODO
     """
@@ -372,11 +372,11 @@ hidden_triples = DeductionRule(
     """
 )
 
-locked_candidate = DeductionRule(
-    "locked_candidate",
+locked_candidates = DeductionRule(
+    "locked_candidates",
     """
     derivable(Mode,strike(C1,V)) :-
-        use_technique(Mode,locked_candidate),
+        use_technique(Mode,locked_candidates),
         deduction_mode(Mode), value(V),
         group(G1), active_group(Mode,G1),
         group(G2), active_group(Mode,G2),

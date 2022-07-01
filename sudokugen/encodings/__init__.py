@@ -10,6 +10,6 @@ from .deduction import DeductionRule, SolvingStrategy, \
     stable_state_no_derivable, stable_state_num_derivable, \
     stable_state_unsolved_naked_pairs, stable_state_unsolved_hidden_pairs, \
     stable_state_unsolved_naked_triples, stable_state_unsolved_hidden_triples, \
-    stable_state_unsolved_locked_candidate, \
+    stable_state_unsolved_locked_candidates, \
     closed_under_naked_singles, closed_under_hidden_singles, \
-    locked_candidate, xy_wing, x_wing
+    locked_candidates, xy_wing, x_wing

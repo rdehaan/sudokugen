@@ -467,7 +467,7 @@ def generate_example(num=1):
                             encodings.naked_singles,
                             encodings.hidden_singles,
                             encodings.naked_pairs,
-                            encodings.locked_candidate,
+                            encodings.locked_candidates,
                             encodings.stable_state_unsolved,
                         ])
                 ]
