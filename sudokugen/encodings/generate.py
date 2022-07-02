@@ -335,7 +335,6 @@ def sym_breaking_row_col_ordering(
     of non-empty cells in the puzzle in the different rows and columns.
     """
     # pylint: disable=W0212,R0914
-    
     block_width = instance._block_width
     block_height = instance._block_height
 
