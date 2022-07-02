@@ -5,7 +5,7 @@ Module with functionality to generate puzzles using ASP encodings
 from typing import List
 
 from .deduction import SolvingStrategy, basic_deduction
-from ..instances import Instance, SquareSudoku
+from ..instances import Instance, SquareSudoku, RectangleBlockSudoku
 
 
 def generate_basic(instance: Instance) -> str:
@@ -308,7 +308,7 @@ def open_cell(
     return asp_code
 
 
-def symmetry_breaking_top_row(
+def sym_breaking_top_row(
         instance: SquareSudoku
     ) -> str:
     """
@@ -323,5 +323,76 @@ def symmetry_breaking_top_row(
         asp_code += f"""
             :- not solution({instance.cell_encoding(cell)},{col}).
         """
+
+    return asp_code
+
+
+def sym_breaking_row_col_ordering(
+        instance: RectangleBlockSudoku
+    ) -> str:
+    """
+    Returns the symmetry breaking code that enforces an ordering in the number
+    of non-empty cells in the puzzle in the different rows and columns.
+    """
+
+    # pylint: disable=W0212
+    block_width = instance._block_width
+    block_height = instance._block_height
+
+    asp_code = ""
+
+    def encoding_rows_ordered(row1, row2):
+        return f"""
+             :- {{ erase({instance.cell_encoding(('C',row1))})
+                 : cell({instance.cell_encoding(('C',row1))}) ;
+                 not erase({instance.cell_encoding(('C',row2))})
+                 : cell({instance.cell_encoding(('C',row2))}) }}
+                 > {instance.size}.
+        """
+
+    def encoding_cols_ordered(col1, col2):
+        return f"""
+            :- {{ erase({instance.cell_encoding((col1,'R'))})
+                : cell({instance.cell_encoding((col1,'R'))}) ;
+                not erase({instance.cell_encoding((col2,'R'))})
+                : cell({instance.cell_encoding((col2,'R'))}) }}
+                > {instance.size}.
+        """
+
+    # Rows inside blocks
+    for row_basis in range(block_width):
+        for row1_basis in range(1, block_width+1):
+            for row2_basis in range(1, block_height-row1_basis+1):
+                basis = row_basis * block_height
+                row1 = basis + row1_basis
+                row2 = basis + row1_basis + row2_basis
+                asp_code += encoding_rows_ordered(row1, row2)
+
+    # Corresponding rows between blocks
+    row_basis = 0
+    for row1_basis in range(block_width):
+        for row2_basis in range(1, block_width-row1_basis):
+            basis = row_basis
+            row1 = basis + row1_basis * block_height + 1
+            row2 = basis + (row1_basis + row2_basis) * block_height + 1
+            asp_code += encoding_rows_ordered(row1, row2)
+
+    # Cols inside blocks
+    for col_basis in range(block_height):
+        for col1_basis in range(1, block_height+1):
+            for col2_basis in range(1, block_width-col1_basis+1):
+                basis = col_basis * block_width
+                col1 = basis + col1_basis
+                col2 = basis + col1_basis + col2_basis
+                asp_code += encoding_cols_ordered(col1, col2)
+
+    # Corresponding cols between blocks
+    col_basis = 0
+    for col1_basis in range(block_height):
+        for col2_basis in range(1, block_height-col1_basis):
+            basis = col_basis
+            col1 = basis + col1_basis * block_width + 1
+            col2 = basis + (col1_basis + col2_basis) * block_width + 1
+            asp_code += encoding_cols_ordered(col1, col2)
 
     return asp_code
