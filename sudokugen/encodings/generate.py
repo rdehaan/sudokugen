@@ -334,8 +334,8 @@ def sym_breaking_row_col_ordering(
     Returns the symmetry breaking code that enforces an ordering in the number
     of non-empty cells in the puzzle in the different rows and columns.
     """
-
-    # pylint: disable=W0212
+    # pylint: disable=W0212,R0914
+    
     block_width = instance._block_width
     block_height = instance._block_height
 
