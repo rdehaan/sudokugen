@@ -12,4 +12,7 @@ from .deduction import DeductionRule, SolvingStrategy, \
     stable_state_unsolved_naked_triples, stable_state_unsolved_hidden_triples, \
     stable_state_unsolved_locked_candidates, \
     closed_under_naked_singles, closed_under_hidden_singles, \
-    locked_candidates, xy_wing, x_wing
+    locked_candidates, xy_wing, x_wing, \
+    snyder_basic, snyder_basic_locked, \
+    snyder_hidden_pairs, snyder_locked_candidates, \
+    snyder_x_wing

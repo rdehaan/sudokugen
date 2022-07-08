@@ -24,13 +24,14 @@ def generate_basic(instance: Instance) -> str:
         asp_code += f"value({instance.value_encoding(value)}).\n"
 
     # Declare the (full) groups and their member cells
-    for groupnum, (_, group) in enumerate(instance.groups):
-        asp_code += f"group({groupnum}).\n"
+    for group_num, (group_type, group) in enumerate(instance.groups):
+        asp_code += f"group({group_num}).\n"
+        asp_code += f"group_type({group_num},{group_type}).\n"
         if len(group) == len(instance.values):
-            asp_code += f"full_group({groupnum}).\n"
+            asp_code += f"full_group({group_num}).\n"
         for cell in group:
             asp_code += \
-                f"in_group({instance.cell_encoding(cell)},{groupnum}).\n"
+                f"in_group({instance.cell_encoding(cell)},{group_num}).\n"
 
     # Declare predicate that captures when cells are different
     asp_code += """
