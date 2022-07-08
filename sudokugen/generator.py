@@ -61,10 +61,13 @@ def generate_puzzle(
 
     if verbose:
         # pylint: disable=E1136
-        total_time = control.statistics['summary']['times']['total']
-        print(f"Total time: {total_time:.2f}s")
-        solving_time = control.statistics['summary']['times']['solve']
-        print(f"Solving took: {solving_time:.2f}s")
+        try:
+            total_time = control.statistics['summary']['times']['total']
+            print(f"Total time: {total_time:.2f}s")
+            solving_time = control.statistics['summary']['times']['solve']
+            print(f"Solving took: {solving_time:.2f}s")
+        except RuntimeError:
+            pass
 
     if new_instance.puzzle: # pylint: disable=R1705
         return new_instance
