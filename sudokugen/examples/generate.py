@@ -25,7 +25,8 @@ def generate_example(num=1):
         ]
         found_solution = generate_puzzle(
             instance,
-            constraints
+            constraints,
+            verbose=True
         )
 
     # Example no. 2:
@@ -33,8 +34,7 @@ def generate_example(num=1):
     # - with a unique solution
     # - minimizing the number of filled in cells
     # - and where at least 10 cells are empty
-    # - giving a timeout of 30 seconds for solving
-    # - in verbose mode
+    # - giving a timeout of 10 seconds for solving with 4 parallel threads
     elif num == 2:
 
         instance = instances.RokuDoku()
@@ -50,8 +50,9 @@ def generate_example(num=1):
         found_solution = generate_puzzle(
             instance,
             constraints,
-            timeout=30,
-            verbose=True
+            timeout=10,
+            verbose=True,
+            cl_arguments=["--parallel-mode=4"],
         )
 
     # Example no. 3:
@@ -60,7 +61,7 @@ def generate_example(num=1):
     # - where at least 10 cells are empty and at least 10 cells are filled in
     # - where the locations of empty cells are left-right and top-bottom
     #   symmetric
-    # - giving a timeout of 10 seconds for solving
+    # - giving a timeout of 10 seconds for solving with 4 parallel threads
     elif num == 3:
 
         instance = instances.CrossDoku()
@@ -77,7 +78,9 @@ def generate_example(num=1):
         found_solution = generate_puzzle(
             instance,
             constraints,
-            timeout=10
+            timeout=10,
+            verbose=True,
+            cl_arguments=["--parallel-mode=4"],
         )
 
     # Example no. 4:
@@ -85,7 +88,7 @@ def generate_example(num=1):
     # - with a unique solution
     # - where at least 15 cells are empty and at least 15 cells are filled in
     # - where the locations of empty cells are point symmetric
-    # - giving a timeout of 10 seconds for solving
+    # - giving a timeout of 10 seconds for solving with 4 parallel threads
     elif num == 4:
 
         instance = instances.TriangleDoku()
@@ -101,14 +104,16 @@ def generate_example(num=1):
         found_solution = generate_puzzle(
             instance,
             constraints,
-            timeout=10
+            timeout=10,
+            verbose=True,
+            cl_arguments=["--parallel-mode=4"],
         )
 
     # Example no. 5:
     # - Generate a BombRokuDoku (6x6) puzzle
     # - with a unique solution
     # - minimizing the number of filled in cells
-    # - giving a timeout of 30 seconds for solving
+    # - giving a timeout of 10 seconds for solving with 4 parallel threads
     elif num == 5:
 
         instance = instances.BombRokuDoku()
@@ -119,7 +124,9 @@ def generate_example(num=1):
         found_solution = generate_puzzle(
             instance,
             constraints,
-            timeout=30
+            timeout=10,
+            verbose=True,
+            cl_arguments=["--parallel-mode=4"],
         )
 
     # Example no. 6:
@@ -130,7 +137,7 @@ def generate_example(num=1):
     #   * hidden singles
     # (- and thus has a unique solution)
     # - where at least 50 cells are empty
-    # - giving a timeout of 10 seconds for solving
+    # - giving a timeout of 10 seconds for solving with 4 parallel threads
     elif num == 6:
 
         instance = instances.RegularSudoku(9)
@@ -152,7 +159,9 @@ def generate_example(num=1):
         found_solution = generate_puzzle(
             instance,
             constraints,
-            timeout=10
+            timeout=10,
+            verbose=True,
+            cl_arguments=["--parallel-mode=4"],
         )
 
     # Example no. 7:
@@ -168,7 +177,7 @@ def generate_example(num=1):
     #   * lone singles
     #   * hidden singles
     # - maximizing the number of non-empty in cells
-    # - giving a timeout of 30 seconds for solving
+    # - giving a timeout of 10 seconds for solving with 4 parallel threads
     elif num == 7:
 
         instance = instances.RegularSudoku(9)
@@ -198,7 +207,9 @@ def generate_example(num=1):
         found_solution = generate_puzzle(
             instance,
             constraints,
-            timeout=30
+            timeout=10,
+            verbose=True,
+            cl_arguments=["--parallel-mode=4"],
         )
 
     # Example no. 8:
@@ -210,7 +221,7 @@ def generate_example(num=1):
     #   * naked pairs
     # (- and thus has a unique solution)
     # - minimizing the number of filled in cells
-    # - giving a timeout of 30 seconds for solving
+    # - giving a timeout of 10 seconds for solving with 4 parallel threads
     elif num == 8:
 
         instance = instances.KnightRokuDoku()
@@ -233,7 +244,9 @@ def generate_example(num=1):
         found_solution = generate_puzzle(
             instance,
             constraints,
-            timeout=30
+            timeout=10,
+            verbose=True,
+            cl_arguments=["--parallel-mode=4"],
         )
 
     # Example no. 9:
@@ -249,7 +262,7 @@ def generate_example(num=1):
     #   * lone singles
     #   * hidden singles
     # - where at least 110 cells are empty
-    # - giving a timeout of 300 seconds for solving
+    # - giving a timeout of 300 seconds for solving with 4 parallel threads
     elif num == 9:
 
         instance = instances.KnightBombDozenDoku()
@@ -283,7 +296,9 @@ def generate_example(num=1):
         found_solution = generate_puzzle(
             instance,
             constraints,
-            timeout=300
+            timeout=60,
+            verbose=True,
+            cl_arguments=["--parallel-mode=4"],
         )
 
     # Example no. 10:
@@ -302,7 +317,8 @@ def generate_example(num=1):
     #   * lone singles
     #   * hidden singles
     #   * naked pairs
-    # - giving a timeout of 240 seconds for solving with 4 parallel threads
+    # - where at least 10 cells are empty
+    # - giving a timeout of 30 seconds for solving with 4 parallel threads
     elif num == 10:
 
         instance = instances.RegularSudoku(9)
@@ -344,7 +360,7 @@ def generate_example(num=1):
         found_solution = generate_puzzle(
             instance,
             constraints,
-            timeout=60,
+            timeout=30,
             verbose=True,
             cl_arguments=["--parallel-mode=4"]
         )
@@ -366,7 +382,8 @@ def generate_example(num=1):
     #   * lone singles
     #   * hidden singles
     #   * naked pairs
-    # - giving a timeout of 60 seconds for solving with 4 parallel threads
+    # - where at least 10 cells are empty
+    # - giving a timeout of 30 seconds for solving with 4 parallel threads
     elif num == 11:
 
         instance = instances.RegularSudoku(9)
@@ -409,7 +426,7 @@ def generate_example(num=1):
         found_solution = generate_puzzle(
             instance,
             constraints,
-            timeout=60,
+            timeout=30,
             verbose=True,
             cl_arguments=["--parallel-mode=4"]
         )
@@ -432,7 +449,8 @@ def generate_example(num=1):
     #   * hidden singles
     #   * naked pairs
     #   * locked candidate
-    # - giving a timeout of 60 seconds for solving with 4 parallel threads
+    # - where at least 10 cells are empty
+    # - giving a timeout of 10 seconds for solving with 4 parallel threads
     elif num == 12:
 
         instance = instances.RegularSudoku(9)
@@ -476,10 +494,211 @@ def generate_example(num=1):
         found_solution = generate_puzzle(
             instance,
             constraints,
-            timeout=60,
+            timeout=10,
             verbose=True,
             cl_arguments=["--parallel-mode=4"]
         )
+
+    # Example no. 13:
+    # - Generate a regular 9x9 sudoku puzzle
+    # - that is solvable using the deduction rules:
+    #   * basic deduction
+    #   * lone singles
+    #   * hidden singles
+    #   * Snyder basic (+ locked)
+    #   * Snyder hidden pairs
+    #   * Snyder locked candidates
+    # (- and thus has a unique solution)
+    # - and that is *not* solvable using only the deduction rules:
+    #   * basic deduction
+    #   * lone singles
+    #   * hidden singles
+    #   * Snyder basic (+ locked)
+    #   * Snyder hidden pairs
+    # - where at least 10 cells are empty
+    # - where the top row has consecutive values as solution
+    #   (to avoid symmetrical solutions that slow down the search)
+    # - giving a timeout of 30 seconds for solving with 4 parallel threads
+    elif num == 13:
+        instance = instances.RegularSudoku(9)
+        constraints = [
+            encodings.constrain_num_filled_cells(
+                instance,
+                0,
+                instance.num_cells-10
+            ),
+            encodings.sym_breaking_top_row(instance),
+            encodings.deduction_constraint(
+                instance,
+                [
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.snyder_basic,
+                            encodings.snyder_basic_locked,
+                            encodings.snyder_hidden_pairs,
+                            encodings.snyder_locked_candidates,
+                            encodings.stable_state_solved
+                        ]),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.snyder_basic,
+                            encodings.snyder_basic_locked,
+                            encodings.snyder_hidden_pairs,
+                            encodings.stable_state_unsolved
+                        ]),
+                ]
+            )
+        ]
+        found_solution = generate_puzzle(
+            instance,
+            constraints,
+            timeout=30,
+            verbose=True,
+            cl_arguments=["--parallel-mode=4"]
+        )
+
+    # Example no. 14:
+    # - Generate a regular 9x9 sudoku puzzle
+    # - that is solvable using the deduction rules:
+    #   * basic deduction
+    #   * lone singles
+    #   * hidden singles
+    #   * Snyder basic (+ locked)
+    #   * Snyder hidden pairs
+    #   * Snyder locked candidates
+    #   * Snyder x-wing
+    # (- and thus has a unique solution)
+    # - and that is *not* solvable using only the deduction rules:
+    #   * basic deduction
+    #   * lone singles
+    #   * hidden singles
+    #   * Snyder basic (+ locked)
+    #   * Snyder hidden pairs
+    #   * Snyder locked candidates
+    # - where at least 10 cells are empty
+    # - where the top row has consecutive values as solution
+    #   (to avoid symmetrical solutions that slow down the search)
+    # - giving a timeout of 30 seconds for solving with 4 parallel threads
+    elif num == 14:
+        instance = instances.RegularSudoku(9)
+        constraints = [
+            encodings.constrain_num_filled_cells(
+                instance,
+                0,
+                instance.num_cells-10
+            ),
+            encodings.sym_breaking_top_row(instance),
+            encodings.deduction_constraint(
+                instance,
+                [
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.snyder_basic,
+                            encodings.snyder_basic_locked,
+                            encodings.snyder_hidden_pairs,
+                            encodings.snyder_locked_candidates,
+                            encodings.snyder_x_wing,
+                            encodings.stable_state_solved
+                        ]),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.snyder_basic,
+                            encodings.snyder_basic_locked,
+                            encodings.snyder_hidden_pairs,
+                            encodings.snyder_locked_candidates,
+                            encodings.stable_state_unsolved
+                        ]),
+                ]
+            )
+        ]
+        found_solution = generate_puzzle(
+            instance,
+            constraints,
+            timeout=30,
+            verbose=True,
+            cl_arguments=["--parallel-mode=4"]
+        )
+
+    # Example no. 15:
+    # - Generate a regular 9x9 sudoku puzzle
+    # - that is solvable using the deduction rules:
+    #   * basic deduction
+    #   * lone singles
+    #   * hidden singles
+    #   * Snyder basic (+ locked)
+    #   * Snyder hidden pairs
+    #   * Snyder locked candidates
+    #   * locked candidates
+    # (- and thus has a unique solution)
+    # - and that is *not* solvable using only the deduction rules:
+    #   * basic deduction
+    #   * lone singles
+    #   * hidden singles
+    #   * Snyder basic (+ locked)
+    #   * Snyder hidden pairs
+    #   * Snyder locked candidates
+    # - where at least 10 cells are empty
+    # - where the top row has consecutive values as solution
+    #   (to avoid symmetrical solutions that slow down the search)
+    # - giving a timeout of 30 seconds for solving with 4 parallel threads
+    elif num == 15:
+        instance = instances.RegularSudoku(9)
+        constraints = [
+            encodings.constrain_num_filled_cells(
+                instance,
+                0,
+                instance.num_cells-10
+            ),
+            encodings.sym_breaking_top_row(instance),
+            encodings.deduction_constraint(
+                instance,
+                [
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.snyder_basic,
+                            encodings.snyder_basic_locked,
+                            encodings.snyder_hidden_pairs,
+                            encodings.snyder_locked_candidates,
+                            encodings.locked_candidates,
+                            encodings.stable_state_solved
+                        ]),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.snyder_basic,
+                            encodings.snyder_basic_locked,
+                            encodings.snyder_hidden_pairs,
+                            encodings.snyder_locked_candidates,
+                            encodings.stable_state_unsolved
+                        ]),
+                ]
+            )
+        ]
+        found_solution = generate_puzzle(
+            instance,
+            constraints,
+            timeout=30,
+            verbose=True,
+            cl_arguments=["--parallel-mode=4"]
+        )
+
 
     else:
         print(f"Example #{num} not found")
