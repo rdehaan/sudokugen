@@ -193,6 +193,14 @@ basic_deduction = DeductionRule(
         deduction_mode(Mode), cell(C), derivable(Mode,solution(C,V2)),
         value(V1), value(V2), different_values(V1,V2).
 
+    %%% Redundant rules: connection between derivable statements and the puzzle
+    :- not solution(C,V),
+        deduction_mode(Mode),
+        derivable(Mode,solution(C,V)).
+    :- solution(C,V),
+        deduction_mode(Mode),
+        derivable(Mode,strike(C,V)).
+
     %%% Declare when the entire solution has been derived
     %all_derivable(Mode) :-
     %    deduction_mode(Mode),
