@@ -395,7 +395,7 @@ xy_wing = DeductionRule(
 x_wing = DeductionRule(
     "x_wing",
     """
-    derivable(Mode,strike(C,V)) :-
+    derivable(Mode,(x_wing_snyder(V,C1,C3,G3);x_wing_snyder(V,C2,C4,G4))) :-
         use_technique(Mode,x_wing),
         deduction_mode(Mode), value(V),
         group(G1), active_group(Mode,G1),
@@ -418,12 +418,53 @@ x_wing = DeductionRule(
         different_cells(C1,C3), different_cells(C1,C4), C1 < C3,
         different_cells(C2,C3), different_cells(C2,C4),
         in_group(C1,G3), in_group(C3,G3),
-        in_group(C2,G4), in_group(C4,G4),
-        cell(C), in_group(C,(G3;G4)),
+        in_group(C2,G4), in_group(C4,G4).
+    derivable(Mode,strike(C,V)) :-
+        use_technique(Mode,x_wing),
+        deduction_mode(Mode), value(V),
+        group(G), active_group(Mode,G),
+        cell(C1), cell(C2), in_group(C1,G), in_group(C2,G),
+        derivable(Mode,x_wing_snyder(V,C1,C2,G)),
         different_cells(C,C1), different_cells(C,C2),
-        different_cells(C,C3), different_cells(C,C4).
+        cell(C), in_group(C,G).
     """
 )
+
+### Old encoding of x_wing
+### (seems to lead to slightly smaller grounding times
+###  but higher solving times)
+# x_wing = DeductionRule(
+#     "x_wing",
+#     """
+#     derivable(Mode,strike(C,V)) :-
+#         use_technique(Mode,x_wing),
+#         deduction_mode(Mode), value(V),
+#         group(G1), active_group(Mode,G1),
+#         group(G2), active_group(Mode,G2),
+#         group(G3), active_group(Mode,G3),
+#         group(G4), active_group(Mode,G4),
+#         G1 != G2, G1 != G3, G1 != G4,
+#         G2 != G3, G2 != G4,
+#         G3 != G4,
+#         group_type(G1,T1), group_type(G2,T1), T1 != block,
+#         group_type(G3,T2), group_type(G4,T2), T2 != block, T1 != T2,
+#         in_group(C1,G1), in_group(C2,G1), different_cells(C1,C2), C1 < C2,
+#         derivable(Mode,strike(D,V)) :
+#             cell(D), in_group(D,G1),
+#             different_cells(D,C1), different_cells(D,C2);
+#         in_group(C3,G2), in_group(C4,G2), different_cells(C3,C4),
+#         derivable(Mode,strike(D,V)) :
+#             cell(D), in_group(D,G2),
+#             different_cells(D,C3), different_cells(D,C4);
+#         different_cells(C1,C3), different_cells(C1,C4), C1 < C3,
+#         different_cells(C2,C3), different_cells(C2,C4),
+#         in_group(C1,G3), in_group(C3,G3),
+#         in_group(C2,G4), in_group(C4,G4),
+#         cell(C), in_group(C,(G3;G4)),
+#         different_cells(C,C1), different_cells(C,C2),
+#         different_cells(C,C3), different_cells(C,C4).
+#     """
+# )
 
 snyder_basic = DeductionRule(
     "snyder_basic",
