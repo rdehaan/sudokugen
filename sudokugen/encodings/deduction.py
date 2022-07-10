@@ -478,7 +478,6 @@ snyder_locked_candidates = DeductionRule(
     """
 )
 
-### TODO: develop this
 snyder_x_wing = DeductionRule(
     "snyder_x_wing",
     """
@@ -488,10 +487,8 @@ snyder_x_wing = DeductionRule(
         group(G1), active_group(Mode,G1), group_type(G1,block),
         group(G2), active_group(Mode,G2), group_type(G2,block),
         G1 != G2,
-        derivable(Mode,snyder(V,C1,C2,G1)), different_cells(C1,C2),
-        derivable(Mode,snyder(V,C3,C4,G2)), different_cells(C3,C4),
-        in_group(C1,Row1), in_group(C2,Row1), group_type(Row1,row),
-        in_group(C3,Row2), in_group(C4,Row2), group_type(Row2,row),
+        derivable(Mode,snyder(V,C1,C2,G1)), different_cells(C1,C2), C1 < C2,
+        derivable(Mode,snyder(V,C3,C4,G2)), different_cells(C3,C4), C1 < C3,
         in_group(C1,Col1), in_group(C3,Col1), group_type(Col1,column),
         in_group(C2,Col2), in_group(C4,Col2), group_type(Col2,column),
         not in_group(C,G1), not in_group(C,G2),
@@ -502,10 +499,8 @@ snyder_x_wing = DeductionRule(
         group(G1), active_group(Mode,G1), group_type(G1,block),
         group(G2), active_group(Mode,G2), group_type(G2,block),
         G1 != G2,
-        derivable(Mode,snyder(V,C1,C2,G1)), different_cells(C1,C2),
-        derivable(Mode,snyder(V,C3,C4,G2)), different_cells(C3,C4),
-        in_group(C1,Col1), in_group(C2,Col1), group_type(Col1,column),
-        in_group(C3,Col2), in_group(C4,Col2), group_type(Col2,column),
+        derivable(Mode,snyder(V,C1,C2,G1)), different_cells(C1,C2), C1 < C2,
+        derivable(Mode,snyder(V,C3,C4,G2)), different_cells(C3,C4), C1 < C3,
         in_group(C1,Row1), in_group(C3,Row1), group_type(Row1,row),
         in_group(C2,Row2), in_group(C4,Row2), group_type(Row2,row),
         not in_group(C,G1), not in_group(C,G2),
