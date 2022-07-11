@@ -765,6 +765,72 @@ def generate_example(num=1):
             cl_arguments=["--parallel-mode=4"]
         )
 
+    # Example no. 17:
+    # - Generate a regular 9x9 sudoku puzzle
+    # - that is solvable using the deduction rules:
+    #   * basic deduction
+    #   * lone singles
+    #   * hidden singles
+    #   * naked pairs
+    #   * hidden pairs
+    #   * locked candidates
+    #   * xy-wing
+    # (- and thus has a unique solution)
+    # - and that is *not* solvable using only the deduction rules:
+    #   * basic deduction
+    #   * lone singles
+    #   * hidden singles
+    #   * naked pairs
+    #   * hidden pairs
+    #   * locked candidates
+    # - where at least 10 cells are empty
+    # - where the top row has consecutive values as solution
+    #   (to avoid symmetrical solutions that slow down the search)
+    # - giving a timeout of 300 seconds for solving with 4 parallel threads
+    elif num == 17:
+        instance = instances.RegularSudoku(9)
+        constraints = [
+            encodings.constrain_num_filled_cells(
+                instance,
+                0,
+                instance.num_cells-10
+            ),
+            encodings.sym_breaking_top_row(instance),
+            encodings.deduction_constraint(
+                instance,
+                [
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.naked_pairs,
+                            encodings.hidden_pairs,
+                            encodings.locked_candidates,
+                            encodings.xy_wing,
+                            encodings.stable_state_solved
+                        ]),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.naked_pairs,
+                            encodings.hidden_pairs,
+                            encodings.locked_candidates,
+                            encodings.stable_state_unsolved
+                        ]),
+                ]
+            )
+        ]
+        found_solution = generate_puzzle(
+            instance,
+            constraints,
+            timeout=300,
+            verbose=True,
+            cl_arguments=["--parallel-mode=4"]
+        )
+
     else:
         print(f"Example #{num} not found")
         return

@@ -384,11 +384,31 @@ locked_candidates = DeductionRule(
     """
 )
 
-### TODO: develop this
 xy_wing = DeductionRule(
     "xy_wing",
     """
-        %TODO
+    derivable(Mode,xy_wing_or(0,C,V1,C,V2)) :-
+        use_technique(Mode,xy_wing), deduction_mode(Mode),
+        value(V1), value(V2), different_values(V1,V2), cell(C),
+        derivable(Mode,strike(C,V)) :
+            value(V), different_values(V,V1), different_values(V,V2).
+    derivable(Mode,xy_wing_or(D,C1,V1,C2,V2)) :-
+        derivable(Mode,xy_wing_or(D,C2,V2,C1,V1)).
+    derivable(Mode,xy_wing_or(1,C1,V1,C4,V4)) :-
+        use_technique(Mode,xy_wing), deduction_mode(Mode),
+        derivable(Mode,xy_wing_or(0,C1,V1,C2,V2)),
+        derivable(Mode,xy_wing_or(0,C3,V3,C4,V4)),
+        share_group(C2,C3), V2 = V3.
+    derivable(Mode,xy_wing_or(2,C1,V1,C4,V4)) :-
+        use_technique(Mode,xy_wing), deduction_mode(Mode),
+        derivable(Mode,xy_wing_or(1,C1,V1,C2,V2)),
+        derivable(Mode,xy_wing_or(0,C3,V3,C4,V4)),
+        share_group(C2,C3), V2 = V3, V1 = V4.
+    derivable(Mode,strike(C,V)) :-
+        use_technique(Mode,xy_wing), deduction_mode(Mode),
+        cell(C), value(V),
+        derivable(Mode,xy_wing_or(2,C1,V,C2,V)),
+        share_group(C,C1), share_group(C,C2).
     """
 )
 
