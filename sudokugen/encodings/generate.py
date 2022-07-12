@@ -2,6 +2,7 @@
 Module with functionality to generate puzzles using ASP encodings
 """
 
+import itertools
 from typing import List
 
 from .deduction import SolvingStrategy, basic_deduction
@@ -458,4 +459,44 @@ def sym_breaking_at_most_one_hidden() -> str:
         :- value(V1), value(V2), different_values(V1,V2),
             not value_appears(V1), not value_appears(V2).
     """
+    return asp_code
+
+
+def use_mask(
+        instance: SquareSudoku,
+        mask: str
+    ) -> str:
+    """
+    Use a mask to generate the puzzle, which consists of a string of characters,
+    one per cell, going left-to-right and (then) top-to-bottom, where a "0"
+    indicates an empty cell, a positive integer indicates a non-empty cell with
+    this value, a "*" indicates a non-empty cell with an arbitrary value,
+    and a "?" indicates free choice for the cell.
+    """
+
+    asp_code = ""
+    mask_pieces = [
+        (j, i, mask[(i-1) * instance.size + j - 1])
+        for (i, j) in itertools.product(range(1, instance.size+1), repeat=2)
+    ]
+    for (i, j, val) in mask_pieces:
+        if val == "0":
+            asp_code += f"""
+                :- not erase({instance.cell_encoding((i,j))}).
+            """
+        elif val == "*":
+            asp_code += f"""
+                :- erase({instance.cell_encoding((i,j))}).
+                certainly_not_erased({instance.cell_encoding((i,j))}).
+            """
+        else:
+            try:
+                val = int(val)
+                asp_code += f"""
+                    :- erase({instance.cell_encoding((i,j))}).
+                    :- not solution({instance.cell_encoding((i,j))},{val}).
+                    certainly_not_erased({instance.cell_encoding((i,j))}).
+                """
+            except ValueError:
+                pass
     return asp_code
