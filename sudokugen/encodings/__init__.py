@@ -2,7 +2,8 @@ from .generate import generate_basic, unique_solution, \
     maximize_num_filled_cells, minimize_num_filled_cells, \
     constrain_num_filled_cells, deduction_constraint, \
     left_right_symmetry, top_bottom_symmetry, point_symmetry, forbid_values, \
-    fill_cell, open_cell, sym_breaking_top_row, sym_breaking_row_col_ordering
+    fill_cell, open_cell, sym_breaking_top_row, sym_breaking_row_col_ordering, \
+    sym_breaking_left_column
 from .deduction import DeductionRule, SolvingStrategy, \
     basic_deduction, naked_singles, hidden_singles, naked_pairs, \
     hidden_pairs, naked_triples, hidden_triples, \

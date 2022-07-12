@@ -396,3 +396,50 @@ def sym_breaking_row_col_ordering(
             asp_code += encoding_cols_ordered(col1, col2)
 
     return asp_code
+
+
+def sym_breaking_left_column(
+        instance: RectangleBlockSudoku
+    ) -> str:
+    """
+    Returns the symmetry breaking code that enforces increasing values in the
+    leftmost column, both inside blocks and between the top rows of different
+    blocks.
+    """
+    # pylint: disable=W0212,R0914
+    block_width = instance._block_width
+    block_height = instance._block_height
+
+    asp_code = ""
+
+    # Rows inside blocks
+    for row_basis in range(block_width):
+        for row1_basis in range(1, block_width+1):
+            for row2_basis in range(1, block_height-row1_basis+1):
+                basis = row_basis * block_height
+                row1 = basis + row1_basis
+                row2 = basis + row1_basis + row2_basis
+                cell1 = (1,row1)
+                cell2 = (1,row2)
+                asp_code += f"""
+                    :- solution({instance.cell_encoding(cell1)},V1),
+                        solution({instance.cell_encoding(cell2)},V2),
+                        V2 < V1.
+                """
+
+    # Corresponding rows between blocks
+    row_basis = 0
+    for row1_basis in range(block_width):
+        for row2_basis in range(1, block_width-row1_basis):
+            basis = row_basis
+            row1 = basis + row1_basis * block_height + 1
+            row2 = basis + (row1_basis + row2_basis) * block_height + 1
+            cell1 = (1,row1)
+            cell2 = (1,row2)
+            asp_code += f"""
+                :- solution({instance.cell_encoding(cell1)},V1),
+                    solution({instance.cell_encoding(cell2)},V2),
+                    V2 < V1.
+            """
+
+    return asp_code
