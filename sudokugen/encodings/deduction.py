@@ -495,6 +495,7 @@ x_chain = DeductionRule(
     derivable(Mode,x_chain_or(C1,yes(V),C2,yes(V))) :-
         use_technique(Mode,x_chain), deduction_mode(Mode),
         value(V), cell(C1), cell(C2), different_cells(C1,C2),
+        group(G), active_group(Mode,G),
         in_group(C1,G), in_group(C2,G),
         derivable(Mode,strike(C,V)) :
             cell(C), in_group(C,G),
@@ -508,12 +509,15 @@ x_chain = DeductionRule(
     derivable(Mode,x_chain_or(C1,S1,C3,S3)) :-
         use_technique(Mode,x_chain), deduction_mode(Mode),
         derivable(Mode,x_chain_or(C1,S1,C2,yes(V))),
-        derivable(Mode,x_chain_or(C2,no(V),C3,S3)).
+        derivable(Mode,x_chain_or(C2,no(V),C3,S3)),
+        different_cells(C1,C2), different_cells(C2,C3),
+        different_cells(C1,C3).
     derivable(Mode,strike(C,V)) :-
         use_technique(Mode,x_chain), deduction_mode(Mode),
         cell(C), value(V),
         derivable(Mode,x_chain_or(C1,yes(V),C2,yes(V))),
-        share_group(C,C1), share_group(C,C2).
+        share_group(C,C1), share_group(C,C2),
+        different_cells(C1,C2).
 
     :- derivable(_,x_chain_or(C1,no(V),C2,no(V))),
         solution(C1,V), solution(C2,V).
@@ -524,6 +528,24 @@ x_chain = DeductionRule(
     :- derivable(_,x_chain_or(C1,yes(V),C2,no(V))),
         not solution(C1,V), solution(C2,V).
     """
+    # """
+    # derivable(Mode,x_chain_or(C1,yes(V),C2,yes(V))) :-
+    #     use_technique(Mode,x_chain), deduction_mode(Mode),
+    #     value(V), cell(C1), cell(C2), different_cells(C1,C2),
+    #     derivable(Mode,solution(C1,V)).
+    # derivable(Mode,x_chain_or(C1,yes(V),C2,no(V))) :-
+    #     use_technique(Mode,x_chain), deduction_mode(Mode),
+    #     value(V), cell(C1), cell(C2), different_cells(C1,C2),
+    #     derivable(Mode,solution(C1,V)).
+    # derivable(Mode,x_chain_or(C1,no(V),C2,yes(V))) :-
+    #     use_technique(Mode,x_chain), deduction_mode(Mode),
+    #     value(V), cell(C1), cell(C2), different_cells(C1,C2),
+    #     derivable(Mode,strike(C1,V)).
+    # derivable(Mode,x_chain_or(C1,no(V),C2,no(V))) :-
+    #     use_technique(Mode,x_chain), deduction_mode(Mode),
+    #     value(V), cell(C1), cell(C2), different_cells(C1,C2),
+    #     derivable(Mode,strike(C1,V)).
+    # """
 )
 
 snyder_basic = DeductionRule(
