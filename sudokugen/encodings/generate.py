@@ -443,3 +443,19 @@ def sym_breaking_left_column(
             """
 
     return asp_code
+
+
+def sym_breaking_at_most_one_hidden() -> str:
+    """
+    Returns the symmetry breaking code that enforces that there may not be two
+    values that do not appear at all in the puzzle (as for many sudoku types
+    this can never lead to a unique solution).
+    """
+
+    asp_code = """
+        value_appears(V) :-
+            value(V), cell(C), solution(C,V), not erase(C).
+        :- value(V1), value(V2), different_values(V1,V2),
+            not value_appears(V1), not value_appears(V2).
+    """
+    return asp_code
