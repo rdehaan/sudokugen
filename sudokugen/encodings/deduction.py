@@ -53,7 +53,9 @@ stable_state_unsolved = DeductionRule(
 stable_state_no_derivable = DeductionRule(
     "ss_no_derivable",
     """
-    stable_state(Mode) :- use_technique(Mode,ss_no_derivable).
+    stable_state(Mode) :-
+        use_technique(Mode,ss_no_derivable),
+        not derivable(Mode,solution(C,V)) : solution(C,V), erase(C).
     """
 )
 
