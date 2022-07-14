@@ -73,6 +73,11 @@ def generate_basic(instance: Instance) -> str:
             value(V1), value(V2), V1 < V2.
     """
 
+    # Use certainly_not_erased/1, to avoid warnings.
+    asp_code += """
+        certainly_not_erased(dummy).
+    """
+
     # Declare what to show
     asp_code += """
         #show solution/2.

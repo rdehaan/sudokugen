@@ -90,6 +90,9 @@ stable_state_unsolved_naked_pairs = DeductionRule(
     counterexample(Mode,ss_unsolved_naked_pairs) :-
         use_technique(Mode,ss_unsolved_naked_pairs),
         cell(C), cell(C1), cell(C2), C != C1, C != C2,
+        not certainly_not_erased(C),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
         group(G), in_group(C,G), in_group(C1,G), in_group(C2,G),
         different_cells_in_group_ordered(C1,C2,G),
         value(V), value_in_pair(V,V1,V2),
@@ -141,7 +144,7 @@ closed_under_naked_singles = DeductionRule(
     :- use_technique(Mode,closed_under_naked_singles),
         cell(C), value(V), solution(C,V),
         derivable(Mode,strike(C,W)) : value(W), V != W;
-        erase(C).
+        not certainly_not_erased(C), erase(C).
     """
 )
 
@@ -152,7 +155,7 @@ closed_under_hidden_singles = DeductionRule(
         deduction_mode(Mode), value(V), cell(C1),
         full_group(G), active_group(Mode,G), in_group(C1,G),
         derivable(Mode,strike(C2,V)) : in_group(C2,G), different_cells(C1,C2);
-        erase(C1).
+        not certainly_not_erased(C1), erase(C1).
     """
 )
 
@@ -200,11 +203,6 @@ basic_deduction = DeductionRule(
     :- solution(C,V),
         deduction_mode(Mode),
         derivable(Mode,strike(C,V)).
-
-    %%% Declare when the entire solution has been derived
-    %all_derivable(Mode) :-
-    %    deduction_mode(Mode),
-    %    derivable(Mode,solution(C,V)) : solution(C,V).
     """
 )
 
@@ -213,7 +211,8 @@ naked_singles = DeductionRule(
     """
     derivable(Mode,solution(C,V1)) :-
         use_technique(Mode,naked_singles),
-        deduction_mode(Mode), value(V1), cell(C),
+        deduction_mode(Mode), value(V1),
+        cell(C), not certainly_not_erased(C),
         derivable(Mode,strike(C,V2)) : different_values(V1,V2).
     """
 )
@@ -223,7 +222,8 @@ hidden_singles = DeductionRule(
     """
     derivable(Mode,solution(C1,V)) :-
         use_technique(Mode,hidden_singles),
-        deduction_mode(Mode), value(V), cell(C1),
+        deduction_mode(Mode), value(V),
+        cell(C1), not certainly_not_erased(C1),
         full_group(G), active_group(Mode,G), in_group(C1,G),
         derivable(Mode,strike(C2,V)) : in_group(C2,G), different_cells(C1,C2).
     """
@@ -236,23 +236,30 @@ naked_pairs = DeductionRule(
         group(G), deduction_mode(Mode), active_group(Mode,G),
         in_group(C1,G), in_group(C2,G), in_group(C3,G),
         different_cells_in_group_ordered(C2,C3,G),
-        different_cells(C1,C2), different_cells(C1,C3).
+        different_cells(C1,C2), different_cells(C1,C3),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
+        not certainly_not_erased(C3).
 
     derivable(Mode,naked_pair(C,V1,V2)) :-
         use_technique(Mode,naked_pairs),
-        deduction_mode(Mode), cell(C), value(V1), value(V2), V1 < V2,
+        deduction_mode(Mode),
+        cell(C), not certainly_not_erased(C),
+        value(V1), value(V2), V1 < V2,
         derivable(Mode,strike(C,W)) : value(W),
             %different_values(V1,W), different_values(V2,W).
             V1 != W, V2 != W.
     derivable(Mode,solution(C,V1)) :-
         use_technique(Mode,naked_pairs),
-        deduction_mode(Mode), cell(C),
+        deduction_mode(Mode),
+        cell(C), not certainly_not_erased(C),
         value(V1), value(V2), V1 < V2,
         derivable(Mode,naked_pair(C,V1,V2)),
         derivable(Mode,strike(C,V2)).
     derivable(Mode,solution(C,V2)) :-
         use_technique(Mode,naked_pairs),
-        deduction_mode(Mode), cell(C),
+        deduction_mode(Mode),
+        cell(C), not certainly_not_erased(C),
         value(V1), value(V2), V1 < V2,
         derivable(Mode,naked_pair(C,V1,V2)),
         derivable(Mode,strike(C,V1)).
@@ -277,7 +284,11 @@ naked_triples = DeductionRule(
         group(G), deduction_mode(Mode), active_group(Mode,G),
         in_group(C1,G), in_group(C2,G), in_group(C3,G), in_group(C4,G),
         different_cells_in_group_ordered(C2,C3,C4,G),
-        different_cells(C1,C2), different_cells(C1,C3), different_cells(C1,C4).
+        different_cells(C1,C2), different_cells(C1,C3), different_cells(C1,C4),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
+        not certainly_not_erased(C3),
+        not certainly_not_erased(C4).
     value_in_triple(V1,V1,V2,V3) :-
         value(V1), value(V2), value(V3), V1 < V2, V2 < V3.
     value_in_triple(V2,V1,V2,V3) :-
@@ -287,7 +298,9 @@ naked_triples = DeductionRule(
 
     derivable(Mode,naked_triple(C,V1,V2,V3)) :-
         use_technique(Mode,naked_triples),
-        deduction_mode(Mode), cell(C), value(V1), value(V2), value(V3),
+        deduction_mode(Mode),
+        cell(C), not certainly_not_erased(C),
+        value(V1), value(V2), value(V3),
         V1 < V2, V2 < V3,
         derivable(Mode,strike(C,W)) : value(W),
             different_values(V1,W),
@@ -311,6 +324,8 @@ hidden_pairs = DeductionRule(
         use_technique(Mode,hidden_pairs),
         deduction_mode(Mode), value(V), group(G), active_group(Mode,G),
         cell(C1), cell(C2),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
         different_cells_in_group_ordered(C1,C2,G),
         in_group(C1,G), in_group(C2,G),
         derivable(Mode,strike(C,V)) : in_group(C,G),
@@ -322,8 +337,8 @@ hidden_pairs = DeductionRule(
     derivable(Mode,strike(C,V)) :-
         use_technique(Mode,hidden_pairs),
         deduction_mode(Mode), value(V), group(G), active_group(Mode,G),
-        cell(C1), in_group(C1,G),
-        cell(C2), in_group(C2,G),
+        cell(C1), in_group(C1,G), not certainly_not_erased(C1),
+        cell(C2), in_group(C2,G), not certainly_not_erased(C2),
         cell_in_pair(C,C1,C2),
         different_cells(C1,C2),
         value(V1), value(V2), V1 < V2,
@@ -341,6 +356,9 @@ hidden_triples = DeductionRule(
         use_technique(Mode,hidden_triples),
         deduction_mode(Mode), value(V), group(G), active_group(Mode,G),
         cell(C1), cell(C2), cell(C3),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
+        not certainly_not_erased(C3),
         different_cells_in_group_ordered(C1,C2,G),
         different_cells_in_group_ordered(C2,C3,G),
         in_group(C1,G), in_group(C2,G), in_group(C3,G),
@@ -357,9 +375,9 @@ hidden_triples = DeductionRule(
     derivable(Mode,strike(C,V)) :-
         use_technique(Mode,hidden_triples),
         deduction_mode(Mode), value(V), group(G), active_group(Mode,G),
-        cell(C1), in_group(C1,G),
-        cell(C2), in_group(C2,G),
-        cell(C3), in_group(C3,G),
+        cell(C1), in_group(C1,G), not certainly_not_erased(C1),
+        cell(C2), in_group(C2,G), not certainly_not_erased(C2),
+        cell(C3), in_group(C3,G), not certainly_not_erased(C3),
         cell_in_triple(C,C1,C2,C3),
         different_cells(C1,C2), different_cells(C1,C3), different_cells(C2,C3),
         value(V1), value(V2), value(V3), V1 < V2, V2 < V3,
@@ -379,6 +397,7 @@ locked_candidates = DeductionRule(
         group(G1), active_group(Mode,G1),
         group(G2), active_group(Mode,G2),
         in_group(C1,G2), not in_group(C1,G1),
+        not certainly_not_erased(C1),
         derivable(Mode,strike(C2,V)) :
             cell(C2), in_group(C2,G1), not in_group(C2,G2).
     """
@@ -389,7 +408,8 @@ xy_wing = DeductionRule(
     """
     derivable(Mode,xy_wing_or(0,C,V1,C,V2)) :-
         use_technique(Mode,xy_wing), deduction_mode(Mode),
-        value(V1), value(V2), different_values(V1,V2), cell(C),
+        value(V1), value(V2), different_values(V1,V2),
+        cell(C), not certainly_not_erased(C),
         derivable(Mode,strike(C,V)) :
             value(V), different_values(V,V1), different_values(V,V2).
     derivable(Mode,xy_wing_or(D,C1,V1,C2,V2)) :-
@@ -406,7 +426,8 @@ xy_wing = DeductionRule(
         share_group(C2,C3), V2 = V3, V1 = V4.
     derivable(Mode,strike(C,V)) :-
         use_technique(Mode,xy_wing), deduction_mode(Mode),
-        cell(C), value(V),
+        cell(C), not certainly_not_erased(C),
+        value(V),
         derivable(Mode,xy_wing_or(2,C1,V,C2,V)),
         share_group(C,C1), share_group(C,C2).
 
@@ -441,7 +462,11 @@ x_wing = DeductionRule(
         different_cells(C1,C3), different_cells(C1,C4), C1 < C3,
         different_cells(C2,C3), different_cells(C2,C4),
         in_group(C1,G3), in_group(C3,G3),
-        in_group(C2,G4), in_group(C4,G4).
+        in_group(C2,G4), in_group(C4,G4),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
+        not certainly_not_erased(C3),
+        not certainly_not_erased(C4).
     derivable(Mode,strike(C,V)) :-
         use_technique(Mode,x_wing),
         deduction_mode(Mode), value(V),
@@ -449,7 +474,7 @@ x_wing = DeductionRule(
         cell(C1), cell(C2), in_group(C1,G), in_group(C2,G),
         derivable(Mode,x_wing_snyder(V,C1,C2,G)),
         different_cells(C,C1), different_cells(C,C2),
-        cell(C), in_group(C,G).
+        cell(C), in_group(C,G), not certainly_not_erased(C).
     """
 )
 
@@ -485,7 +510,11 @@ x_wing = DeductionRule(
 #         in_group(C2,G4), in_group(C4,G4),
 #         cell(C), in_group(C,(G3;G4)),
 #         different_cells(C,C1), different_cells(C,C2),
-#         different_cells(C,C3), different_cells(C,C4).
+#         different_cells(C,C3), different_cells(C,C4),
+#         not certainly_not_erased(C1),
+#         not certainly_not_erased(C2),
+#         not certainly_not_erased(C3),
+#         not certainly_not_erased(C4).
 #     """
 # )
 
@@ -495,6 +524,8 @@ x_chain = DeductionRule(
     derivable(Mode,x_chain_or(C1,yes(V),C2,yes(V))) :-
         use_technique(Mode,x_chain), deduction_mode(Mode),
         value(V), cell(C1), cell(C2), different_cells(C1,C2),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
         group(G), active_group(Mode,G),
         in_group(C1,G), in_group(C2,G),
         derivable(Mode,strike(C,V)) :
@@ -503,6 +534,8 @@ x_chain = DeductionRule(
     derivable(Mode,x_chain_or(C1,no(V),C2,no(V))) :-
         use_technique(Mode,x_chain), deduction_mode(Mode),
         value(V), cell(C1), cell(C2), different_cells(C1,C2),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
         share_group(C1,C2).
     derivable(Mode,x_chain_or(C1,S1,C2,S2)) :-
         derivable(Mode,x_chain_or(C2,S2,C1,S1)).
@@ -511,10 +544,14 @@ x_chain = DeductionRule(
         derivable(Mode,x_chain_or(C1,S1,C2,yes(V))),
         derivable(Mode,x_chain_or(C2,no(V),C3,S3)),
         different_cells(C1,C2), different_cells(C2,C3),
-        different_cells(C1,C3).
+        different_cells(C1,C3),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
+        not certainly_not_erased(C3).
     derivable(Mode,strike(C,V)) :-
         use_technique(Mode,x_chain), deduction_mode(Mode),
-        cell(C), value(V),
+        cell(C), not certainly_not_erased(C),
+        value(V),
         derivable(Mode,x_chain_or(C1,yes(V),C2,yes(V))),
         share_group(C,C1), share_group(C,C2),
         different_cells(C1,C2).
@@ -532,18 +569,26 @@ x_chain = DeductionRule(
     # derivable(Mode,x_chain_or(C1,yes(V),C2,yes(V))) :-
     #     use_technique(Mode,x_chain), deduction_mode(Mode),
     #     value(V), cell(C1), cell(C2), different_cells(C1,C2),
+    #     not certainly_not_erased(C1),
+    #     not certainly_not_erased(C2),
     #     derivable(Mode,solution(C1,V)).
     # derivable(Mode,x_chain_or(C1,yes(V),C2,no(V))) :-
     #     use_technique(Mode,x_chain), deduction_mode(Mode),
     #     value(V), cell(C1), cell(C2), different_cells(C1,C2),
+    #     not certainly_not_erased(C1),
+    #     not certainly_not_erased(C2),
     #     derivable(Mode,solution(C1,V)).
     # derivable(Mode,x_chain_or(C1,no(V),C2,yes(V))) :-
     #     use_technique(Mode,x_chain), deduction_mode(Mode),
     #     value(V), cell(C1), cell(C2), different_cells(C1,C2),
+    #     not certainly_not_erased(C1),
+    #     not certainly_not_erased(C2),
     #     derivable(Mode,strike(C1,V)).
     # derivable(Mode,x_chain_or(C1,no(V),C2,no(V))) :-
     #     use_technique(Mode,x_chain), deduction_mode(Mode),
     #     value(V), cell(C1), cell(C2), different_cells(C1,C2),
+    #     not certainly_not_erased(C1),
+    #     not certainly_not_erased(C2),
     #     derivable(Mode,strike(C1,V)).
     # """
 )
@@ -556,6 +601,8 @@ snyder_basic = DeductionRule(
         deduction_mode(Mode), value(V),
         group(G), active_group(Mode,G), group_type(G,block),
         cell(C1), cell(C2), different_cells(C1,C2),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
         in_group(C1,G), in_group(C2,G),
         derivable(Mode,strike(C,V)) : in_group(C,G),
             different_cells(C,C1), different_cells(C,C2).
@@ -564,6 +611,9 @@ snyder_basic = DeductionRule(
         deduction_mode(Mode),
         group(G), active_group(Mode,G), group_type(G,block),
         cell(C1), cell(C2), cell(C),
+        not certainly_not_erased(C),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
         different_cells(C1,C2), different_cells(C1,C),
         different_cells(C2,C),
         in_group(C1,G), in_group(C2,G), in_group(C,G),
@@ -580,6 +630,8 @@ snyder_basic_locked = DeductionRule(
         group(G1), active_group(Mode,G1), group_type(G1,block),
         group(G2), active_group(Mode,G2), group_type(G2,(row;column)),
         cell(C1), cell(C2), different_cells(C1,C2),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
         in_group(C1,G1), in_group(C2,G1),
         in_group(C1,G2), in_group(C2,G2),
         derivable(Mode,strike(C,V)) : in_group(C,G2),
@@ -600,6 +652,8 @@ snyder_hidden_pairs = DeductionRule(
         group(G), active_group(Mode,G), group_type(G,block),
         cell(C1), in_group(C1,G),
         cell(C2), in_group(C2,G),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
         different_cells(C1,C2), C1 < C2,
         cell_in_pair(C,C1,C2),
         value(V1), value(V2), V1 < V2,
@@ -620,6 +674,9 @@ snyder_locked_candidates = DeductionRule(
         cell(C1), cell(C2), cell(C),
         different_cells(C1,C2), different_cells(C1,C),
         different_cells(C2,C),
+        not certainly_not_erased(C),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
         in_group(C1,G1), in_group(C2,G1),
         in_group(C1,G2), in_group(C2,G2), in_group(C,G2),
         derivable(Mode,snyder(V,C1,C2,G1)).
@@ -637,6 +694,11 @@ snyder_x_wing = DeductionRule(
         G1 != G2,
         derivable(Mode,snyder(V,C1,C2,G1)), different_cells(C1,C2), C1 < C2,
         derivable(Mode,snyder(V,C3,C4,G2)), different_cells(C3,C4), C1 < C3,
+        not certainly_not_erased(C),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
+        not certainly_not_erased(C3),
+        not certainly_not_erased(C4),
         in_group(C1,G3), in_group(C3,G3), group_type(G3,T),
         in_group(C2,G4), in_group(C4,G4), group_type(G4,T), T != block,
         not in_group(C,G1), not in_group(C,G2),

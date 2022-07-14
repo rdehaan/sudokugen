@@ -4,3 +4,5 @@ from .instances import Instance, SquareSudoku, RokuDoku, RegularSudoku, \
 from .generator import generate_puzzle
 
 from .printing import repr_latex, latex_preamble
+
+from .masks import mask_library
