@@ -8,8 +8,8 @@ from .generate import generate_basic, unique_solution, \
 from .deduction import DeductionRule, SolvingStrategy, \
     basic_deduction, naked_singles, hidden_singles, naked_pairs, \
     hidden_pairs, naked_triples, hidden_triples, \
-    stable_state_solved, stable_state_unsolved, stable_state_trivial, \
-    stable_state_no_derivable, stable_state_num_derivable, \
+    stable_state_solved, stable_state_unsolved, \
+    stable_state_no_derivable, \
     stable_state_unsolved_naked_pairs, stable_state_unsolved_hidden_pairs, \
     stable_state_unsolved_naked_triples, stable_state_unsolved_hidden_triples, \
     stable_state_unsolved_locked_candidates, \

@@ -30,58 +30,34 @@ class SolvingStrategy:
 stable_state_solved = DeductionRule(
     "ss_solved",
     """
-    stable_state(Mode) :-
-        all_derived(Mode), use_technique(Mode,ss_solved).
-    all_derived(Mode) :-
-        deduction_mode(Mode), use_technique(Mode,ss_solved),
-        derivable(Mode,solution(C,V)) : solution(C,V).
+    :- deduction_mode(Mode), use_technique(Mode,ss_solved),
+        cell(C), solution(C,V),
+        not derivable(Mode,solution(C,V)).
     """
 )
 
 stable_state_unsolved = DeductionRule(
     "ss_unsolved",
     """
-    stable_state(Mode) :-
-        not all_derived(Mode), use_technique(Mode,ss_unsolved).
-    all_derived(Mode) :-
-        deduction_mode(Mode), use_technique(Mode,ss_unsolved),
+    :- deduction_mode(Mode), use_technique(Mode,ss_unsolved),
         derivable(Mode,solution(C,V)) : solution(C,V).
     """
 )
 
-### TODO: develop this
 stable_state_no_derivable = DeductionRule(
     "ss_no_derivable",
     """
-    stable_state(Mode) :-
-        use_technique(Mode,ss_no_derivable),
-        not derivable(Mode,solution(C,V)) : solution(C,V), erase(C).
-    """
-)
-
-### TODO: develop this
-def stable_state_num_derivable(lower, upper):
-    return DeductionRule(
-        f"ss_num_derivable({lower},{upper})",
-        f"""
-        stable_state(Mode) :-
-            use_technique(Mode,ss_num_derivable({lower},{upper})).
-        """
-    )
-
-stable_state_trivial = DeductionRule(
-    "ss_trivial",
-    """
-    stable_state(Mode) :- use_technique(Mode,ss_trivial).
+    :- use_technique(Mode,ss_no_derivable),
+        cell(C), solution(C,V), erase(C),
+        derivable(Mode,solution(C,V)).
     """
 )
 
 stable_state_unsolved_naked_pairs = DeductionRule(
     "ss_unsolved_naked_pairs",
     """
-    stable_state(Mode) :-
-        use_technique(Mode,ss_unsolved_naked_pairs),
-        counterexample(Mode,ss_unsolved_naked_pairs).
+    :- use_technique(Mode,ss_unsolved_naked_pairs),
+        not counterexample(Mode,ss_unsolved_naked_pairs).
     different_cells_in_group_ordered(C1,C2,G) :-
         group(G), cell(C1), cell(C2),
         in_group(C1,G), in_group(C2,G), C1 < C2.

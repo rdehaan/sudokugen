@@ -336,7 +336,6 @@ def generate_example(num=1):
                             encodings.basic_deduction,
                             encodings.closed_under_naked_singles,
                             encodings.closed_under_hidden_singles,
-                            encodings.stable_state_trivial
                         ]),
                     encodings.SolvingStrategy(
                         rules=[
@@ -401,7 +400,6 @@ def generate_example(num=1):
                             encodings.basic_deduction,
                             encodings.closed_under_naked_singles,
                             encodings.closed_under_hidden_singles,
-                            encodings.stable_state_trivial
                         ]),
                     encodings.SolvingStrategy(
                         rules=[
@@ -468,7 +466,6 @@ def generate_example(num=1):
                             encodings.basic_deduction,
                             encodings.closed_under_naked_singles,
                             encodings.closed_under_hidden_singles,
-                            encodings.stable_state_trivial
                         ]),
                     encodings.SolvingStrategy(
                         rules=[
