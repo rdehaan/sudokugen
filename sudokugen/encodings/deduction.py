@@ -687,7 +687,7 @@ snyder_x_wing = DeductionRule(
     """
 )
 
-def derive_mask_exactly(
+def stable_state_mask_derived(
         instance: SquareSudoku,
         mask: str
     ) -> str:
@@ -743,3 +743,12 @@ def derive_mask_exactly(
         asp_code
     )
     return deduction_rule
+
+def stable_state_mask_not_derived(
+        instance: SquareSudoku,
+        mask: str
+    ) -> str:
+    """
+    TODO
+    """
+    pass
