@@ -6,7 +6,7 @@ puzzles
 from abc import abstractmethod
 import itertools
 import math
-
+import random
 
 class Instance:
     """
@@ -201,6 +201,76 @@ class RectangleBlockSudoku(SquareSudoku):
             if row % self._block_height == 0:
                 output += "\n"
         return output[:-2]
+
+    def shuffle(self):
+        """
+        Randomly permutes the rows, columns and values of the instance,
+        and randomly transposes the instance if the blocks are squares.
+        """
+
+        # Construct value permutation
+        values = list(range(1,self.size+1))
+        random.shuffle(values)
+        def val_permutation(value):
+            if value == 0:
+                return 0
+            return values[value-1]
+
+        # Construct column permutation
+        col_indices = [
+            [(j*self._block_width)+i for i in range(1,self._block_width+1)]
+            for j in range(self._block_height)
+        ]
+        for sublist in col_indices:
+            random.shuffle(sublist)
+        random.shuffle(col_indices)
+        col_indices = [index for sublist in col_indices for index in sublist]
+        def col_permutation(index):
+            return col_indices[index-1]
+
+        # Construct row permutation
+        row_indices = [
+            [(j*self._block_height)+i for i in range(1,self._block_height+1)]
+            for j in range(self._block_width)
+        ]
+        for sublist in row_indices:
+            random.shuffle(sublist)
+        random.shuffle(row_indices)
+        row_indices = [index for sublist in row_indices for index in sublist]
+        def row_permutation(index):
+            return row_indices[index-1]
+
+        # Decide whether to transpose
+        transpose = False
+        if self._block_width == self._block_height:
+            transpose = random.choice([True, False])
+        def flip_if_transposed(i,j):
+            if transpose:
+                return (j,i)
+            return (i,j)
+
+        # Apply permutations
+        new_puzzle = {
+            (i,j): val_permutation(
+                    self.puzzle[flip_if_transposed(
+                        col_permutation(i),
+                        row_permutation(j)
+                    )]
+                )
+            for (i,j) in self.puzzle
+        }
+        self.puzzle = new_puzzle
+        new_solution = {
+            (i,j): val_permutation(
+                    self.solution[flip_if_transposed(
+                        col_permutation(i),
+                        row_permutation(j)
+                    )]
+                )
+            for (i,j) in self.solution
+        }
+        self.solution = new_solution
+
 
 
 class RegularSudoku(RectangleBlockSudoku):
