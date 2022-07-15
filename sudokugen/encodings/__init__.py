@@ -17,4 +17,4 @@ from .deduction import DeductionRule, SolvingStrategy, \
     locked_candidates, xy_wing, x_wing, x_chain, \
     snyder_basic, snyder_basic_locked, \
     snyder_hidden_pairs, snyder_locked_candidates, \
-    snyder_x_wing
+    snyder_x_wing, derive_mask_exactly

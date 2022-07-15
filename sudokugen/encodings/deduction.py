@@ -4,6 +4,9 @@ Module with ASP encodings for different deduction rules
 
 from typing import List, Optional
 from dataclasses import dataclass
+import itertools
+
+from ..instances import SquareSudoku
 
 @dataclass(eq=True, frozen=True)
 class DeductionRule:
@@ -47,7 +50,7 @@ stable_state_unsolved = DeductionRule(
 stable_state_no_derivable = DeductionRule(
     "ss_no_derivable",
     """
-    :- use_technique(Mode,ss_no_derivable),
+    :- deduction_mode(Mode), use_technique(Mode,ss_no_derivable),
         cell(C), solution(C,V), erase(C),
         derivable(Mode,solution(C,V)).
     """
@@ -683,3 +686,60 @@ snyder_x_wing = DeductionRule(
         cell(C), in_group(C,(G3;G4)).
     """
 )
+
+def derive_mask_exactly(
+        instance: SquareSudoku,
+        mask: str
+    ) -> str:
+    """
+    Given a mask, produce a deduction rule that states that this mask must be
+    derived exactly (in the deduction mode in which the rule is used): if the
+    mask has a 0 for a cell, no solution may be derived for this cell, if the
+    mask has a positive integer, this integer must be derived for this cell,
+    if the mask has a "*", some solution must be derived for this cell,
+    and if the mask has a "?", no constraints are posed on what may be derived
+    for this cell.
+    """
+
+    asp_code = ""
+    mask_pieces = [
+        (j, i, mask[(i-1) * instance.size + j - 1])
+        for (i, j) in itertools.product(range(1, instance.size+1), repeat=2)
+    ]
+    for (i, j, val) in mask_pieces:
+        cell = instance.cell_encoding((i,j))
+        if val == "0":
+            asp_code += f"""
+                :- deduction_mode(Mode),
+                    use_technique(Mode,derive_mask_exactly({mask})),
+                    cell({cell}), value(V),
+                    solution({cell},V),
+                    derivable(Mode,solution({cell},V)).
+            """
+        elif val == "*":
+            asp_code += f"""
+                :- deduction_mode(Mode),
+                    use_technique(Mode,derive_mask_exactly({mask})),
+                    cell({cell}), value(V),
+                    solution({cell},V),
+                    not derivable(Mode,solution({cell},V)).
+            """
+        else:
+            try:
+                val = int(val)
+                asp_code += f"""
+                    solution({cell},{val}).
+                    :- deduction_mode(Mode),
+                        use_technique(Mode,derive_mask_exactly({mask})),
+                        cell({cell}),
+                        solution({cell},{val}),
+                        not derivable(Mode,solution({cell},{val})).
+                """
+            except ValueError:
+                pass
+
+    deduction_rule = DeductionRule(
+        f"derive_mask_exactly({mask})",
+        asp_code
+    )
+    return deduction_rule
