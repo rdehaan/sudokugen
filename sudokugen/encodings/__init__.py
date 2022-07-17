@@ -1,6 +1,7 @@
 from .generate import generate_basic, unique_solution, \
     maximize_num_filled_cells, minimize_num_filled_cells, \
     constrain_num_filled_cells, deduction_constraint, \
+    chained_deduction_constraint, \
     left_right_symmetry, top_bottom_symmetry, point_symmetry, forbid_values, \
     fill_cell, open_cell, sym_breaking_top_row, sym_breaking_row_col_ordering, \
     sym_breaking_left_column, sym_breaking_at_most_one_hidden, \

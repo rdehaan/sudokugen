@@ -4,6 +4,7 @@ Module with functionality to generate puzzles using ASP encodings
 
 import itertools
 from typing import List
+import uuid
 
 from .deduction import SolvingStrategy, basic_deduction
 from ..instances import Instance, SquareSudoku, RectangleBlockSudoku
@@ -166,30 +167,85 @@ def deduction_constraint(
         solving_strategies: List[SolvingStrategy]
     ) -> str:
     """
-    Returns the encoding that requires that the puzzle (i) can or (ii) cannot
-    be solved, using a given solving strategy, where the choice between (i) and
-    (ii) is specified in the solving strategy
+    Returns the encoding that specifies one or more solving strategies, where
+    each solving strategy consists of a list of deduction rules. Each such
+    deduction rule specifies either (i) a reasoning technique (e.g., hidden
+    singles, etc) or (ii) a constraint on what the set of deduction rules must
+    lead to (e.g., a fully solved solution, etc).
     """
 
     asp_code = ""
     all_rules = set([basic_deduction])
 
+    # Generate unique id to avoid collision with multiple (chained)
+    # deduction constraints
+    strategy_uuid = str(uuid.uuid4()).replace('-', '')
+
+    # Express each solving strategy in the asp code
     for strategy_num, strategy in enumerate(solving_strategies):
-
-        strategy_name = f"strategy({strategy_num})"
-
+        strategy_name = f"strategy(s{strategy_uuid},{strategy_num})"
         asp_code += f"deduction_mode({strategy_name}).\n"
-
         all_rules.update(strategy.rules)
-
         for rule in strategy.rules:
             asp_code += f"use_technique({strategy_name},{rule.name}).\n"
-
         for groupnum, (groupname, _) in enumerate(instance.groups):
             if ((strategy.groups and groupname in strategy.groups)
                     or not strategy.groups):
                 asp_code += f"active_group({strategy_name},{groupnum}).\n"
 
+    # Add the encodings of the rules that were used
+    for rule in all_rules:
+        asp_code += rule.encoding
+
+    return asp_code
+
+
+def chained_deduction_constraint(
+        instance: Instance,
+        solving_strategies: List[SolvingStrategy]
+    ) -> str:
+    """
+    Returns the encoding that specifies one or more solving strategies, that are interpreted in a chained way (i.e., exhaustively applying the first
+    strategy, then using the result of this, exhaustively applying the second,
+    etc; the constraints on the result of applying these solving strategies
+    are enforced at the step in the chain where they are given).
+    """
+
+    asp_code = ""
+    all_rules = set([basic_deduction])
+
+    # Generate unique id to avoid collision with multiple (chained)
+    # deduction constraints
+    strategy_uuid = str(uuid.uuid4()).replace('-', '')
+
+    def construct_strategy_name(strategy_num):
+        return f"strategy(s{strategy_uuid},{strategy_num})"
+
+    # Express each solving strategy in the asp code
+    for strategy_num, strategy in enumerate(solving_strategies):
+        strategy_name = construct_strategy_name(strategy_num)
+        asp_code += f"deduction_mode({strategy_name}).\n"
+        all_rules.update(strategy.rules)
+        for rule in strategy.rules:
+            asp_code += f"use_technique({strategy_name},{rule.name}).\n"
+        for groupnum, (groupname, _) in enumerate(instance.groups):
+            if ((strategy.groups and groupname in strategy.groups)
+                    or not strategy.groups):
+                asp_code += f"active_group({strategy_name},{groupnum}).\n"
+
+    # Ensure that the derivable pencil marks (and solutions) are chained
+    # between subsequent solving strategies
+    for strategy_num, strategy in enumerate(solving_strategies[:-1]):
+        cur_strategy_name = construct_strategy_name(strategy_num)
+        next_strategy_name = construct_strategy_name(strategy_num+1)
+        asp_code += f"""
+            derivable({next_strategy_name},strike(C,V)) :-
+                derivable({cur_strategy_name},strike(C,V)).
+            derivable({next_strategy_name},solution(C,V)) :-
+                derivable({cur_strategy_name},solution(C,V)).
+        """
+
+    # Add the encodings of the rules that were used
     for rule in all_rules:
         asp_code += rule.encoding
 
