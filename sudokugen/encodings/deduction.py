@@ -417,6 +417,63 @@ xy_wing = DeductionRule(
     """
 )
 
+xyz_wing = DeductionRule(
+    "xyz_wing",
+    """
+    derivable(Mode,strike(C,V2)) :-
+        deduction_mode(Mode), use_technique(Mode, xyz_wing),
+        cell(C1), cell(C2), cell(C3), cell(C),
+        not certainly_not_erased(C),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
+        not certainly_not_erased(C3),
+        different_cells(C1,C2), different_cells(C1,C3), different_cells(C2,C3),
+        different_cells(C,C1), different_cells(C,C2), different_cells(C,C3),
+        value(V1), value(V2), value(V3),
+        share_group(C,C1), share_group(C,C2), share_group(C,C3),
+        share_group(C1,C2), share_group(C2,C3),
+        derivable(Mode,strike(C1,V)) :
+            value(V), different_values(V,V1), different_values(V,V2);
+        derivable(Mode,strike(C2,V)) :
+            value(V), different_values(V,V1), different_values(V,V2),
+            different_values(V,V3);
+        derivable(Mode,strike(C3,V)) :
+            value(V), different_values(V,V2), different_values(V,V3).
+    """
+)
+
+xyz_wing_proper_chained = DeductionRule(
+    "xyz_wing_proper_chained",
+    """
+    derivable(Mode,strike(C,V2)) :-
+        deduction_mode(Mode), use_technique(Mode, xyz_wing_proper_chained),
+        cell(C1), cell(C2), cell(C3), cell(C),
+        not certainly_not_erased(C),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
+        not certainly_not_erased(C3),
+        different_cells(C1,C2), different_cells(C1,C3), different_cells(C2,C3),
+        different_cells(C,C1), different_cells(C,C2), different_cells(C,C3),
+        value(V1), value(V2), value(V3),
+        share_group(C,C1), share_group(C,C2), share_group(C,C3),
+        share_group(C1,C2), share_group(C2,C3),
+        not derivable(Mode,strike(C1,V1)),
+        not derivable(Mode,strike(C1,V2)),
+        derivable(Mode,strike(C1,V)) :
+            value(V), different_values(V,V1), different_values(V,V2);
+        not derivable(Mode,strike(C2,V1)),
+        not derivable(Mode,strike(C2,V2)),
+        not derivable(Mode,strike(C3,V3)),
+        derivable(Mode,strike(C2,V)) :
+            value(V), different_values(V,V1), different_values(V,V2),
+            different_values(V,V3);
+        not derivable(Mode,strike(C3,V2)),
+        not derivable(Mode,strike(C3,V3)),
+        derivable(Mode,strike(C3,V)) :
+            value(V), different_values(V,V2), different_values(V,V3).
+    """
+)
+
 x_wing = DeductionRule(
     "x_wing",
     """
