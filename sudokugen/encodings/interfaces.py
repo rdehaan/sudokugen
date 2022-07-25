@@ -32,6 +32,7 @@ def input_cell_semantically_undeducible(
     values to yield another solution to the puzzle (that can be required to be
     unique for each alternative value for the input cell).
     """
+    # pylint: disable=invalid-name
 
     asp_code = f"""
         #const num_icsu_alt_solutions={num_alternative_values}.

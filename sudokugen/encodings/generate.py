@@ -205,7 +205,8 @@ def chained_deduction_constraint(
         solving_strategies: List[SolvingStrategy]
     ) -> str:
     """
-    Returns the encoding that specifies one or more solving strategies, that are interpreted in a chained way (i.e., exhaustively applying the first
+    Returns the encoding that specifies one or more solving strategies, that
+    are interpreted in a chained way (i.e., exhaustively applying the first
     strategy, then using the result of this, exhaustively applying the second,
     etc; the constraints on the result of applying these solving strategies
     are enforced at the step in the chain where they are given).
