@@ -1,5 +1,6 @@
 from .instances import Instance, SquareSudoku, RokuDoku, RegularSudoku, \
-    XSudoku, YSudoku, SSudoku
+    XSudoku, YSudoku, SSudoku, \
+    BasicInterfaceSudoku
 
 from .generator import generate_puzzle
 

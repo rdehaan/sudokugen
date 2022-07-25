@@ -20,3 +20,10 @@ from .deduction import DeductionRule, SolvingStrategy, \
     snyder_basic, snyder_basic_locked, \
     snyder_hidden_pairs, snyder_locked_candidates, \
     snyder_x_wing, stable_state_mask_derived, stable_state_mask_not_derived
+from .interfaces import input_cell_semantically_undeducible, \
+    full_semantic_undeducibility, select_input_cell, \
+    fix_location_of_input_cell, fix_solution_at_input_cell, \
+    select_output_cell, \
+    fix_location_of_output_cell, fix_solution_at_output_cell, \
+    forbid_solution_at_output_cell, \
+    reveal_input_cell, output_cell_derivable, output_cell_not_derivable

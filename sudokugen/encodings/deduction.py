@@ -422,7 +422,7 @@ xyz_wing = DeductionRule(
     """
     derivable(Mode,strike(C,V2)) :-
         deduction_mode(Mode), use_technique(Mode, xyz_wing),
-        cell(C1), cell(C2), cell(C3), cell(C),
+        cell(C1), cell(C2), cell(C3), cell(C), C1 < C3,
         not certainly_not_erased(C),
         not certainly_not_erased(C1),
         not certainly_not_erased(C2),
@@ -430,6 +430,9 @@ xyz_wing = DeductionRule(
         different_cells(C1,C2), different_cells(C1,C3), different_cells(C2,C3),
         different_cells(C,C1), different_cells(C,C2), different_cells(C,C3),
         value(V1), value(V2), value(V3),
+        different_values(V1,V2),
+        different_values(V1,V3),
+        different_values(V2,V3),
         share_group(C,C1), share_group(C,C2), share_group(C,C3),
         share_group(C1,C2), share_group(C2,C3),
         derivable(Mode,strike(C1,V)) :
@@ -447,7 +450,7 @@ xyz_wing_proper_chained = DeductionRule(
     """
     derivable(Mode,strike(C,V2)) :-
         deduction_mode(Mode), use_technique(Mode, xyz_wing_proper_chained),
-        cell(C1), cell(C2), cell(C3), cell(C),
+        cell(C1), cell(C2), cell(C3), cell(C), C1 < C3,
         not certainly_not_erased(C),
         not certainly_not_erased(C1),
         not certainly_not_erased(C2),
@@ -455,6 +458,9 @@ xyz_wing_proper_chained = DeductionRule(
         different_cells(C1,C2), different_cells(C1,C3), different_cells(C2,C3),
         different_cells(C,C1), different_cells(C,C2), different_cells(C,C3),
         value(V1), value(V2), value(V3),
+        different_values(V1,V2),
+        different_values(V1,V3),
+        different_values(V2,V3),
         share_group(C,C1), share_group(C,C2), share_group(C,C3),
         share_group(C1,C2), share_group(C2,C3),
         not derivable(Mode,strike(C1,V1)),

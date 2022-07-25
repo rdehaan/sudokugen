@@ -62,6 +62,30 @@ class Instance:
         Extracts the solution and puzzle members from an answer set.
         """
 
+    def swap_values(self, value1, value2):
+        """
+        Swaps two values in the puzzle and solution.
+        """
+
+        def val_permutation(value):
+            if value == value1:
+                return value2
+            if value == value2:
+                return value1
+            return value
+
+        # Apply permutation
+        new_puzzle = {
+            (i,j): val_permutation(self.puzzle[(i,j)])
+            for (i,j) in self.puzzle
+        }
+        self.puzzle = new_puzzle
+        new_solution = {
+            (i,j): val_permutation(self.solution[(i,j)])
+            for (i,j) in self.solution
+        }
+        self.solution = new_solution
+
 
 class SquareSudoku(Instance):
     """
@@ -207,14 +231,14 @@ class RectangleBlockSudoku(SquareSudoku):
         Randomly permutes the rows, columns and values of the instance,
         and randomly transposes the instance if the blocks are squares.
         """
+        self.shuffle_values()
+        self.shuffle_orientation()
 
-        # Construct value permutation
-        values = list(range(1,self.size+1))
-        random.shuffle(values)
-        def val_permutation(value):
-            if value == 0:
-                return 0
-            return values[value-1]
+    def shuffle_orientation(self):
+        """
+        Randomly permutes the rows, columns of the instance,
+        and randomly transposes the instance if the blocks are squares.
+        """
 
         # Construct column permutation
         col_indices = [
@@ -251,26 +275,44 @@ class RectangleBlockSudoku(SquareSudoku):
 
         # Apply permutations
         new_puzzle = {
-            (i,j): val_permutation(
-                    self.puzzle[flip_if_transposed(
+            (i,j): self.puzzle[flip_if_transposed(
                         col_permutation(i),
-                        row_permutation(j)
-                    )]
-                )
+                        row_permutation(j))]
             for (i,j) in self.puzzle
         }
         self.puzzle = new_puzzle
         new_solution = {
-            (i,j): val_permutation(
-                    self.solution[flip_if_transposed(
+            (i,j): self.solution[flip_if_transposed(
                         col_permutation(i),
-                        row_permutation(j)
-                    )]
-                )
+                        row_permutation(j))]
             for (i,j) in self.solution
         }
         self.solution = new_solution
 
+    def shuffle_values(self):
+        """
+        Randomly permutes the values of the instance.
+        """
+
+        # Construct value permutation
+        values = list(range(1,self.size+1))
+        random.shuffle(values)
+        def val_permutation(value):
+            if value == 0:
+                return 0
+            return values[value-1]
+
+        # Apply permutation
+        new_puzzle = {
+            (i,j): val_permutation(self.puzzle[(i,j)])
+            for (i,j) in self.puzzle
+        }
+        self.puzzle = new_puzzle
+        new_solution = {
+            (i,j): val_permutation(self.solution[(i,j)])
+            for (i,j) in self.solution
+        }
+        self.solution = new_solution
 
 
 class RegularSudoku(RectangleBlockSudoku):
@@ -567,3 +609,106 @@ class KnightBombDozenDoku(KnightSudoku, BombSudoku, DozenDoku):
     """
     Class to represent knight bomb dozen doku instances.
     """
+
+
+class BasicInterfaceSudoku(RegularSudoku):
+    """
+    Class to represent 'interface' regular sudoku instances, with one output
+    and one input cell.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.output_cell = None
+        self.input_cell = None
+
+    def extract_from_answer_set(self, model):
+        """
+        Extracts the solution and puzzle members from an answer set.
+        """
+
+        super().extract_from_answer_set(model)
+
+        for atom in model.symbols(shown=True):
+            if atom.name == "output_cell":
+                col = atom.arguments[0].arguments[0].number
+                row = atom.arguments[0].arguments[1].number
+                self.output_cell = (col, row)
+            if atom.name == "input_cell":
+                col = atom.arguments[0].arguments[0].number
+                row = atom.arguments[0].arguments[1].number
+                self.input_cell = (col, row)
+
+    def shuffle_orientation(self):
+        """
+        Randomly permutes the rows, columns of the instance,
+        and randomly transposes the instance.
+        """
+
+        # Construct column permutation
+        col_indices = [
+            [(j*self._block_width)+i for i in range(1,self._block_width+1)]
+            for j in range(self._block_height)
+        ]
+        for sublist in col_indices:
+            random.shuffle(sublist)
+        random.shuffle(col_indices)
+        col_indices = [index for sublist in col_indices for index in sublist]
+        def col_permutation(index):
+            return col_indices[index-1]
+        def col_permutation_inverse(index):
+            return col_indices.index(index)+1
+
+        # Construct row permutation
+        row_indices = [
+            [(j*self._block_height)+i for i in range(1,self._block_height+1)]
+            for j in range(self._block_width)
+        ]
+        for sublist in row_indices:
+            random.shuffle(sublist)
+        random.shuffle(row_indices)
+        row_indices = [index for sublist in row_indices for index in sublist]
+        def row_permutation(index):
+            return row_indices[index-1]
+        def row_permutation_inverse(index):
+            return row_indices.index(index)+1
+
+        # Decide whether to transpose
+        transpose = False
+        if self._block_width == self._block_height:
+            transpose = random.choice([True, False])
+        def flip_if_transposed(i,j):
+            if transpose:
+                return (j,i)
+            return (i,j)
+
+        # Apply permutations
+        new_puzzle = {
+            (i,j): self.puzzle[flip_if_transposed(
+                        col_permutation(i),
+                        row_permutation(j))]
+            for (i,j) in self.puzzle
+        }
+        self.puzzle = new_puzzle
+        new_solution = {
+            (i,j): self.solution[flip_if_transposed(
+                        col_permutation(i),
+                        row_permutation(j))]
+            for (i,j) in self.solution
+        }
+        self.solution = new_solution
+
+        if self.input_cell:
+            (i, j) = self.input_cell
+            self.input_cell = flip_if_transposed(
+                col_permutation_inverse(i),
+                row_permutation_inverse(j)
+            )
+
+        if self.output_cell:
+            (i, j) = self.output_cell
+            self.output_cell = flip_if_transposed(
+                col_permutation_inverse(i),
+                row_permutation_inverse(j)
+            )
