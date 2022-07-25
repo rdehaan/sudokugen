@@ -20,6 +20,7 @@ def generate_puzzle(
     """
     Takes a Sudoku instance, and generates a solution and puzzle if possible.
     """
+    # pylint: disable=too-many-arguments
 
     new_instance = deepcopy(instance)
 
