@@ -622,6 +622,8 @@ class BasicInterfaceSudoku(RegularSudoku):
 
         self.output_cell = None
         self.input_cell = None
+        self.output_decoy_value = None
+        self.input_decoy_value = None
 
     def extract_from_answer_set(self, model):
         """
@@ -639,6 +641,10 @@ class BasicInterfaceSudoku(RegularSudoku):
                 col = atom.arguments[0].arguments[0].number
                 row = atom.arguments[0].arguments[1].number
                 self.input_cell = (col, row)
+            if atom.name == "output_decoy_value":
+                self.output_decoy_value = atom.arguments[0].number
+            if atom.name == "input_decoy_value":
+                self.input_decoy_value = atom.arguments[0].number
 
     def shuffle_orientation(self):
         """
@@ -711,4 +717,73 @@ class BasicInterfaceSudoku(RegularSudoku):
             self.output_cell = flip_if_transposed(
                 col_permutation_inverse(i),
                 row_permutation_inverse(j)
+            )
+
+    def shuffle_values(self):
+        """
+        Randomly permutes the values of the instance.
+        """
+
+        # Construct value permutation
+        values = list(range(1,self.size+1))
+        random.shuffle(values)
+        def val_permutation(value):
+            if value == 0:
+                return 0
+            return values[value-1]
+        def val_permutation_inverse(value):
+            if value == 0:
+                return 0
+            return values.index(value)+1
+
+        # Apply permutation
+        new_puzzle = {
+            (i,j): val_permutation(self.puzzle[(i,j)])
+            for (i,j) in self.puzzle
+        }
+        self.puzzle = new_puzzle
+        new_solution = {
+            (i,j): val_permutation(self.solution[(i,j)])
+            for (i,j) in self.solution
+        }
+        self.solution = new_solution
+        if self.input_decoy_value:
+            self.input_decoy_value = val_permutation(
+                self.input_decoy_value
+            )
+        if self.output_decoy_value:
+            self.output_decoy_value = val_permutation(
+                self.output_decoy_value
+            )
+
+    def swap_values(self, value1, value2):
+        """
+        Swaps two values in the puzzle and solution.
+        """
+
+        def val_permutation(value):
+            if value == value1:
+                return value2
+            if value == value2:
+                return value1
+            return value
+
+        # Apply permutation
+        new_puzzle = {
+            (i,j): val_permutation(self.puzzle[(i,j)])
+            for (i,j) in self.puzzle
+        }
+        self.puzzle = new_puzzle
+        new_solution = {
+            (i,j): val_permutation(self.solution[(i,j)])
+            for (i,j) in self.solution
+        }
+        self.solution = new_solution
+        if self.input_decoy_value:
+            self.input_decoy_value = val_permutation(
+                self.input_decoy_value
+            )
+        if self.output_decoy_value:
+            self.output_decoy_value = val_permutation(
+                self.output_decoy_value
             )

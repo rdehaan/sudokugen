@@ -8,7 +8,8 @@ from .deduction import DeductionRule
 
 def select_input_cell() -> str:
     """
-    Encoding that requires that an input cell is selected.
+    Encoding that requires that an input cell is selected together with a decoy
+    value.
     """
 
     # Require that there is exactly one input cell, and that it is empty
@@ -20,11 +21,21 @@ def select_input_cell() -> str:
         :- input_cell(C), not erase(C).
     """
 
+    # Require that a decoy value is selected, that is different from the
+    # solution at the input cell.
+    asp_code += """
+        1 { input_decoy_value(V) : value(V) } 1.
+        #show input_decoy_value/1.
+
+        :- input_decoy_value(V), input_cell(C), solution(C,V).
+    """
+
     return asp_code
 
 
 def input_cell_semantically_undeducible(
         num_alternative_values=1,
+        enforce_exclusivity=False,
         enforce_uniqueness=False,
     ) -> str:
     """
@@ -50,7 +61,39 @@ def input_cell_semantically_undeducible(
             icsu_alt_solution(I1,C,W1), icsu_alt_solution(I2,C,W2), W2 >= W1.
         :- icsu_alt_solution(I,C,V), icsu_alt_solution(I),
             input_cell(C), solution(C,V).
+
+        :- input_cell(C), input_decoy_value(V),
+            V != W : icsu_alt_solution(_,C,W).
     """
+
+    if enforce_exclusivity:
+        asp_code += """
+            icsu_value(V) :- icsu_alt_solution(I,C,V), input_cell(C).
+            icsu_value(V) :- input_cell(C), solution(C,V).
+
+            %%% Use saturation
+            :- not icsu_saturate.
+            icsu_other(C,V) :- cell(C), value(V), icsu_saturate.
+
+            %%% Choose at least one value for every cell
+            icsu_other(C,V) : value(V) :- cell(C).
+
+            %%% Filter out choices that don't agree with non-erased cells
+            icsu_saturate :-
+                cell(C), solution(C,V1), not erase(C),
+                icsu_other(C,V2), different_values(V1,V2).
+
+            %%% Filter out choices that correspond to the selected values at
+            %%% the input cell
+            icsu_saturate :- icsu_other(C,V), input_cell(C), icsu_value(V).
+
+            %%% Filter out choices that don't satisfy the constraints
+            icsu_saturate :-
+                icsu_other(C1,V),
+                icsu_other(C2,V),
+                cell(C1), cell(C2), value(V),
+                share_group(C1,C2).
+        """
 
     if enforce_uniqueness:
         asp_code += """
@@ -59,7 +102,7 @@ def input_cell_semantically_undeducible(
             icsu_alt_other(I,C,V) :- icsu_alt_solution(I),
                 cell(C), value(V), icsu_saturate(I).
 
-            %%% Choose at least one V for every cell X,Y
+            %%% Choose at least one value for every cell
             icsu_alt_other(I,C,V) : value(V) :-
                 icsu_alt_solution(I),
                 cell(C).
@@ -88,21 +131,6 @@ def input_cell_semantically_undeducible(
                 cell(C1), cell(C2), value(V),
                 share_group(C1,C2).
         """
-
-    # # Require that for each possible value in the input cell,
-    # # there is a solution that agrees with the puzzle
-    # asp_code = """
-    #     1 { alt_solution(V,C,W) : value(W) } 1 :-
-    #         value(V), cell(C).
-    #     alt_solution(V,C,W) :-
-    #         value(V), cell(C), solution(C,W), not erase(C).
-    #     :- alt_solution(V,C1,W), alt_solution(V,C2,W),
-    #         value(V), cell(C1), cell(C2), share_group(C1,C2).
-    #     alt_solution(V,C,V) :- input_cell(C), value(V).
-    #     alt_solution(V,C,W) :-
-    #         cell(C), solution(C,W),
-    #         input_cell(D), solution(D,V).
-    # """
 
     return asp_code
 
@@ -162,9 +190,24 @@ def fix_solution_at_input_cell(
     return asp_code
 
 
+def fix_input_decoy_value(
+        value: int
+    ) -> str:
+    """
+    Encoding that requires that the input decoy has a particular value.
+    """
+
+    asp_code = f"""
+        input_decoy_value({value}).
+    """
+
+    return asp_code
+
+
 def select_output_cell() -> str:
     """
-    Encoding that requires that an output cell is selected.
+    Encoding that requires that an output cell is selected together with a
+    decoy value.
     """
 
     # Require that there is exactly one output cell, and that it is empty
@@ -174,6 +217,15 @@ def select_output_cell() -> str:
         #show output_cell/1.
 
         :- output_cell(C), not erase(C).
+    """
+
+    # Require that a decoy value is selected, that is different from the
+    # solution at the output cell.
+    asp_code += """
+        1 { output_decoy_value(V) : value(V) } 1.
+        #show output_decoy_value/1.
+
+        :- output_decoy_value(V), output_cell(C), solution(C,V).
     """
 
     return asp_code
@@ -226,6 +278,38 @@ def forbid_solution_at_output_cell(
     return asp_code
 
 
+def fix_output_decoy_value(
+        value: int
+    ) -> str:
+    """
+    Encoding that requires that the output decoy has a particular value.
+    """
+
+    asp_code = f"""
+        output_decoy_value({value}).
+    """
+
+    return asp_code
+
+
+def io_solutions_and_decoys_alldiff() -> str:
+    """
+    Encoding that requires that the solutions of the input/output cells and
+    the input/output decoy values are all different.
+    """
+
+    asp_code = f"""
+        :- input_decoy_value(V), output_decoy_value(V).
+        :- input_decoy_value(V), input_cell(C), solution(C,V).
+        :- input_decoy_value(V), output_cell(C), solution(C,V).
+        :- output_decoy_value(V), input_cell(C), solution(C,V).
+        :- output_decoy_value(V), output_cell(C), solution(C,V).
+        :- input_cell(C1), output_cell(C2), solution(C1,V), solution(C2,V).
+    """
+
+    return asp_code
+
+
 reveal_input_cell = DeductionRule(
     "reveal_input_cell",
     """
@@ -250,5 +334,27 @@ output_cell_not_derivable = DeductionRule(
     :- deduction_mode(Mode), use_technique(Mode,output_cell_not_derivable),
         output_cell(C), solution(C,V),
         derivable(Mode,solution(C,V)).
+    """
+)
+
+reveal_output_value_or_decoy = DeductionRule(
+    "reveal_output_value_or_decoy",
+    """
+    derivable(Mode,strike(C,V)) :- deduction_mode(Mode),
+        use_technique(Mode,reveal_output_value_or_decoy),
+        output_cell(C), solution(C,V1),
+        output_decoy_value(V2),
+        value(V),
+        different_values(V,V1),
+        different_values(V,V2).
+    """
+)
+
+output_decoy_not_ruled_out = DeductionRule(
+    "output_decoy_not_ruled_out",
+    """
+    :- deduction_mode(Mode), use_technique(Mode,output_decoy_not_ruled_out),
+        output_cell(C), output_decoy_value(V),
+        derivable(Mode,strike(C,V)).
     """
 )

@@ -23,7 +23,10 @@ from .deduction import DeductionRule, SolvingStrategy, \
 from .interfaces import input_cell_semantically_undeducible, \
     full_semantic_undeducibility, select_input_cell, \
     fix_location_of_input_cell, fix_solution_at_input_cell, \
+    fix_input_decoy_value, \
     select_output_cell, \
     fix_location_of_output_cell, fix_solution_at_output_cell, \
-    forbid_solution_at_output_cell, \
-    reveal_input_cell, output_cell_derivable, output_cell_not_derivable
+    forbid_solution_at_output_cell, fix_output_decoy_value, \
+    io_solutions_and_decoys_alldiff, \
+    reveal_input_cell, output_cell_derivable, output_cell_not_derivable, \
+    reveal_output_value_or_decoy, output_decoy_not_ruled_out
