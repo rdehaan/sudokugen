@@ -16,7 +16,7 @@ from .deduction import DeductionRule, SolvingStrategy, \
     stable_state_unsolved_locked_candidates, \
     closed_under_naked_singles, closed_under_hidden_singles, \
     locked_candidates, xy_wing, xyz_wing, xyz_wing_proper_chained, \
-    x_wing, x_chain, color_trap, color_wrap, \
+    x_wing, x_chain, color_trap, color_trap_proper_chained, color_wrap, \
     snyder_basic, snyder_basic_locked, \
     snyder_hidden_pairs, snyder_locked_candidates, \
     snyder_x_wing, stable_state_mask_derived, stable_state_mask_not_derived
