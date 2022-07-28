@@ -1,6 +1,7 @@
 """
 Module with ASP encodings for different deduction rules
 """
+# pylint: disable=too-many-lines
 
 from typing import List, Optional
 from dataclasses import dataclass
@@ -329,7 +330,6 @@ hidden_pairs = DeductionRule(
     """
 )
 
-### TODO: develop this
 hidden_triples = DeductionRule(
     "hidden_triples",
     """
