@@ -242,6 +242,8 @@ def chained_deduction_constraint(
         asp_code += f"""
             derivable({next_strategy_name},strike(C,V)) :-
                 derivable({cur_strategy_name},strike(C,V)).
+            derivable({next_strategy_name},strike(C,V)) :-
+                derivable({cur_strategy_name},pre_strike(C,V)).
             derivable({next_strategy_name},solution(C,V)) :-
                 derivable({cur_strategy_name},solution(C,V)).
         """
