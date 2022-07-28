@@ -88,38 +88,6 @@ stable_state_unsolved_naked_pairs = DeductionRule(
     """
 )
 
-### TODO: develop this
-stable_state_unsolved_hidden_pairs = DeductionRule(
-    "ss_unsolved_hidden_pairs",
-    """
-    %TODO
-    """
-)
-
-### TODO: develop this
-stable_state_unsolved_naked_triples = DeductionRule(
-    "ss_unsolved_naked_triples",
-    """
-    %TODO
-    """
-)
-
-### TODO: develop this
-stable_state_unsolved_hidden_triples = DeductionRule(
-    "ss_unsolved_hidden_triples",
-    """
-    %TODO
-    """
-)
-
-### TODO: develop this
-stable_state_unsolved_locked_candidates = DeductionRule(
-    "ss_unsolved_locked_candidates",
-    """
-    %TODO
-    """
-)
-
 closed_under_naked_singles = DeductionRule(
     "closed_under_naked_singles",
     """
