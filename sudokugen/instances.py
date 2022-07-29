@@ -231,8 +231,8 @@ class RectangleBlockSudoku(SquareSudoku):
         Randomly permutes the rows, columns and values of the instance,
         and randomly transposes the instance if the blocks are squares.
         """
-        self.shuffle_values()
         self.shuffle_orientation()
+        self.shuffle_values()
 
     def shuffle_orientation(self):
         """
@@ -684,37 +684,37 @@ class BasicInterfaceSudoku(RegularSudoku):
         transpose = False
         if self._block_width == self._block_height:
             transpose = random.choice([True, False])
-        def flip_if_transposed(i,j):
+        def flip_if_transposed(col, row):
             if transpose:
-                return (j,i)
-            return (i,j)
+                return (row, col)
+            return (col, row)
 
         # Apply permutations
         new_puzzle = {
-            (i,j): self.puzzle[flip_if_transposed(
+            (i, j): self.puzzle[flip_if_transposed(
                         col_permutation(i),
                         row_permutation(j))]
-            for (i,j) in self.puzzle
+            for (i, j) in self.puzzle
         }
         self.puzzle = new_puzzle
         new_solution = {
-            (i,j): self.solution[flip_if_transposed(
+            (i, j): self.solution[flip_if_transposed(
                         col_permutation(i),
                         row_permutation(j))]
-            for (i,j) in self.solution
+            for (i, j) in self.solution
         }
         self.solution = new_solution
 
         if self.input_cell:
-            (i, j) = self.input_cell
-            self.input_cell = flip_if_transposed(
+            (i, j) = flip_if_transposed(*self.input_cell)
+            self.input_cell = (
                 col_permutation_inverse(i),
                 row_permutation_inverse(j)
             )
 
         if self.output_cell:
-            (i, j) = self.output_cell
-            self.output_cell = flip_if_transposed(
+            (i, j) = flip_if_transposed(*self.output_cell)
+            self.output_cell = (
                 col_permutation_inverse(i),
                 row_permutation_inverse(j)
             )
@@ -727,6 +727,7 @@ class BasicInterfaceSudoku(RegularSudoku):
         # Construct value permutation
         values = list(range(1,self.size+1))
         random.shuffle(values)
+        print(f"Using shuffle {values}")
         def val_permutation(value):
             if value == 0:
                 return 0
@@ -738,13 +739,13 @@ class BasicInterfaceSudoku(RegularSudoku):
 
         # Apply permutation
         new_puzzle = {
-            (i,j): val_permutation(self.puzzle[(i,j)])
-            for (i,j) in self.puzzle
+            (i, j): val_permutation(self.puzzle[(i, j)])
+            for (i, j) in self.puzzle
         }
         self.puzzle = new_puzzle
         new_solution = {
-            (i,j): val_permutation(self.solution[(i,j)])
-            for (i,j) in self.solution
+            (i, j): val_permutation(self.solution[(i, j)])
+            for (i, j) in self.solution
         }
         self.solution = new_solution
         if self.input_decoy_value:
