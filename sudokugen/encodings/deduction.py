@@ -267,6 +267,79 @@ naked_triples = DeductionRule(
     """
 )
 
+# naked_triples_perfect_chained = DeductionRule(
+#     "naked_triples_perfect_chained",
+#     """
+#     different_cells_in_group_ordered(C1,C2,C3,G) :-
+#         group(G), cell(C1), cell(C2), cell(C3),
+#         in_group(C1,G), in_group(C2,G), in_group(C3,G),
+#         C1 < C2, C2 < C3.
+#     naked_triples_setting(Mode,C1,C2,C3,C4) :-
+#         group(G), deduction_mode(Mode), active_group(Mode,G),
+#         in_group(C1,G), in_group(C2,G), in_group(C3,G), in_group(C4,G),
+#         different_cells_in_group_ordered(C2,C3,C4,G),
+#         different_cells(C1,C2), different_cells(C1,C3), different_cells(C1,C4),
+#         not certainly_not_erased(C1),
+#         not certainly_not_erased(C2),
+#         not certainly_not_erased(C3),
+#         not certainly_not_erased(C4).
+#     value_in_triple(V1,V1,V2,V3) :-
+#         value(V1), value(V2), value(V3), V1 < V2, V2 < V3.
+#     value_in_triple(V2,V1,V2,V3) :-
+#         value(V1), value(V2), value(V3), V1 < V2, V2 < V3.
+#     value_in_triple(V3,V1,V2,V3) :-
+#         value(V1), value(V2), value(V3), V1 < V2, V2 < V3.
+#
+#     derivable(Mode,naked_triple_perfect(C,V1,V2,V3)) :-
+#         use_technique(Mode,naked_triples_perfect_chained),
+#         deduction_mode(Mode),
+#         cell(C), not certainly_not_erased(C),
+#         value(V1), value(V2), value(V3),
+#         V1 < V2, V2 < V3,
+#         not derivable(Mode,strike(C,V1)),
+#         not derivable(Mode,strike(C,V2)),
+#         derivable(Mode,strike(C,V3)),
+#         derivable(Mode,strike(C,W)) : value(W),
+#             different_values(V1,W),
+#             different_values(V2,W),
+#             different_values(V3,W).
+#     derivable(Mode,naked_triple_perfect(C,V1,V2,V3)) :-
+#         use_technique(Mode,naked_triples_perfect_chained),
+#         deduction_mode(Mode),
+#         cell(C), not certainly_not_erased(C),
+#         value(V1), value(V2), value(V3),
+#         V1 < V2, V2 < V3,
+#         not derivable(Mode,strike(C,V1)),
+#         derivable(Mode,strike(C,V2)),
+#         not derivable(Mode,strike(C,V3)),
+#         derivable(Mode,strike(C,W)) : value(W),
+#             different_values(V1,W),
+#             different_values(V2,W),
+#             different_values(V3,W).
+#     derivable(Mode,naked_triple_perfect(C,V1,V2,V3)) :-
+#         use_technique(Mode,naked_triples_perfect_chained),
+#         deduction_mode(Mode),
+#         cell(C), not certainly_not_erased(C),
+#         value(V1), value(V2), value(V3),
+#         V1 < V2, V2 < V3,
+#         derivable(Mode,strike(C,V1)),
+#         not derivable(Mode,strike(C,V2)),
+#         not derivable(Mode,strike(C,V3)),
+#         derivable(Mode,strike(C,W)) : value(W),
+#             different_values(V1,W),
+#             different_values(V2,W),
+#             different_values(V3,W).
+#     derivable(Mode,pre_strike(C1,V)) :-
+#         use_technique(Mode,naked_triples_perfect_chained),
+#         deduction_mode(Mode), value(V),
+#         naked_triples_setting(Mode,C1,C2,C3,C4),
+#         derivable(Mode,naked_triple_perfect(C2,V1,V2,V3)),
+#         derivable(Mode,naked_triple_perfect(C3,V1,V2,V3)),
+#         derivable(Mode,naked_triple_perfect(C4,V1,V2,V3)),
+#         value_in_triple(V,V1,V2,V3).
+#     """
+# )
+
 hidden_pairs = DeductionRule(
     "hidden_pairs",
     """
