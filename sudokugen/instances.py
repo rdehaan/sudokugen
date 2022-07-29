@@ -731,10 +731,10 @@ class BasicInterfaceSudoku(RegularSudoku):
             if value == 0:
                 return 0
             return values[value-1]
-        def val_permutation_inverse(value):
-            if value == 0:
-                return 0
-            return values.index(value)+1
+        # def val_permutation_inverse(value):
+        #     if value == 0:
+        #         return 0
+        #     return values.index(value)+1
 
         # Apply permutation
         new_puzzle = {
