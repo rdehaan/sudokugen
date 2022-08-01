@@ -1209,6 +1209,7 @@ def stable_state_mask_derived(
     """
 
     asp_code = ""
+    mask_id = mask.replace("?", "_")
     mask_pieces = [
         (j, i, mask[(i-1) * instance.size + j - 1])
         for (i, j) in itertools.product(range(1, instance.size+1), repeat=2)
@@ -1218,7 +1219,7 @@ def stable_state_mask_derived(
         if val == "0":
             asp_code += f"""
                 :- deduction_mode(Mode),
-                    use_technique(Mode,ss_mask_derived(m{mask})),
+                    use_technique(Mode,ss_mask_derived(m{mask_id})),
                     cell({cell}), value(V),
                     solution({cell},V),
                     derivable(Mode,solution({cell},V)).
@@ -1226,7 +1227,7 @@ def stable_state_mask_derived(
         elif val == "*":
             asp_code += f"""
                 :- deduction_mode(Mode),
-                    use_technique(Mode,ss_mask_derived(m{mask})),
+                    use_technique(Mode,ss_mask_derived(m{mask_id})),
                     cell({cell}), value(V),
                     solution({cell},V),
                     not derivable(Mode,solution({cell},V)).
@@ -1237,7 +1238,7 @@ def stable_state_mask_derived(
                 asp_code += f"""
                     solution({cell},{val}).
                     :- deduction_mode(Mode),
-                        use_technique(Mode,ss_mask_derived(m{mask})),
+                        use_technique(Mode,ss_mask_derived(m{mask_id})),
                         cell({cell}),
                         solution({cell},{val}),
                         not derivable(Mode,solution({cell},{val})).
@@ -1246,7 +1247,7 @@ def stable_state_mask_derived(
                 pass
 
     deduction_rule = DeductionRule(
-        f"ss_mask_derived(m{mask})",
+        f"ss_mask_derived(m{mask_id})",
         asp_code
     )
     return deduction_rule
@@ -1267,6 +1268,7 @@ def stable_state_mask_not_derived(
     """
 
     asp_code = ""
+    mask_id = mask.replace("?", "_")
     mask_pieces = [
         (j, i, mask[(i-1) * instance.size + j - 1])
         for (i, j) in itertools.product(range(1, instance.size+1), repeat=2)
@@ -1275,18 +1277,18 @@ def stable_state_mask_not_derived(
         cell = instance.cell_encoding((i,j))
         if val == "0":
             asp_code += f"""
-                derivable(Mode,mask_not_derived({cell},m{mask})) :-
+                derivable(Mode,mask_not_derived({cell},m{mask_id})) :-
                     deduction_mode(Mode),
-                    use_technique(Mode,ss_mask_not_derived(m{mask})),
+                    use_technique(Mode,ss_mask_not_derived(m{mask_id})),
                     cell({cell}), value(V),
                     solution({cell},V),
                     derivable(Mode,solution({cell},V)).
             """
         elif val == "*":
             asp_code += f"""
-                derivable(Mode,mask_not_derived({cell},m{mask})) :-
+                derivable(Mode,mask_not_derived({cell},m{mask_id})) :-
                     deduction_mode(Mode),
-                    use_technique(Mode,ss_mask_not_derived(m{mask})),
+                    use_technique(Mode,ss_mask_not_derived(m{mask_id})),
                     cell({cell}), value(V),
                     solution({cell},V),
                     not derivable(Mode,solution({cell},V)).
@@ -1295,9 +1297,9 @@ def stable_state_mask_not_derived(
             try:
                 val = int(val)
                 asp_code += f"""
-                    derivable(Mode,mask_not_derived({cell},m{mask})) :-
+                    derivable(Mode,mask_not_derived({cell},m{mask_id})) :-
                         deduction_mode(Mode),
-                        use_technique(Mode,ss_mask_not_derived(m{mask})),
+                        use_technique(Mode,ss_mask_not_derived(m{mask_id})),
                         cell({cell}),
                         not derivable(Mode,solution({cell},{val})).
                 """
@@ -1305,17 +1307,17 @@ def stable_state_mask_not_derived(
                 pass
 
     asp_code += f"""
-        derivable(Mode,mask_not_derived(m{mask})) :-
+        derivable(Mode,mask_not_derived(m{mask_id})) :-
             deduction_mode(Mode),
-            use_technique(Mode,ss_mask_not_derived(m{mask})),
-            cell(C), derivable(Mode,mask_not_derived(C,m{mask})).
+            use_technique(Mode,ss_mask_not_derived(m{mask_id})),
+            cell(C), derivable(Mode,mask_not_derived(C,m{mask_id})).
         :- deduction_mode(Mode),
-            use_technique(Mode,ss_mask_not_derived(m{mask})),
-            not derivable(Mode,mask_not_derived(m{mask})).
+            use_technique(Mode,ss_mask_not_derived(m{mask_id})),
+            not derivable(Mode,mask_not_derived(m{mask_id})).
     """
 
     deduction_rule = DeductionRule(
-        f"ss_mask_not_derived(m{mask})",
+        f"ss_mask_not_derived(m{mask_id})",
         asp_code
     )
     return deduction_rule
