@@ -727,7 +727,6 @@ class BasicInterfaceSudoku(RegularSudoku):
         # Construct value permutation
         values = list(range(1,self.size+1))
         random.shuffle(values)
-        print(f"Using shuffle {values}")
         def val_permutation(value):
             if value == 0:
                 return 0
