@@ -246,6 +246,9 @@ def chained_deduction_constraint(
                 derivable({cur_strategy_name},pre_strike(C,V)).
             derivable({next_strategy_name},solution(C,V)) :-
                 derivable({cur_strategy_name},solution(C,V)).
+
+            % To avoid spurious warnings
+            derivable({cur_strategy_name},pre_strike(dummy,dummy)).
         """
 
     # Add the encodings of the rules that were used
