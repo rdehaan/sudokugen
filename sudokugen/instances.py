@@ -21,6 +21,8 @@ class Instance:
         self.solution = None
         self.puzzle = None
 
+        self.outputs = {}
+
     @property
     def num_cells(self):
         return len(self.cells)
@@ -56,11 +58,20 @@ class Instance:
         """
         return str(value)
 
-    @abstractmethod
     def extract_from_answer_set(self, model):
         """
         Extracts the solution and puzzle members from an answer set.
         """
+
+        self.outputs = {}
+
+        for atom in model.symbols(shown=True):
+            if atom.name == "output":
+                key = str(atom.arguments[0])
+                value = str(atom.arguments[1])
+                if key not in self.outputs:
+                    self.outputs[key] = []
+                self.outputs[key] = self.outputs[key] + [value]
 
     def swap_values(self, value1, value2):
         """
@@ -114,6 +125,8 @@ class SquareSudoku(Instance):
         """
         Extracts the solution and puzzle members from an answer set.
         """
+
+        super().extract_from_answer_set(model)
 
         self.solution = {}
         self.puzzle = {}

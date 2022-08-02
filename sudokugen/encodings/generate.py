@@ -83,6 +83,8 @@ def generate_basic(instance: Instance) -> str:
     asp_code += """
         #show solution/2.
         #show erase/1.
+        
+        #show output/2.
     """
 
     return asp_code
