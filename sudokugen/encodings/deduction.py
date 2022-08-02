@@ -1197,9 +1197,7 @@ snyder_x_wing = DeductionRule(
 
 def stable_state_mask_derived(
         instance: SquareSudoku,
-        mask: str,
-        use_strong_mask_derivability=False,
-        strong_derivability_rules=None
+        mask: str
     ) -> str:
     """
     Given a mask, produce a deduction rule that states that this mask must be
@@ -1211,31 +1209,8 @@ def stable_state_mask_derived(
     for this cell.
     """
 
-    mask_id = mask.replace("?", "_")
-
     asp_code = ""
-
-    if use_strong_mask_derivability:
-        # Declare a shadow deduction mode
-        asp_code += f"""
-            deduction_mode(shadow(Mode,m{mask_id})) :-
-                deduction_mode(Mode),
-                use_technique(Mode,ss_mask_derived(m{mask_id})).
-
-            active_group(shadow(Mode,m{mask_id}),G) :-
-                deduction_mode(Mode),
-                use_technique(Mode,ss_mask_derived(m{mask_id})),
-                active_group(Mode,G).
-        """
-
-        # Activate the specified rules for the shadow mode
-        for rule in strong_derivability_rules:
-            asp_code += f"""
-                use_technique(shadow(Mode,m{mask_id}),{rule.name}) :-
-                    deduction_mode(Mode),
-                    use_technique(Mode,ss_mask_derived(m{mask_id})).
-            """
-
+    mask_id = mask.replace("?", "_")
     mask_pieces = [
         (j, i, mask[(i-1) * instance.size + j - 1])
         for (i, j) in itertools.product(range(1, instance.size+1), repeat=2)
@@ -1251,28 +1226,6 @@ def stable_state_mask_derived(
                     derivable(Mode,solution({cell},V)).
             """
 
-            # Enforce that no nontrivial strikes may be derivable for this
-            # cell, if requested
-            if use_strong_mask_derivability:
-                asp_code += f"""
-                    :- deduction_mode(Mode),
-                        use_technique(Mode,ss_mask_derived(m{mask_id})),
-                        cell({cell}), value(V),
-                        derivable(Mode,strike({cell},V)),
-                        not derivable(Mode,solution(C,V)) :
-                            cell(C), share_group(C,{cell}), solution(C,V).
-                """
-
-            if use_strong_mask_derivability:
-                # Require that no strikes are derived in the original mode that
-                # are not also derived in the shadow mode
-                asp_code += f"""
-                    :- deduction_mode(Mode),
-                        use_technique(Mode,ss_mask_derived(m{mask_id})),
-                        derivable(Mode,strike({cell},V)),
-                        not derivable(shadow(Mode,m{mask_id}),strike({cell},V)).
-                """
-
         elif val == "*":
             asp_code += f"""
                 :- deduction_mode(Mode),
@@ -1281,16 +1234,6 @@ def stable_state_mask_derived(
                     solution({cell},V),
                     not derivable(Mode,solution({cell},V)).
             """
-
-            if use_strong_mask_derivability:
-                # Give as starting point for the shadow mode everything given
-                # in the mask
-                asp_code += f"""
-                    derivable(shadow(Mode,m{mask_id}),solution({cell},V)) :-
-                        deduction_mode(Mode),
-                        use_technique(Mode,ss_mask_derived(m{mask_id})),
-                        solution({cell},V).
-                """
 
         else:
             try:
@@ -1303,15 +1246,6 @@ def stable_state_mask_derived(
                         solution({cell},{val}),
                         not derivable(Mode,solution({cell},{val})).
                 """
-
-                if use_strong_mask_derivability:
-                    # Give as starting point for the shadow mode everything
-                    # given in the mask
-                    asp_code += f"""
-                        derivable(shadow(Mode,m{mask_id}),solution({cell},{val})) :-
-                            deduction_mode(Mode),
-                            use_technique(Mode,ss_mask_derived(m{mask_id})).
-                    """
             except ValueError:
                 pass
 
