@@ -1,0 +1,81 @@
+\documentclass[10pt]{article}
+\usepackage[margin=1cm]{geometry}
+\geometry{a4paper}
+
+\usepackage{fontawesome}
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage{tikz}
+\usetikzlibrary{patterns}
+
+\pagestyle{empty}
+
+\begin{document}
+
+\begin{center}
+\begin{tikzpicture}
+  % PLAYER A
+  \node[] at (-5,-1.25) {\parbox{5cm}{\centering \sffamily \Large \color{BrickRed} \textbf{Player A}}};
+  % PLAYER A, LEVEL 1
+  \node[] at (-5,-2.75) {\parbox{5cm}{\sffamily \large \color{BrickRed} \textbf{Level 1} \hfill {\faGear}}};
+  \node[] at (-5,-6) {%
+  %%%[PUZZLE HERE: PLAYER A, LEVEL 1]%%%
+  };
+  % PLAYER A, LEVEL 2
+  \node[] at (-5,-10.75) {\parbox{5cm}{\sffamily \large \color{BrickRed} \textbf{Level 2} \hfill {\faGear\ \faGear}}};
+  \node[] at (-5,-14) {%
+  %%%[PUZZLE HERE: PLAYER A, LEVEL 2]%%%
+  };
+  % PLAYER A, LEVEL 3
+  \node[] at (-5,-18.75) {\parbox{5cm}{\sffamily \large \color{BrickRed} \textbf{Level 3} \hfill {\faGear\ \faGear\ \faGear}}};
+  \node[] at (-5,-22) {%
+  %%%[PUZZLE HERE: PLAYER A, LEVEL 3]%%%
+  };
+  %
+  \node[] at (-5,-26.5) {\parbox{5cm}{\centering \sffamily Puzzle~\#%
+  %%%[PUZZLE ID HERE]%%%
+  }};
+  % PLAYER B
+  \node[] at (5,-1.25) {\parbox{5cm}{\centering \sffamily \Large \color{BrickRed} \textbf{Player B}}};
+  % PLAYER B, LEVEL 1
+  \node[] at (5,-2.75) {\parbox{5cm}{\sffamily \large \color{BrickRed} \textbf{Level 1} \hfill {\faGear}}};
+  \node[] at (5,-6) {%
+  %%%[PUZZLE HERE: PLAYER B, LEVEL 1]%%%
+  };
+  % PLAYER B, LEVEL 2
+  \node[] at (5,-10.75) {\parbox{5cm}{\sffamily \large \color{BrickRed} \textbf{Level 2} \hfill {\faGear\ \faGear}}};
+  \node[] at (5,-14) {%
+  %%%[PUZZLE HERE: PLAYER B, LEVEL 2]%%%
+  };
+  % PLAYER B, LEVEL 3
+  \node[] at (5,-18.75) {\parbox{5cm}{\sffamily \large \color{BrickRed} \textbf{Level 3} \hfill {\faGear\ \faGear\ \faGear}}};
+  \node[] at (5,-22) {%
+  %%%[PUZZLE HERE: PLAYER B, LEVEL 3]%%%
+  };
+  %
+  \node[] at (5,-26.5) {\parbox{5cm}{\centering \sffamily Puzzle~\#%
+  %%%[PUZZLE ID HERE]%%%
+  }};
+  %
+  \draw[] (0,0.5) edge[ultra thick, dashed] (0,-27);
+  \node[fill=white,inner sep=0pt] at (0,-26.2) {\rotatebox{90}{\Huge \faScissors}};
+  %
+\end{tikzpicture}
+\end{center}
+
+\pagebreak
+
+\begin{center}
+\begin{tikzpicture}
+  %
+  % PLAYER A
+  \node[] at (-5,-1.25) {\parbox{5cm}{\centering \sffamily \Large \color{BrickRed} \textbf{Instructions}}};
+  % PLAYER B
+  \node[] at (5,-1.25) {\parbox{5cm}{\centering \sffamily \Large \color{BrickRed} \textbf{Instructions}}};
+  %
+  \draw[] (0,0.5) edge[ultra thick, dashed,white] (0,-27);
+  %
+\end{tikzpicture}
+\end{center}
+
+\end{document}
