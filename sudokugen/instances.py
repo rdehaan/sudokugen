@@ -65,7 +65,7 @@ class Instance:
 
         self.outputs = {}
 
-        for atom in model.symbols(shown=True):
+        for atom in model.symbols(atoms=True):
             if atom.name == "output":
                 key = str(atom.arguments[0])
                 value = str(atom.arguments[1])
