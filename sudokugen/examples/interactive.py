@@ -295,20 +295,9 @@ def initial_xy_wing(
             sym_breaking_constraints = []
         # Add deduction constraints
         deduction_constraints = [
-            encodings.deduction_constraint(
+            encodings.chained_deduction_constraint(
                 instance,
                 [
-                    encodings.SolvingStrategy(
-                        rules=[
-                            encodings.basic_deduction,
-                            encodings.naked_singles,
-                            encodings.hidden_singles,
-                            encodings.naked_pairs,
-                            encodings.hidden_pairs,
-                            encodings.locked_candidates,
-                            encodings.xy_wing,
-                            encodings.stable_state_solved
-                        ]),
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
@@ -320,7 +309,17 @@ def initial_xy_wing(
                             #
                             encodings.closed_under_naked_singles,
                             encodings.closed_under_hidden_singles,
-                            encodings.stable_state_unsolved
+                            #
+                            encodings.stable_state_unsolved,
+                        ]
+                    ),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.xy_wing,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            #
+                            encodings.stable_state_solved,
                         ]),
                 ]
             ),
@@ -1367,6 +1366,149 @@ def initial_hidden_triples(
             sym_breaking_constraints + \
             deduction_constraints + \
             mask_constraints
+
+        # Generate the puzzle
+        found_solution = generate_puzzle(
+            instance,
+            constraints,
+            timeout=timeout,
+            verbose=verbose,
+            cl_arguments=["--parallel-mode=4"],
+        )
+
+        if found_solution:
+            puzzle = found_solution.repr_short()
+            if verbose:
+                print(found_solution.repr_pretty())
+                print(f"Puzzle = {puzzle}")
+                print(f"Number of cells filled: {81-puzzle.count('0')}")
+            return puzzle
+
+
+def prepend_xy_wing(
+        puzzle_to_derive,
+        maximize_filled_cells=True,
+        max_num_repeat=4,
+        use_strong_connection=False,
+        timeout=300,
+        verbose=True,
+    ):
+    """
+    Function to take a Sudoku puzzle and from it construct another that
+    requires the solving technique XY-wing to get to the given puzzle.
+    """
+    # pylint: disable=too-many-arguments
+
+    # If required, firstly determine what strikes cannot be derived from the
+    # given puzzle in order to require that none of these can be derived in
+    # the prepended puzzle
+    if use_strong_connection:
+
+        instance = instances.RegularSudoku(9)
+        constraints = [
+            encodings.use_mask(
+                instance,
+                puzzle_to_derive
+            ),
+            encodings.deduction_constraint(
+                instance,
+                [
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.naked_pairs,
+                            encodings.hidden_pairs,
+                            encodings.locked_candidates,
+                            #
+                            encodings.select_non_derivable_strikes_as_highlight,
+                        ]
+                    ),
+                ]
+            ),
+            encodings.output_highlight_strikes(),
+        ]
+
+        # Generate the puzzle
+        found_solution = generate_puzzle(
+            instance,
+            constraints,
+            timeout=30,
+            verbose=False,
+        )
+
+        # Store the strikes that we may not derive
+        forbidden_strikes = found_solution.outputs['highlight_strike']
+
+    # Now let's find our prepended puzzle..
+    puzzle = None
+
+    i = 0
+    while not puzzle and i < max_num_repeat:
+        i += 1
+
+        instance = instances.RegularSudoku(9)
+        # Add maximization constraint
+        if maximize_filled_cells:
+            maximize_constraints = [
+                encodings.maximize_num_filled_cells(),
+            ]
+        else:
+            maximize_constraints = []
+        # Add deduction constraints
+        if use_strong_connection:
+            forbidden_strike_rule = [
+                encodings.forbid_strings_derivable(
+                    forbidden_strikes
+                )
+            ]
+        else:
+            forbidden_strike_rule = []
+        deduction_constraints = [
+            encodings.chained_deduction_constraint(
+                instance,
+                [
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.naked_pairs,
+                            encodings.hidden_pairs,
+                            encodings.locked_candidates,
+                            #
+                            encodings.closed_under_naked_singles,
+                            encodings.closed_under_hidden_singles,
+                            #
+                            encodings.stable_state_mask_not_derived(
+                                instance,
+                                puzzle_to_derive
+                            )
+                        ]
+                    ),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.xy_wing,
+                        ]
+                    ),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            #
+                            encodings.stable_state_mask_derived(
+                                instance,
+                                puzzle_to_derive
+                            ),
+                        ] + forbidden_strike_rule),
+                ]
+            )
+        ]
+
+        constraints = \
+            maximize_constraints + \
+            deduction_constraints
 
         # Generate the puzzle
         found_solution = generate_puzzle(
