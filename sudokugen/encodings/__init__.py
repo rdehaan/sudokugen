@@ -38,3 +38,8 @@ from .interfaces import input_cell_semantically_undeducible, \
     io_solutions_and_decoys_alldiff, \
     reveal_input_cell, output_cell_derivable, output_cell_not_derivable, \
     reveal_output_value_or_decoy, output_decoy_not_ruled_out
+from .interactive import select_single_highlight_strike, \
+    output_highlight_strikes, \
+    highlight_strikes_derivable, highlight_strikes_not_derivable, \
+    reveal_highlight_strikes, select_non_derivable_strikes_as_highlight, \
+    forbid_strings_derivable
