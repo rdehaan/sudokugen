@@ -202,7 +202,8 @@ def deduction_constraint(
 
 def chained_deduction_constraint(
         instance: Instance,
-        solving_strategies: List[SolvingStrategy]
+        solving_strategies: List[SolvingStrategy],
+        chaining_pattern=None
     ) -> str:
     """
     Returns the encoding that specifies one or more solving strategies, that
@@ -234,11 +235,18 @@ def chained_deduction_constraint(
                     or not strategy.groups):
                 asp_code += f"active_group({strategy_name},{groupnum}).\n"
 
+    # If no chaining pattern is given, use a simple subsequent pattern
+    if not chaining_pattern:
+        chaining_pattern = [
+            (strategy_num, strategy_num+1)
+            for strategy_num, _ in enumerate(solving_strategies[:-1])
+        ]
+
     # Ensure that the derivable pencil marks (and solutions) are chained
-    # between subsequent solving strategies
-    for strategy_num, strategy in enumerate(solving_strategies[:-1]):
-        cur_strategy_name = construct_strategy_name(strategy_num)
-        next_strategy_name = construct_strategy_name(strategy_num+1)
+    # between the appropriate solving strategies
+    for (cur_strategy_num, next_strategy_num) in chaining_pattern:
+        cur_strategy_name = construct_strategy_name(cur_strategy_num)
+        next_strategy_name = construct_strategy_name(next_strategy_num)
         asp_code += f"""
             derivable({next_strategy_name},strike(C,V)) :-
                 derivable({cur_strategy_name},strike(C,V)).
