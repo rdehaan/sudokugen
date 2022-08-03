@@ -212,6 +212,7 @@ def chained_deduction_constraint(
     etc; the constraints on the result of applying these solving strategies
     are enforced at the step in the chain where they are given).
     """
+    # pylint: disable=too-many-locals
 
     asp_code = ""
     all_rules = set([basic_deduction])
