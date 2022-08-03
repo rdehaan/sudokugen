@@ -13,6 +13,7 @@ def initial_xyz_wing(
         timeout=600,
         num_filled_cells_in_random_mask=40,
         use_chained_encoding=False,
+        allow_xy_wing_in_solving=True,
         sym_breaking=True,
         verbose=True,
     ):
@@ -46,10 +47,58 @@ def initial_xyz_wing(
             sym_breaking_constraints = []
         # Add deduction constraints
         if use_chained_encoding:
-            positive_deduction_constraint = [
+            xyz_rules = [
+                encodings.xyz_wing_proper_chained,
+            ]
+        else:
+            xyz_rules = [
+                encodings.xyz_wing,
+            ]
+        if allow_xy_wing_in_solving:
+            deduction_constraints = [
                 encodings.chained_deduction_constraint(
                     instance,
                     [
+                        # no 0
+                        encodings.SolvingStrategy(
+                            rules=[
+                                encodings.basic_deduction,
+                                encodings.naked_singles,
+                                encodings.hidden_singles,
+                                encodings.naked_pairs,
+                                encodings.hidden_pairs,
+                                encodings.locked_candidates,
+                                #
+                                encodings.xy_wing,
+                                #
+                                encodings.closed_under_naked_singles,
+                                encodings.closed_under_hidden_singles,
+                                encodings.stable_state_unsolved
+                            ]),
+                        # no 1
+                        encodings.SolvingStrategy(
+                            rules=xyz_rules
+                        ),
+                        # no 2
+                        encodings.SolvingStrategy(
+                            rules=[
+                                encodings.naked_singles,
+                                encodings.hidden_singles,
+                                # encodings.naked_pairs,
+                                # encodings.hidden_pairs,
+                                # encodings.locked_candidates,
+                                #
+                                encodings.stable_state_solved
+                            ]),
+                    ]
+                ),
+            ]
+        else:
+            deduction_constraints = [
+                encodings.chained_deduction_constraint(
+                    instance,
+                    [
+                        # no 0
                         encodings.SolvingStrategy(
                             rules=[
                                 encodings.basic_deduction,
@@ -61,68 +110,40 @@ def initial_xyz_wing(
                                 #
                                 encodings.closed_under_naked_singles,
                                 encodings.closed_under_hidden_singles,
+                                encodings.stable_state_unsolved
                             ]),
+                        # no 1
+                        encodings.SolvingStrategy(
+                            rules=xyz_rules
+                        ),
+                        # no 2
                         encodings.SolvingStrategy(
                             rules=[
-                                encodings.xyz_wing_proper_chained,
+                                encodings.naked_singles,
+                                encodings.hidden_singles,
+                                # encodings.naked_pairs,
+                                # encodings.hidden_pairs,
+                                # encodings.locked_candidates,
+                                #
+                                encodings.stable_state_solved
                             ]),
+                        # no 3
                         encodings.SolvingStrategy(
                             rules=[
-                                encodings.basic_deduction,
                                 encodings.naked_singles,
                                 encodings.hidden_singles,
                                 encodings.naked_pairs,
                                 encodings.hidden_pairs,
                                 encodings.locked_candidates,
                                 #
-                                encodings.stable_state_solved
+                                encodings.xy_wing,
+                                #
+                                encodings.stable_state_unsolved
                             ]),
-                    ]
+                    ],
+                    chaining_pattern=[(0, 1), (1, 2), (0, 3)]
                 ),
             ]
-        else:
-            positive_deduction_constraint = [
-                encodings.deduction_constraint(
-                    instance,
-                    [
-                        encodings.SolvingStrategy(
-                            rules=[
-                                encodings.basic_deduction,
-                                encodings.naked_singles,
-                                encodings.hidden_singles,
-                                encodings.naked_pairs,
-                                encodings.hidden_pairs,
-                                encodings.locked_candidates,
-                                #
-                                encodings.xyz_wing,
-                                #
-                                encodings.stable_state_solved
-                            ]),
-                    ]
-                ),
-            ]
-        deduction_constraints = [
-            encodings.deduction_constraint(
-                instance,
-                [
-                    encodings.SolvingStrategy(
-                        rules=[
-                            encodings.basic_deduction,
-                            encodings.naked_singles,
-                            encodings.hidden_singles,
-                            encodings.naked_pairs,
-                            encodings.hidden_pairs,
-                            encodings.locked_candidates,
-                            #
-                            encodings.xy_wing,
-                            #
-                            encodings.closed_under_naked_singles,
-                            encodings.closed_under_hidden_singles,
-                            encodings.stable_state_unsolved
-                        ]),
-                ]
-            ),
-        ] + positive_deduction_constraint
         # Add mask constraint
         mask_constraints = [
             encodings.use_mask(
@@ -194,20 +215,9 @@ def initial_x_wing(
             sym_breaking_constraints = []
         # Add deduction constraints
         deduction_constraints = [
-            encodings.deduction_constraint(
+            encodings.chained_deduction_constraint(
                 instance,
                 [
-                    encodings.SolvingStrategy(
-                        rules=[
-                            encodings.basic_deduction,
-                            encodings.naked_singles,
-                            encodings.hidden_singles,
-                            encodings.naked_pairs,
-                            encodings.hidden_pairs,
-                            encodings.locked_candidates,
-                            encodings.x_wing,
-                            encodings.stable_state_solved
-                        ]),
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
@@ -219,7 +229,17 @@ def initial_x_wing(
                             #
                             encodings.closed_under_naked_singles,
                             encodings.closed_under_hidden_singles,
-                            encodings.stable_state_unsolved
+                            #
+                            encodings.stable_state_unsolved,
+                        ]
+                    ),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.x_wing,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            #
+                            encodings.stable_state_solved,
                         ]),
                 ]
             ),
@@ -395,20 +415,9 @@ def initial_color_wrap(
             sym_breaking_constraints = []
         # Add deduction constraints
         deduction_constraints = [
-            encodings.deduction_constraint(
+            encodings.chained_deduction_constraint(
                 instance,
                 [
-                    encodings.SolvingStrategy(
-                        rules=[
-                            encodings.basic_deduction,
-                            encodings.naked_singles,
-                            encodings.hidden_singles,
-                            encodings.naked_pairs,
-                            encodings.hidden_pairs,
-                            encodings.locked_candidates,
-                            encodings.color_wrap,
-                            encodings.stable_state_solved
-                        ]),
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
@@ -420,7 +429,17 @@ def initial_color_wrap(
                             #
                             encodings.closed_under_naked_singles,
                             encodings.closed_under_hidden_singles,
-                            encodings.stable_state_unsolved
+                            #
+                            encodings.stable_state_unsolved,
+                        ]
+                    ),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.color_wrap,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            #
+                            encodings.stable_state_solved,
                         ]),
                 ]
             ),
@@ -517,40 +536,20 @@ def initial_color_trap(
                             #
                             encodings.closed_under_naked_singles,
                             encodings.closed_under_hidden_singles,
-                        ]),
+                            #
+                            encodings.stable_state_unsolved
+                        ] + additional_non_solve),
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.color_trap_proper_chained,
                         ]),
                     encodings.SolvingStrategy(
                         rules=[
-                            encodings.basic_deduction,
                             encodings.naked_singles,
                             encodings.hidden_singles,
-                            encodings.naked_pairs,
-                            encodings.hidden_pairs,
-                            encodings.locked_candidates,
                             #
                             encodings.stable_state_solved
                         ]),
-                ]
-            ),
-            encodings.deduction_constraint(
-                instance,
-                [
-                    encodings.SolvingStrategy(
-                        rules=[
-                            encodings.basic_deduction,
-                            encodings.naked_singles,
-                            encodings.hidden_singles,
-                            encodings.naked_pairs,
-                            encodings.hidden_pairs,
-                            encodings.locked_candidates,
-                            #
-                            encodings.closed_under_naked_singles,
-                            encodings.closed_under_hidden_singles,
-                            encodings.stable_state_unsolved
-                        ] + additional_non_solve),
                 ]
             ),
         ]
@@ -594,6 +593,7 @@ def initial_x_chain(
         num_filled_cells_in_random_mask=40,
         use_proper_encoding=True,
         rule_out_xy_wing=False,
+        rule_out_color_trap=False,
         sym_breaking=True,
         verbose=True,
     ):
@@ -626,106 +626,53 @@ def initial_x_chain(
         else:
             sym_breaking_constraints = []
         # Add deduction constraints
-        if use_proper_encoding:
-            deduction_constraints = [
-                encodings.chained_deduction_constraint(
-                    instance,
-                    [
-                        encodings.SolvingStrategy(
-                            rules=[
-                                encodings.basic_deduction,
-                                encodings.naked_singles,
-                                encodings.hidden_singles,
-                                encodings.naked_pairs,
-                                encodings.hidden_pairs,
-                                encodings.locked_candidates,
-                                #
-                                encodings.closed_under_naked_singles,
-                                encodings.closed_under_hidden_singles,
-                            ]),
-                        encodings.SolvingStrategy(
-                            rules=[
-                                encodings.x_chain_proper_chained,
-                            ]),
-                        encodings.SolvingStrategy(
-                            rules=[
-                                encodings.basic_deduction,
-                                encodings.naked_singles,
-                                encodings.hidden_singles,
-                                encodings.naked_pairs,
-                                encodings.hidden_pairs,
-                                encodings.locked_candidates,
-                                #
-                                encodings.stable_state_solved
-                            ]),
-                    ]
-                ),
-            ]
-        else:
-            deduction_constraints = [
-                encodings.deduction_constraint(
-                    instance,
-                    [
-                        encodings.SolvingStrategy(
-                            rules=[
-                                encodings.basic_deduction,
-                                encodings.naked_singles,
-                                encodings.hidden_singles,
-                                encodings.naked_pairs,
-                                encodings.hidden_pairs,
-                                encodings.locked_candidates,
-                                #
-                                encodings.x_chain,
-                                #
-                                encodings.stable_state_solved
-                            ]),
-                    ]
-                ),
-            ]
+        additional_non_solve = []
         if rule_out_xy_wing:
-            deduction_constraints += [
-                encodings.deduction_constraint(
-                    instance,
-                    [
-                        encodings.SolvingStrategy(
-                            rules=[
-                                encodings.basic_deduction,
-                                encodings.naked_singles,
-                                encodings.hidden_singles,
-                                encodings.naked_pairs,
-                                encodings.hidden_pairs,
-                                encodings.locked_candidates,
-                                #
-                                encodings.xy_wing,
-                                #
-                                encodings.closed_under_naked_singles,
-                                encodings.closed_under_hidden_singles,
-                                encodings.stable_state_unsolved
-                            ]),
-                    ]
-                ),
+            additional_non_solve += [
+                encodings.xy_wing,
+            ]
+        if rule_out_color_trap:
+            additional_non_solve += [
+                encodings.color_trap,
+            ]
+        if use_proper_encoding:
+            x_chain_rules = [
+                encodings.x_chain_proper_chained,
             ]
         else:
-            deduction_constraints += [
-                encodings.deduction_constraint(
-                    instance,
-                    [
-                        encodings.SolvingStrategy(
-                            rules=[
-                                encodings.basic_deduction,
-                                encodings.naked_singles,
-                                encodings.hidden_singles,
-                                encodings.naked_pairs,
-                                encodings.hidden_pairs,
-                                encodings.locked_candidates,
-                                #
-                                encodings.closed_under_naked_singles,
-                                encodings.closed_under_hidden_singles,
-                                encodings.stable_state_unsolved
-                            ]),
-                    ]
-                ),
+            x_chain_rules = [
+                encodings.x_chain,
             ]
+        deduction_constraints = [
+            encodings.chained_deduction_constraint(
+                instance,
+                [
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.naked_pairs,
+                            encodings.hidden_pairs,
+                            encodings.locked_candidates,
+                            #
+                            encodings.closed_under_naked_singles,
+                            encodings.closed_under_hidden_singles,
+                            #
+                            encodings.stable_state_unsolved
+                        ] + additional_non_solve),
+                    encodings.SolvingStrategy(
+                        rules=x_chain_rules),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            #
+                            encodings.stable_state_solved
+                        ]),
+                ]
+            ),
+        ]
         # Add mask constraint
         mask_constraints = [
             encodings.use_mask(
@@ -796,21 +743,9 @@ def initial_snyder_x_wing(
             sym_breaking_constraints = []
         # Add deduction constraints
         deduction_constraints = [
-            encodings.deduction_constraint(
+            encodings.chained_deduction_constraint(
                 instance,
                 [
-                    encodings.SolvingStrategy(
-                        rules=[
-                            encodings.basic_deduction,
-                            encodings.naked_singles,
-                            encodings.hidden_singles,
-                            encodings.snyder_basic,
-                            encodings.snyder_hidden_pairs,
-                            encodings.snyder_basic_locked,
-                            encodings.snyder_locked_candidates,
-                            encodings.snyder_x_wing,
-                            encodings.stable_state_solved
-                        ]),
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
@@ -823,25 +758,27 @@ def initial_snyder_x_wing(
                             #
                             encodings.closed_under_naked_singles,
                             encodings.closed_under_hidden_singles,
-                            encodings.stable_state_unsolved
+                            encodings.stable_state_unsolved,
+
+                        ]),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.snyder_x_wing,
+                            #
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.snyder_basic,
+                            #
+                            encodings.stable_state_solved
                         ]),
                 ]
             ),
-        ]
-        # Add mask constraint
-        mask_constraints = [
-            # encodings.use_mask(
-            #     instance,
-            #     masks.generate_randomly(instance, '?',
-            #         [(num_filled_cells_in_random_mask, '*')])
-            # ),
         ]
 
         constraints = \
             maximize_constraints + \
             sym_breaking_constraints + \
-            deduction_constraints + \
-            mask_constraints
+            deduction_constraints
 
         # Generate the puzzle
         found_solution = generate_puzzle(
@@ -899,20 +836,9 @@ def initial_snyder_locked_full(
             sym_breaking_constraints = []
         # Add deduction constraints
         deduction_constraints = [
-            encodings.deduction_constraint(
+            encodings.chained_deduction_constraint(
                 instance,
                 [
-                    encodings.SolvingStrategy(
-                        rules=[
-                            encodings.basic_deduction,
-                            encodings.naked_singles,
-                            encodings.hidden_singles,
-                            encodings.snyder_basic,
-                            encodings.snyder_hidden_pairs,
-                            encodings.snyder_basic_locked,
-                            encodings.locked_candidates,
-                            encodings.stable_state_solved
-                        ]),
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
@@ -925,7 +851,18 @@ def initial_snyder_locked_full(
                             #
                             encodings.closed_under_naked_singles,
                             encodings.closed_under_hidden_singles,
-                            encodings.stable_state_unsolved
+                            encodings.stable_state_unsolved,
+
+                        ]),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.locked_candidates,
+                            #
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.snyder_basic,
+                            #
+                            encodings.stable_state_solved
                         ]),
                 ]
             ),
@@ -1001,20 +938,9 @@ def initial_snyder_locked(
             sym_breaking_constraints = []
         # Add deduction constraints
         deduction_constraints = [
-            encodings.deduction_constraint(
+            encodings.chained_deduction_constraint(
                 instance,
                 [
-                    encodings.SolvingStrategy(
-                        rules=[
-                            encodings.basic_deduction,
-                            encodings.naked_singles,
-                            encodings.hidden_singles,
-                            encodings.snyder_basic,
-                            encodings.snyder_hidden_pairs,
-                            encodings.snyder_basic_locked,
-                            encodings.snyder_locked_candidates,
-                            encodings.stable_state_solved
-                        ]),
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
@@ -1026,7 +952,18 @@ def initial_snyder_locked(
                             #
                             encodings.closed_under_naked_singles,
                             encodings.closed_under_hidden_singles,
-                            encodings.stable_state_unsolved
+                            encodings.stable_state_unsolved,
+
+                        ]),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.snyder_locked_candidates,
+                            #
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.snyder_basic,
+                            #
+                            encodings.stable_state_solved
                         ]),
                 ]
             ),
@@ -1102,7 +1039,7 @@ def initial_snyder_hidden_pairs(
             sym_breaking_constraints = []
         # Add deduction constraints
         deduction_constraints = [
-            encodings.deduction_constraint(
+            encodings.chained_deduction_constraint(
                 instance,
                 [
                     encodings.SolvingStrategy(
@@ -1111,23 +1048,23 @@ def initial_snyder_hidden_pairs(
                             encodings.naked_singles,
                             encodings.hidden_singles,
                             encodings.snyder_basic,
-                            encodings.snyder_hidden_pairs,
-                            encodings.snyder_basic_locked,
                             encodings.locked_candidates,
-                            encodings.stable_state_solved
-                        ]),
-                    encodings.SolvingStrategy(
-                        rules=[
-                            encodings.basic_deduction,
-                            encodings.naked_singles,
-                            encodings.hidden_singles,
-                            encodings.snyder_basic,
                             encodings.snyder_basic_locked,
-                            encodings.locked_candidates,
                             #
                             encodings.closed_under_naked_singles,
                             encodings.closed_under_hidden_singles,
-                            encodings.stable_state_unsolved
+                            encodings.stable_state_unsolved,
+
+                        ]),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.snyder_hidden_pairs,
+                            #
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.snyder_basic,
+                            #
+                            encodings.stable_state_solved
                         ]),
                 ]
             ),
@@ -1210,22 +1147,9 @@ def initial_naked_triples(
         else:
             additional_non_solve = []
         deduction_constraints = [
-            encodings.deduction_constraint(
+            encodings.chained_deduction_constraint(
                 instance,
                 [
-                    encodings.SolvingStrategy(
-                        rules=[
-                            encodings.basic_deduction,
-                            encodings.naked_singles,
-                            encodings.hidden_singles,
-                            encodings.naked_pairs,
-                            encodings.hidden_pairs,
-                            encodings.locked_candidates,
-                            #
-                            encodings.naked_triples,
-                            #
-                            encodings.stable_state_solved
-                        ]),
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.basic_deduction,
@@ -1239,6 +1163,15 @@ def initial_naked_triples(
                             encodings.closed_under_hidden_singles,
                             encodings.stable_state_unsolved
                         ] + additional_non_solve),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.naked_triples,
+                            #
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            #
+                            encodings.stable_state_solved
+                        ]),
                 ]
             ),
         ]
@@ -1332,23 +1265,19 @@ def initial_hidden_triples(
                             encodings.hidden_pairs,
                             encodings.locked_candidates,
                             #
-                            encodings.hidden_triples,
-                            #
-                            encodings.stable_state_solved
-                        ]),
-                    encodings.SolvingStrategy(
-                        rules=[
-                            encodings.basic_deduction,
-                            encodings.naked_singles,
-                            encodings.hidden_singles,
-                            encodings.naked_pairs,
-                            encodings.hidden_pairs,
-                            encodings.locked_candidates,
-                            #
                             encodings.closed_under_naked_singles,
                             encodings.closed_under_hidden_singles,
                             encodings.stable_state_unsolved
                         ] + additional_non_solve),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.hidden_triples,
+                            #
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            #
+                            encodings.stable_state_solved
+                        ]),
                 ]
             ),
         ]
@@ -1516,6 +1445,108 @@ def initial_lc_hp_combo(
             return puzzle
 
 
+def initial_hidden_pairs(
+        maximize_filled_cells=True,
+        max_num_repeat=4,
+        timeout=300,
+        num_filled_cells_in_random_mask=0,
+        sym_breaking=True,
+        verbose=True,
+    ):
+    """
+    Function to generate a Sudoku puzzle that requires the solving techniques
+    of hidden pairs to solve.
+    """
+    # pylint: disable=too-many-arguments
+
+    puzzle = None
+
+    i = 0
+    while not puzzle and i < max_num_repeat:
+        i += 1
+
+        instance = instances.RegularSudoku(9)
+        # Add maximization constraint
+        if maximize_filled_cells:
+            maximize_constraints = [
+                encodings.maximize_num_filled_cells(),
+            ]
+        else:
+            maximize_constraints = []
+        # Add symmetry breaking constraints
+        if sym_breaking:
+            sym_breaking_constraints = [
+                encodings.sym_breaking_top_row(instance),
+                encodings.sym_breaking_left_column(instance),
+            ]
+        else:
+            sym_breaking_constraints = []
+        # Add deduction constraints
+        deduction_constraints = [
+            encodings.chained_deduction_constraint(
+                instance,
+                [
+                    # no 0
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.naked_pairs,
+                            #
+                            encodings.closed_under_naked_singles,
+                            encodings.closed_under_hidden_singles,
+                            #
+                            encodings.stable_state_unsolved,
+                        ]
+                    ),
+                    # no 4
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.hidden_pairs,
+                            #
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            #
+                            encodings.stable_state_solved,
+                        ]
+                    ),
+                ],
+            )
+        ]
+        # Add mask constraint
+        mask_constraints = [
+            encodings.use_mask(
+                instance,
+                masks.generate_randomly(instance, '?',
+                    [(num_filled_cells_in_random_mask, '*')])
+            ),
+        ]
+
+        constraints = \
+            maximize_constraints + \
+            sym_breaking_constraints + \
+            deduction_constraints + \
+            mask_constraints
+
+        # Generate the puzzle
+        found_solution = generate_puzzle(
+            instance,
+            constraints,
+            timeout=timeout,
+            verbose=verbose,
+            cl_arguments=["--parallel-mode=4"],
+        )
+
+        if found_solution:
+            puzzle = found_solution.repr_short()
+            if verbose:
+                print(found_solution.repr_pretty())
+                print(f"Puzzle = {puzzle}")
+                print(f"Number of cells filled: {81-puzzle.count('0')}")
+            return puzzle
+
+
 def prepend_xy_wing(
         puzzle_to_derive,
         maximize_filled_cells=True,
@@ -1621,6 +1652,420 @@ def prepend_xy_wing(
                     encodings.SolvingStrategy(
                         rules=[
                             encodings.xy_wing,
+                        ]
+                    ),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            #
+                            encodings.stable_state_mask_derived(
+                                instance,
+                                puzzle_to_derive
+                            ),
+                        ] + forbidden_strike_rule),
+                ]
+            )
+        ]
+
+        constraints = \
+            maximize_constraints + \
+            deduction_constraints
+
+        # Generate the puzzle
+        found_solution = generate_puzzle(
+            instance,
+            constraints,
+            timeout=timeout,
+            verbose=verbose,
+            cl_arguments=["--parallel-mode=4"],
+        )
+
+        if found_solution:
+            puzzle = found_solution.repr_short()
+            if verbose:
+                print(found_solution.repr_pretty())
+                print(f"Puzzle = {puzzle}")
+                print(f"Number of cells filled: {81-puzzle.count('0')}")
+            return puzzle
+
+
+def prepend_locked_candidates(
+        puzzle_to_derive,
+        maximize_filled_cells=True,
+        max_num_repeat=4,
+        use_strong_connection=False,
+        timeout=120,
+        verbose=True,
+    ):
+    """
+    Function to take a Sudoku puzzle and from it construct another that
+    requires the solving technique locked candidates to get to the given puzzle.
+    """
+    # pylint: disable=too-many-arguments
+
+    # If required, firstly determine what strikes cannot be derived from the
+    # given puzzle in order to require that none of these can be derived in
+    # the prepended puzzle
+    if use_strong_connection:
+
+        instance = instances.RegularSudoku(9)
+        constraints = [
+            encodings.use_mask(
+                instance,
+                puzzle_to_derive
+            ),
+            encodings.deduction_constraint(
+                instance,
+                [
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            #
+                            encodings.select_non_derivable_strikes_as_highlight,
+                        ]
+                    ),
+                ]
+            ),
+            encodings.output_highlight_strikes(),
+        ]
+
+        # Generate the puzzle
+        found_solution = generate_puzzle(
+            instance,
+            constraints,
+            timeout=30,
+            verbose=False,
+        )
+
+        # Store the strikes that we may not derive
+        forbidden_strikes = found_solution.outputs['highlight_strike']
+
+    # Now let's find our prepended puzzle..
+    puzzle = None
+
+    i = 0
+    while not puzzle and i < max_num_repeat:
+        i += 1
+
+        instance = instances.RegularSudoku(9)
+        # Add maximization constraint
+        if maximize_filled_cells:
+            maximize_constraints = [
+                encodings.maximize_num_filled_cells(),
+            ]
+        else:
+            maximize_constraints = []
+        # Add deduction constraints
+        if use_strong_connection:
+            forbidden_strike_rule = [
+                encodings.forbid_strings_derivable(
+                    forbidden_strikes
+                )
+            ]
+        else:
+            forbidden_strike_rule = []
+        deduction_constraints = [
+            encodings.chained_deduction_constraint(
+                instance,
+                [
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.naked_pairs,
+                            encodings.hidden_pairs,
+                            #
+                            encodings.closed_under_naked_singles,
+                            encodings.closed_under_hidden_singles,
+                            #
+                            encodings.stable_state_mask_not_derived(
+                                instance,
+                                puzzle_to_derive
+                            )
+                        ]
+                    ),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.locked_candidates,
+                        ]
+                    ),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            #
+                            encodings.stable_state_mask_derived(
+                                instance,
+                                puzzle_to_derive
+                            ),
+                        ] + forbidden_strike_rule),
+                ]
+            )
+        ]
+
+        constraints = \
+            maximize_constraints + \
+            deduction_constraints
+
+        # Generate the puzzle
+        found_solution = generate_puzzle(
+            instance,
+            constraints,
+            timeout=timeout,
+            verbose=verbose,
+            cl_arguments=["--parallel-mode=4"],
+        )
+
+        if found_solution:
+            puzzle = found_solution.repr_short()
+            if verbose:
+                print(found_solution.repr_pretty())
+                print(f"Puzzle = {puzzle}")
+                print(f"Number of cells filled: {81-puzzle.count('0')}")
+            return puzzle
+
+
+def prepend_hidden_pairs(
+        puzzle_to_derive,
+        maximize_filled_cells=True,
+        max_num_repeat=4,
+        use_strong_connection=False,
+        timeout=120,
+        verbose=True,
+    ):
+    """
+    Function to take a Sudoku puzzle and from it construct another that
+    requires the solving technique hidden pairs to get to the given puzzle.
+    """
+    # pylint: disable=too-many-arguments
+
+    # If required, firstly determine what strikes cannot be derived from the
+    # given puzzle in order to require that none of these can be derived in
+    # the prepended puzzle
+    if use_strong_connection:
+
+        instance = instances.RegularSudoku(9)
+        constraints = [
+            encodings.use_mask(
+                instance,
+                puzzle_to_derive
+            ),
+            encodings.deduction_constraint(
+                instance,
+                [
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            #
+                            encodings.select_non_derivable_strikes_as_highlight,
+                        ]
+                    ),
+                ]
+            ),
+            encodings.output_highlight_strikes(),
+        ]
+
+        # Generate the puzzle
+        found_solution = generate_puzzle(
+            instance,
+            constraints,
+            timeout=30,
+            verbose=False,
+        )
+
+        # Store the strikes that we may not derive
+        forbidden_strikes = found_solution.outputs['highlight_strike']
+
+    # Now let's find our prepended puzzle..
+    puzzle = None
+
+    i = 0
+    while not puzzle and i < max_num_repeat:
+        i += 1
+
+        instance = instances.RegularSudoku(9)
+        # Add maximization constraint
+        if maximize_filled_cells:
+            maximize_constraints = [
+                encodings.maximize_num_filled_cells(),
+            ]
+        else:
+            maximize_constraints = []
+        # Add deduction constraints
+        if use_strong_connection:
+            forbidden_strike_rule = [
+                encodings.forbid_strings_derivable(
+                    forbidden_strikes
+                )
+            ]
+        else:
+            forbidden_strike_rule = []
+        deduction_constraints = [
+            encodings.chained_deduction_constraint(
+                instance,
+                [
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            encodings.naked_pairs,
+                            #
+                            encodings.closed_under_naked_singles,
+                            encodings.closed_under_hidden_singles,
+                            #
+                            encodings.stable_state_mask_not_derived(
+                                instance,
+                                puzzle_to_derive
+                            )
+                        ]
+                    ),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.hidden_pairs,
+                        ]
+                    ),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            #
+                            encodings.stable_state_mask_derived(
+                                instance,
+                                puzzle_to_derive
+                            ),
+                        ] + forbidden_strike_rule),
+                ]
+            )
+        ]
+
+        constraints = \
+            maximize_constraints + \
+            deduction_constraints
+
+        # Generate the puzzle
+        found_solution = generate_puzzle(
+            instance,
+            constraints,
+            timeout=timeout,
+            verbose=verbose,
+            cl_arguments=["--parallel-mode=4"],
+        )
+
+        if found_solution:
+            puzzle = found_solution.repr_short()
+            if verbose:
+                print(found_solution.repr_pretty())
+                print(f"Puzzle = {puzzle}")
+                print(f"Number of cells filled: {81-puzzle.count('0')}")
+            return puzzle
+
+
+def prepend_naked_pairs(
+        puzzle_to_derive,
+        maximize_filled_cells=True,
+        max_num_repeat=4,
+        use_strong_connection=False,
+        timeout=120,
+        verbose=True,
+    ):
+    """
+    Function to take a Sudoku puzzle and from it construct another that
+    requires the solving technique naked pairs to get to the given puzzle.
+    """
+    # pylint: disable=too-many-arguments
+
+    # If required, firstly determine what strikes cannot be derived from the
+    # given puzzle in order to require that none of these can be derived in
+    # the prepended puzzle
+    if use_strong_connection:
+
+        instance = instances.RegularSudoku(9)
+        constraints = [
+            encodings.use_mask(
+                instance,
+                puzzle_to_derive
+            ),
+            encodings.deduction_constraint(
+                instance,
+                [
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            #
+                            encodings.select_non_derivable_strikes_as_highlight,
+                        ]
+                    ),
+                ]
+            ),
+            encodings.output_highlight_strikes(),
+        ]
+
+        # Generate the puzzle
+        found_solution = generate_puzzle(
+            instance,
+            constraints,
+            timeout=30,
+            verbose=False,
+        )
+
+        # Store the strikes that we may not derive
+        forbidden_strikes = found_solution.outputs['highlight_strike']
+
+    # Now let's find our prepended puzzle..
+    puzzle = None
+
+    i = 0
+    while not puzzle and i < max_num_repeat:
+        i += 1
+
+        instance = instances.RegularSudoku(9)
+        # Add maximization constraint
+        if maximize_filled_cells:
+            maximize_constraints = [
+                encodings.maximize_num_filled_cells(),
+            ]
+        else:
+            maximize_constraints = []
+        # Add deduction constraints
+        if use_strong_connection:
+            forbidden_strike_rule = [
+                encodings.forbid_strings_derivable(
+                    forbidden_strikes
+                )
+            ]
+        else:
+            forbidden_strike_rule = []
+        deduction_constraints = [
+            encodings.chained_deduction_constraint(
+                instance,
+                [
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.basic_deduction,
+                            encodings.naked_singles,
+                            encodings.hidden_singles,
+                            #
+                            encodings.closed_under_naked_singles,
+                            encodings.closed_under_hidden_singles,
+                            #
+                            encodings.stable_state_mask_not_derived(
+                                instance,
+                                puzzle_to_derive
+                            )
+                        ]
+                    ),
+                    encodings.SolvingStrategy(
+                        rules=[
+                            encodings.naked_pairs,
                         ]
                     ),
                     encodings.SolvingStrategy(
