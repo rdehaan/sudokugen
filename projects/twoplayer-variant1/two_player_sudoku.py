@@ -21,7 +21,8 @@ def construct_basic_interface_sudoku_from_dict(
         input_dict
     ):
     """
-    TODO
+    Takes a dictionary that specifies a basic interface sudoku and creates a
+    BasicInterfaceSudoku instance from it.
     """
 
     puzzle=input_dict["puzzle"]
@@ -70,7 +71,7 @@ def construct_basic_interface_sudoku_from_dict(
     return found_solution
 
 
-def instance_to_latex(instance, swap_input_output=False):
+def instance_to_latex(instance):
     """
     Provides a LaTeX representation of a BasicInterfaceSudoku.
     """
@@ -94,7 +95,9 @@ def make_pdf(
         directory=None,
         executable="pdflatex"
     ):
-    """Create a PDF of the puzzle (using LaTeX)."""
+    """
+    Creates a PDF of the puzzle (using LaTeX).
+    """
 
     #
     if directory:
@@ -144,3 +147,70 @@ def make_pdf(
             os.remove(os.path.join(cwd, f"{filename}.{ext}"))
         except FileNotFoundError:
             pass
+
+
+def load_puzzle(puzzle):
+    """
+    Takes a 9x9 puzzle as a mask, and creates an instance from it.
+    """
+
+    instance = instances.RegularSudoku(9)
+    constraints = [
+        encodings.use_mask(
+            instance,
+            puzzle
+        )
+    ]
+
+    # Generate the puzzle
+    found_solution = generate_puzzle(
+        instance,
+        constraints,
+        timeout=30,
+        verbose=True,
+        cl_arguments=["--parallel-mode=4"],
+    )
+
+    return found_solution
+
+
+def print_puzzle_info(instance):
+    """
+    Prints some information about a given instance.
+    """
+
+    puzzle = instance.repr_short()
+    try:
+        input_cell = instance.input_cell
+    except AttributeError:
+        input_cell = None
+    try:
+        input_cell_solution = instance.solution[input_cell]
+    except KeyError:
+        input_cell_solution = None
+    try:
+        input_decoy_value = instance.input_decoy_value
+    except AttributeError:
+        input_decoy_value = None
+    try:
+        output_cell = instance.output_cell
+    except AttributeError:
+        output_cell = None
+    try:
+        output_cell_solution = instance.solution[output_cell]
+    except KeyError:
+        output_cell_solution = None
+    try:
+        output_decoy_value = instance.output_decoy_value
+    except AttributeError:
+        output_decoy_value = None
+
+    print(instance.repr_pretty())
+    print(f"puzzle = {puzzle}")
+    print(f"num cells filled = {81-puzzle.count('0')}")
+    print(f"output_cell = {output_cell} ", end="")
+    print(f"with solution {output_cell_solution} ", end="")
+    print(f"and decoy {output_decoy_value}")
+    print(f"input_cell = {input_cell} ", end="")
+    print(f"with solution {input_cell_solution} ", end="")
+    print(f"and decoy {input_decoy_value}")
