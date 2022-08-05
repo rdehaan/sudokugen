@@ -1,9 +1,4 @@
-from .instances import Instance, SquareSudoku, RokuDoku, RegularSudoku, \
-    XSudoku, YSudoku, SSudoku, \
-    BasicInterfaceSudoku
-
-from .generator import generate_puzzle
-
-from .printing import repr_latex, latex_preamble
-
-from .masks import mask_library
+from .instances import *
+from .generator import *
+from .printing import *
+from .masks import *

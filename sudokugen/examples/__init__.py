@@ -1,2 +1,2 @@
-from .generate import generate_example
+from .generate import *
 from .interactive import *
