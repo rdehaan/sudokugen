@@ -4,3 +4,4 @@ from .fish import *
 from .masks import *
 from .snyder import *
 from .wings import *
+from .other import *

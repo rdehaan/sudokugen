@@ -522,3 +522,221 @@ color_wrap = DeductionRule(
         not solution(C1,V), not solution(C2,V).
     """
 )
+
+remote_pairs_chained = DeductionRule(
+    "remote_pairs_chained",
+    """
+    derivable(Mode,rp_odd(V1,V2,C1,C2)) :-
+        use_technique(Mode,remote_pairs_chained), deduction_mode(Mode),
+        value(V1), value(V2), different_values(V1,V2), V1 < V2,
+        cell(C1), cell(C2), different_cells(C1,C2), C1 < C2,
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
+        derivable(Mode,strike(C1,V)) :
+            different_values(V,V1), different_values(V,V2);
+        derivable(Mode,strike(C2,V)) :
+            different_values(V,V1), different_values(V,V2);
+        share_active_group(Mode,C1,C2),
+        not derivable(Mode,strike(C1,V1)),
+        not derivable(Mode,strike(C1,V2)),
+        not derivable(Mode,strike(C2,V1)),
+        not derivable(Mode,strike(C2,V2)).
+
+    derivable(Mode,rp_odd(V1,V2,C1,C2)) :-
+        derivable(Mode,rp_odd(V1,V2,C2,C1)).
+    derivable(Mode,rp_even(V1,V2,C1,C2)) :-
+        derivable(Mode,rp_even(V1,V2,C2,C1)).
+
+    derivable(Mode,rp_even(V1,V2,C1,C3)) :-
+        use_technique(Mode,remote_pairs_chained), deduction_mode(Mode),
+        value(V1), value(V2), different_values(V1,V2), V1 < V2,
+        cell(C1), cell(C2), cell(C3),
+        different_cells(C1,C2), different_cells(C1,C3),
+        different_cells(C2,C3),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
+        not certainly_not_erased(C3),
+        derivable(Mode,rp_odd(V1,V2,C1,C2)),
+        derivable(Mode,strike(C3,V)) :
+            different_values(V,V1), different_values(V,V2);
+        share_active_group(Mode,C2,C3),
+        not derivable(Mode,strike(C3,V1)),
+        not derivable(Mode,strike(C3,V2)).
+    derivable(Mode,rp_odd(V1,V2,C1,C3)) :-
+        use_technique(Mode,remote_pairs_chained), deduction_mode(Mode),
+        value(V1), value(V2), different_values(V1,V2), V1 < V2,
+        cell(C1), cell(C2), cell(C3),
+        different_cells(C1,C2), different_cells(C1,C3),
+        different_cells(C2,C3),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
+        not certainly_not_erased(C3),
+        derivable(Mode,rp_even(V1,V2,C1,C2)),
+        derivable(Mode,strike(C3,V)) :
+            different_values(V,V1), different_values(V,V2);
+        share_active_group(Mode,C2,C3),
+        not derivable(Mode,strike(C3,V1)),
+        not derivable(Mode,strike(C3,V2)).
+
+    derivable(Mode,strike(C,V)) :-
+        use_technique(Mode,remote_pairs_chained), deduction_mode(Mode),
+        value(V), cell(C),
+        derivable(Mode,rp_odd(V,_,C1,C2)),
+        share_active_group(Mode,C,C1),
+        share_active_group(Mode,C,C2),
+        different_cells(C,C1),
+        different_cells(C,C2).
+    derivable(Mode,strike(C,V)) :-
+        use_technique(Mode,remote_pairs_chained), deduction_mode(Mode),
+        value(V), cell(C),
+        derivable(Mode,rp_odd(_,V,C1,C2)),
+        share_active_group(Mode,C,C1),
+        share_active_group(Mode,C,C2),
+        different_cells(C,C1),
+        different_cells(C,C2).
+
+    :- derivable(_,rp_even(V1,V2,C1,C2)),
+        solution(C1,V1), solution(C2,V2).
+    :- derivable(_,rp_even(V1,V2,C1,C2)),
+        solution(C1,V2), solution(C2,V1).
+    :- derivable(_,rp_odd(V1,V2,C1,C2)),
+        solution(C1,V1), solution(C2,V1).
+    :- derivable(_,rp_odd(V1,V2,C1,C2)),
+        solution(C1,V2), solution(C2,V2).
+    """
+)
+
+remote_pairs_not_applicable_chained = DeductionRule(
+    "remote_pairs_not_applicable_chained",
+    """
+    derivable(Mode,rp_odd(V1,V2,C1,C2)) :-
+        use_technique(Mode,remote_pairs_not_applicable_chained),
+        deduction_mode(Mode),
+        value(V1), value(V2), different_values(V1,V2), V1 < V2,
+        cell(C1), cell(C2), different_cells(C1,C2), C1 < C2,
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
+        derivable(Mode,strike(C1,V)) :
+            different_values(V,V1), different_values(V,V2);
+        derivable(Mode,strike(C2,V)) :
+            different_values(V,V1), different_values(V,V2);
+        share_active_group(Mode,C1,C2),
+        not derivable(Mode,strike(C1,V1)),
+        not derivable(Mode,strike(C1,V2)),
+        not derivable(Mode,strike(C2,V1)),
+        not derivable(Mode,strike(C2,V2)).
+
+    derivable(Mode,rp_odd(V1,V2,C1,C2)) :-
+        derivable(Mode,rp_odd(V1,V2,C2,C1)).
+    derivable(Mode,rp_even(V1,V2,C1,C2)) :-
+        derivable(Mode,rp_even(V1,V2,C2,C1)).
+
+    derivable(Mode,rp_even(V1,V2,C1,C3)) :-
+        use_technique(Mode,remote_pairs_not_applicable_chained),
+        deduction_mode(Mode),
+        value(V1), value(V2), different_values(V1,V2), V1 < V2,
+        cell(C1), cell(C2), cell(C3),
+        different_cells(C1,C2), different_cells(C1,C3),
+        different_cells(C2,C3),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
+        not certainly_not_erased(C3),
+        derivable(Mode,rp_odd(V1,V2,C1,C2)),
+        derivable(Mode,strike(C3,V)) :
+            different_values(V,V1), different_values(V,V2);
+        share_active_group(Mode,C2,C3),
+        not derivable(Mode,strike(C3,V1)),
+        not derivable(Mode,strike(C3,V2)).
+    derivable(Mode,rp_odd(V1,V2,C1,C3)) :-
+        use_technique(Mode,remote_pairs_not_applicable_chained),
+        deduction_mode(Mode),
+        value(V1), value(V2), different_values(V1,V2), V1 < V2,
+        cell(C1), cell(C2), cell(C3),
+        different_cells(C1,C2), different_cells(C1,C3),
+        different_cells(C2,C3),
+        not certainly_not_erased(C1),
+        not certainly_not_erased(C2),
+        not certainly_not_erased(C3),
+        derivable(Mode,rp_even(V1,V2,C1,C2)),
+        derivable(Mode,strike(C3,V)) :
+            different_values(V,V1), different_values(V,V2);
+        share_active_group(Mode,C2,C3),
+        not derivable(Mode,strike(C3,V1)),
+        not derivable(Mode,strike(C3,V2)).
+
+    :- use_technique(Mode,remote_pairs_not_applicable_chained),
+        deduction_mode(Mode),
+        value(V), cell(C),
+        derivable(Mode,rp_odd(V,_,C1,C2)),
+        share_active_group(Mode,C,C1),
+        share_active_group(Mode,C,C2),
+        different_cells(C,C1),
+        different_cells(C,C2),
+        not derivable(Mode,strike(C,V)).
+    :- use_technique(Mode,remote_pairs_not_applicable_chained),
+        deduction_mode(Mode),
+        value(V), cell(C),
+        derivable(Mode,rp_odd(_,V,C1,C2)),
+        share_active_group(Mode,C,C1),
+        share_active_group(Mode,C,C2),
+        different_cells(C,C1),
+        different_cells(C,C2),
+        not derivable(Mode,strike(C,V)).
+
+    :- derivable(_,rp_even(V1,V2,C1,C2)),
+        solution(C1,V1), solution(C2,V2).
+    :- derivable(_,rp_even(V1,V2,C1,C2)),
+        solution(C1,V2), solution(C2,V1).
+    :- derivable(_,rp_odd(V1,V2,C1,C2)),
+        solution(C1,V1), solution(C2,V1).
+    :- derivable(_,rp_odd(V1,V2,C1,C2)),
+        solution(C1,V2), solution(C2,V2).
+    """
+)
+
+remote_pairs_protection_chained = DeductionRule(
+    "remote_pairs_protection_chained",
+    """
+    derivable(Mode,pair_left(V1,V2,C)) :-
+        deduction_mode(Mode),
+        use_technique(Mode,remote_pairs_protection_chained),
+        value(V1), value(V2), V1 < V2,
+        cell(C),
+        not derivable(Mode,strike(C,V1)),
+        not derivable(Mode,strike(C,V2)),
+        derivable(Mode,strike(C,V)) : value(V),
+            different_values(V,V1), different_values(V,V2).
+
+    :- deduction_mode(Mode),
+        use_technique(Mode,remote_pairs_protection_chained),
+        value(V1), value(V2), V1 < V2,
+        4 { derivable(Mode,pair_left(V1,V2,C)) :
+            derivable(Mode,pair_left(V1,V2,C)), cell(C) }.
+    """
+)
+
+remote_pairs_requirement_chained = DeductionRule(
+    "remote_pairs_requirement_chained",
+    """
+    derivable(Mode,rp_pair_left(V1,V2,C)) :-
+        deduction_mode(Mode),
+        use_technique(Mode,remote_pairs_requirement_chained),
+        value(V1), value(V2), V1 < V2,
+        cell(C),
+        not derivable(Mode,strike(C,V1)),
+        not derivable(Mode,strike(C,V2)),
+        derivable(Mode,strike(C,V)) : value(V),
+            different_values(V,V1), different_values(V,V2).
+
+    derivable(Mode,rp_requirement_met(V1,V2)) :-
+        deduction_mode(Mode),
+        use_technique(Mode,remote_pairs_requirement_chained),
+        value(V1), value(V2), V1 < V2,
+        not 4 { derivable(Mode,rp_pair_left(V1,V2,C)) :
+            derivable(Mode,pair_left(V1,V2,C)), cell(C) }.
+    :- deduction_mode(Mode),
+        use_technique(Mode,remote_pairs_requirement_chained),
+        not derivable(Mode,rp_requirement_met(V1,V2)) :
+            value(V1), value(V2), V1 < V2.
+    """
+)

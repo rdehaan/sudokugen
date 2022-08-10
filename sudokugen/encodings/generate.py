@@ -255,6 +255,8 @@ def chained_deduction_constraint(
                 derivable({cur_strategy_name},pre_strike(C,V)).
             derivable({next_strategy_name},solution(C,V)) :-
                 derivable({cur_strategy_name},solution(C,V)).
+            derivable({next_strategy_name},snyder(V,C1,C2,G)) :-
+                derivable({cur_strategy_name},snyder(V,C1,C2,G)).
 
             % To avoid spurious warnings
             derivable({cur_strategy_name},pre_strike(dummy,dummy)).
