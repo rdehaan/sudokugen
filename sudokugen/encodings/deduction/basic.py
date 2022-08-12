@@ -338,6 +338,145 @@ naked_triples_not_applicable_chained = DeductionRule(
     """
 )
 
+naked_triples_forced_shot_chained = DeductionRule(
+    "naked_triples_forced_shot_chained",
+    """
+    1 { choice(Mode,naked_triples_value1(V)) : value(V) } 1 :-
+        use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode).
+    1 { choice(Mode,naked_triples_value2(V)) : value(V) } 1 :-
+        use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode).
+    1 { choice(Mode,naked_triples_value3(V)) : value(V) } 1 :-
+        use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode).
+
+    :- choice(Mode,naked_triples_value1(V1)),
+        choice(Mode,naked_triples_value2(V2)),
+        V1 >= V2.
+    :- choice(Mode,naked_triples_value1(V1)),
+        choice(Mode,naked_triples_value3(V3)),
+        V1 >= V3.
+    :- choice(Mode,naked_triples_value2(V2)),
+        choice(Mode,naked_triples_value3(V3)),
+        V2 >= V3.
+
+    1 { choice(Mode,naked_triples_cell1(C)) : cell(C),
+        not certainly_not_erased(C) } 1 :-
+        use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode).
+    1 { choice(Mode,naked_triples_cell2(C)) : cell(C),
+        not certainly_not_erased(C) } 1 :-
+        use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode).
+    1 { choice(Mode,naked_triples_cell3(C)) : cell(C),
+        not certainly_not_erased(C) } 1 :-
+        use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode).
+    1 { choice(Mode,naked_triples_group(G)) : group(G) } 1 :-
+        use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode).
+
+    1 { choice(Mode,naked_triples_target_cell(C));
+        choice(Mode,naked_triples_cell1(C));
+        choice(Mode,naked_triples_cell2(C));
+        choice(Mode,naked_triples_cell3(C)) } 1 :-
+        use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode),
+        cell(C),
+        choice(Mode,naked_triples_group(G)),
+        in_group(C,G).
+
+    :- choice(Mode,naked_triples_cell1(C1)),
+        choice(Mode,naked_triples_cell2(C2)),
+        C1 >= C2.
+    :- choice(Mode,naked_triples_cell1(C1)),
+        choice(Mode,naked_triples_cell3(C3)),
+        C1 >= C3.
+    :- choice(Mode,naked_triples_cell2(C2)),
+        choice(Mode,naked_triples_cell3(C3)),
+        C2 >= C3.
+    :- choice(Mode,naked_triples_cell1(C)),
+        choice(Mode,naked_triples_group(G)),
+        not in_group(C,G).
+    :- choice(Mode,naked_triples_cell2(C)),
+        choice(Mode,naked_triples_group(G)),
+        not in_group(C,G).
+    :- choice(Mode,naked_triples_cell3(C)),
+        choice(Mode,naked_triples_group(G)),
+        not in_group(C,G).
+
+    :- use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode),
+        choice(Mode,naked_triples_cell1(C1)),
+        choice(Mode,naked_triples_value1(V1)),
+        choice(Mode,naked_triples_value2(V2)),
+        choice(Mode,naked_triples_value3(V3)),
+        value(V), different_values(V,V1), different_values(V,V2),
+        different_values(V,V3),
+        not derivable(Mode,strike(C1,V)).
+
+    :- use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode),
+        choice(Mode,naked_triples_cell2(C2)),
+        choice(Mode,naked_triples_value1(V1)),
+        choice(Mode,naked_triples_value2(V2)),
+        choice(Mode,naked_triples_value3(V3)),
+        value(V), different_values(V,V1), different_values(V,V2),
+        different_values(V,V3),
+        not derivable(Mode,strike(C2,V)).
+
+    :- use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode),
+        choice(Mode,naked_triples_cell3(C3)),
+        choice(Mode,naked_triples_value1(V1)),
+        choice(Mode,naked_triples_value2(V2)),
+        choice(Mode,naked_triples_value3(V3)),
+        value(V), different_values(V,V1), different_values(V,V2),
+        different_values(V,V3),
+        not derivable(Mode,strike(C3,V)).
+
+    derivable(Mode,naked_triples_nontrivial) :-
+        use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode),
+        choice(Mode,naked_triples_target_cell(C)),
+        choice(Mode,naked_triples_value1(V)),
+        not derivable(Mode,strike(C,V)).
+    derivable(Mode,naked_triples_nontrivial) :-
+        use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode),
+        choice(Mode,naked_triples_target_cell(C)),
+        choice(Mode,naked_triples_value2(V)),
+        not derivable(Mode,strike(C,V)).
+    derivable(Mode,naked_triples_nontrivial) :-
+        use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode),
+        choice(Mode,naked_triples_target_cell(C)),
+        choice(Mode,naked_triples_value3(V)),
+        not derivable(Mode,strike(C,V)).
+    :- use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode),
+        not derivable(Mode,naked_triples_nontrivial).
+
+    derivable(Mode,pre_strike(C,V)) :-
+        use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode),
+        choice(Mode,naked_triples_target_cell(C)),
+        choice(Mode,naked_triples_value1(V)).
+    derivable(Mode,pre_strike(C,V)) :-
+        use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode),
+        choice(Mode,naked_triples_target_cell(C)),
+        choice(Mode,naked_triples_value2(V)).
+    derivable(Mode,pre_strike(C,V)) :-
+        use_technique(Mode,naked_triples_forced_shot_chained),
+        deduction_mode(Mode),
+        choice(Mode,naked_triples_target_cell(C)),
+        choice(Mode,naked_triples_value3(V)).
+    """
+)
+
+
 hidden_pairs = DeductionRule(
     "hidden_pairs",
     """
@@ -430,6 +569,66 @@ locked_candidates_not_applicable_chained = DeductionRule(
         deduction_mode(Mode), value(V),
         group(G1), active_group(Mode,G1),
         group(G2), active_group(Mode,G2),
+        in_group(C1,G2), not in_group(C1,G1),
+        not certainly_not_erased(C1),
+        derivable(Mode,strike(C2,V)) :
+            cell(C2), in_group(C2,G1), not in_group(C2,G2);
+        not derivable(Mode,strike(C1,V)).
+    """
+)
+
+locked_candidates_pointing = DeductionRule(
+    "locked_candidates_pointing",
+    """
+    derivable(Mode,strike(C1,V)) :-
+        use_technique(Mode,locked_candidates_pointing),
+        deduction_mode(Mode), value(V),
+        group(G1), active_group(Mode,G1), group_type(G1,block),
+        group(G2), active_group(Mode,G2), group_type(G2,T2), T2 != block,
+        in_group(C1,G2), not in_group(C1,G1),
+        not certainly_not_erased(C1),
+        derivable(Mode,strike(C2,V)) :
+            cell(C2), in_group(C2,G1), not in_group(C2,G2).
+    """
+)
+
+locked_candidates_pointing_not_applicable_chained = DeductionRule(
+    "locked_candidates_pointing_not_applicable_chained",
+    """
+    :- use_technique(Mode,locked_candidates_pointing_not_applicable_chained),
+        deduction_mode(Mode), value(V),
+        group(G1), active_group(Mode,G1), group_type(G1,block),
+        group(G2), active_group(Mode,G2), group_type(G2,T2), T2 != block,
+        in_group(C1,G2), not in_group(C1,G1),
+        not certainly_not_erased(C1),
+        derivable(Mode,strike(C2,V)) :
+            cell(C2), in_group(C2,G1), not in_group(C2,G2);
+        not derivable(Mode,strike(C1,V)).
+    """
+)
+
+locked_candidates_claiming = DeductionRule(
+    "locked_candidates_claiming",
+    """
+    derivable(Mode,strike(C1,V)) :-
+        use_technique(Mode,locked_candidates_claiming),
+        deduction_mode(Mode), value(V),
+        group(G1), active_group(Mode,G1), group_type(G1,T1), T1 != block,
+        group(G2), active_group(Mode,G2), group_type(G2,block),
+        in_group(C1,G2), not in_group(C1,G1),
+        not certainly_not_erased(C1),
+        derivable(Mode,strike(C2,V)) :
+            cell(C2), in_group(C2,G1), not in_group(C2,G2).
+    """
+)
+
+locked_candidates_claiming_not_applicable_chained = DeductionRule(
+    "locked_candidates_claiming_not_applicable_chained",
+    """
+    :- use_technique(Mode,locked_candidates_claiming_not_applicable_chained),
+        deduction_mode(Mode), value(V),
+        group(G1), active_group(Mode,G1), group_type(G1,T1), T1 != block,
+        group(G2), active_group(Mode,G2), group_type(G2,block),
         in_group(C1,G2), not in_group(C1,G1),
         not certainly_not_erased(C1),
         derivable(Mode,strike(C2,V)) :

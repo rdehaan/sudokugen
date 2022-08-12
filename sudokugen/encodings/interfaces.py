@@ -350,6 +350,20 @@ reveal_output_value_or_decoy = DeductionRule(
     """
 )
 
+output_value_or_decoy_derived = DeductionRule(
+    "output_value_or_decoy_derived",
+    """
+    :- deduction_mode(Mode),
+        use_technique(Mode,output_value_or_decoy_derived),
+        output_cell(C), solution(C,V1),
+        output_decoy_value(V2),
+        value(V),
+        different_values(V,V1),
+        different_values(V,V2),
+        not derivable(Mode,strike(C,V)).
+    """
+)
+
 output_decoy_not_ruled_out = DeductionRule(
     "output_decoy_not_ruled_out",
     """

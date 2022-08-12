@@ -1149,6 +1149,145 @@ def initial_from_preset(
             "post_rules": [],
         },
         #
+        "naked triples *": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "num_filled_cells_in_random_mask": 40,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.locked_candidates,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+            ],
+            "chain_point_rules": [
+                encodings.naked_triples_forced_shot_chained,
+            ],
+            "post_rules": [],
+        },
+        #
+        "locked candidates": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "num_filled_cells_in_random_mask": 40,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+            ],
+            "chain_point_rules": [
+                encodings.locked_candidates,
+            ],
+            "post_rules": [],
+        },
+        #
+        "locked candidates pointing": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "num_filled_cells_in_random_mask": 40,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+            ],
+            "chain_point_rules": [
+                encodings.locked_candidates_pointing,
+            ],
+            "post_rules": [],
+        },
+        #
+        "locked candidates pointing only": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "num_filled_cells_in_random_mask": 40,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+                encodings.locked_candidates_claiming_not_applicable_chained
+            ],
+            "chain_point_rules": [
+                encodings.locked_candidates_pointing,
+            ],
+            "post_rules": [],
+        },
+        #
+        "locked candidates claiming": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "num_filled_cells_in_random_mask": 40,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+            ],
+            "chain_point_rules": [
+                encodings.locked_candidates_claiming,
+            ],
+            "post_rules": [],
+        },
+        #
+        "locked candidates claiming only": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "num_filled_cells_in_random_mask": 40,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+                encodings.locked_candidates_pointing_not_applicable_chained,
+            ],
+            "chain_point_rules": [
+                encodings.locked_candidates_claiming,
+            ],
+            "post_rules": [],
+        },
+        #
+        "locked candidates both": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 180,
+            "num_filled_cells_in_random_mask": 20,
+            "pre_rules": [
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+            ],
+            "chain_point_rules": [
+                encodings.locked_candidates_pointing,
+                encodings.locked_candidates_claiming,
+            ],
+            "post_rules": [],
+            "additional_nonsolve_branches": [
+                [
+                    encodings.closed_under_naked_singles,
+                    encodings.closed_under_hidden_singles,
+                    encodings.naked_pairs,
+                    encodings.hidden_pairs,
+                    encodings.locked_candidates_pointing,
+                ],
+                [
+                    encodings.closed_under_naked_singles,
+                    encodings.closed_under_hidden_singles,
+                    encodings.naked_pairs,
+                    encodings.hidden_pairs,
+                    encodings.locked_candidates_claiming,
+                ],
+            ]
+        },
+        #
         "lc hp combo": {
             "maximize_filled_cells": True,
             "max_num_repeat": 4,
@@ -1352,6 +1491,28 @@ def initial_from_preset(
             "post_rules": [],
         },
         #
+        "xy wing protected *": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "num_filled_cells_in_random_mask": 40,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.locked_candidates,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+                encodings.bug1_protection_chained,
+                encodings.remote_pairs_protection_chained,
+                encodings.turbot_fish_not_applicable_chained,
+                encodings.empty_rectangle_not_applicable_chained,
+            ],
+            "chain_point_rules": [
+                encodings.xy_wing_forced_shot_chained,
+            ],
+            "post_rules": [],
+        },
+        #
         "xyz wing": {
             "maximize_filled_cells": True,
             "max_num_repeat": 4,
@@ -1534,6 +1695,24 @@ def initial_from_preset(
             "post_rules": [],
         },
         #
+        "turbot fish *": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "num_filled_cells_in_random_mask": 40,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.locked_candidates,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+            ],
+            "chain_point_rules": [
+                encodings.turbot_fish_forced_shot_chained,
+            ],
+            "post_rules": [],
+        },
+        #
         "turbot fish only": {
             "maximize_filled_cells": True,
             "max_num_repeat": 4,
@@ -1552,6 +1731,28 @@ def initial_from_preset(
             ],
             "chain_point_rules": [
                 encodings.turbot_fish_proper_chained,
+            ],
+            "post_rules": [],
+        },
+        #
+        "turbot fish only *": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "num_filled_cells_in_random_mask": 40,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.locked_candidates,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+                encodings.x_wing_not_applicable_chained,
+                encodings.empty_rectangle_not_applicable_chained,
+                encodings.bug1_protection_chained,
+                encodings.remote_pairs_protection_chained,
+            ],
+            "chain_point_rules": [
+                encodings.turbot_fish_forced_shot_chained,
             ],
             "post_rules": [],
         },
@@ -1595,6 +1796,26 @@ def initial_from_preset(
             "post_rules": [],
         },
         #
+        "empty rectangle protected": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "num_filled_cells_in_random_mask": 40,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.locked_candidates,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+                encodings.bug1_protection_chained,
+                encodings.remote_pairs_protection_chained,
+            ],
+            "chain_point_rules": [
+                encodings.empty_rectangle,
+            ],
+            "post_rules": [],
+        },
+        #
         "two string kite": {
             "maximize_filled_cells": True,
             "max_num_repeat": 4,
@@ -1612,6 +1833,7 @@ def initial_from_preset(
             ],
             "post_rules": [],
         },
+        #
         "two string kite only": {
             "maximize_filled_cells": True,
             "max_num_repeat": 4,
@@ -1626,6 +1848,26 @@ def initial_from_preset(
                 encodings.x_wing_not_applicable_chained,
                 encodings.skyscraper_not_applicable_chained,
                 encodings.empty_rectangle_not_applicable_chained,
+                encodings.bug1_protection_chained,
+                encodings.remote_pairs_protection_chained,
+            ],
+            "chain_point_rules": [
+                encodings.two_string_kite,
+            ],
+            "post_rules": [],
+        },
+        #
+        "two string kite protected": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "num_filled_cells_in_random_mask": 40,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.locked_candidates,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
                 encodings.bug1_protection_chained,
                 encodings.remote_pairs_protection_chained,
             ],
@@ -1653,6 +1895,24 @@ def initial_from_preset(
             "post_rules": [],
         },
         #
+        "skyscraper *": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "num_filled_cells_in_random_mask": 40,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.locked_candidates,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+            ],
+            "chain_point_rules": [
+                encodings.skyscraper_forced_shot_chained,
+            ],
+            "post_rules": [],
+        },
+        #
         "skyscraper only": {
             "maximize_filled_cells": True,
             "max_num_repeat": 4,
@@ -1667,6 +1927,26 @@ def initial_from_preset(
                 encodings.x_wing_not_applicable_chained,
                 encodings.two_string_kite_not_applicable_chained,
                 encodings.empty_rectangle_not_applicable_chained,
+                encodings.bug1_protection_chained,
+                encodings.remote_pairs_protection_chained,
+            ],
+            "chain_point_rules": [
+                encodings.skyscraper,
+            ],
+            "post_rules": [],
+        },
+        #
+        "skyscraper protected": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "num_filled_cells_in_random_mask": 40,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.locked_candidates,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
                 encodings.bug1_protection_chained,
                 encodings.remote_pairs_protection_chained,
             ],
@@ -1867,6 +2147,8 @@ def prepend_generic(
                             encodings.basic_deduction,
                             encodings.naked_singles,
                             encodings.hidden_singles,
+                            encodings.closed_under_naked_singles,
+                            encodings.closed_under_hidden_singles,
                             #
                             encodings.stable_state_mask_not_derived(
                                 instance,
@@ -1931,6 +2213,95 @@ def prepend_from_preset(
 
     presets = {
         #
+        "locked candidates": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "use_strong_connection": True,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+            ],
+            "chain_point_rules": [
+                encodings.locked_candidates,
+            ],
+            "post_rules": [],
+            "strong_connection_rules": [
+                encodings.basic_deduction,
+                encodings.naked_singles,
+                encodings.hidden_singles,
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+            ]
+        },
+        #
+        "locked candidates claiming": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "use_strong_connection": True,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+            ],
+            "chain_point_rules": [
+                encodings.locked_candidates_claiming,
+            ],
+            "post_rules": [],
+            "strong_connection_rules": [
+                encodings.basic_deduction,
+                encodings.naked_singles,
+                encodings.hidden_singles,
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+            ]
+        },
+        #
+        "locked candidates pointing": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "use_strong_connection": True,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+            ],
+            "chain_point_rules": [
+                encodings.locked_candidates_pointing,
+            ],
+            "post_rules": [],
+            "strong_connection_rules": [
+                encodings.basic_deduction,
+                encodings.naked_singles,
+                encodings.hidden_singles,
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+            ]
+        },
+        #
+        "x wing": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 300,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.locked_candidates,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+            ],
+            "chain_point_rules": [
+                encodings.x_wing,
+            ],
+            "post_rules": [],
+        },
+        #
         "xy wing": {
             "maximize_filled_cells": True,
             "max_num_repeat": 4,
@@ -1969,7 +2340,6 @@ def prepend_from_preset(
             "maximize_filled_cells": True,
             "max_num_repeat": 4,
             "timeout": 300,
-            "num_filled_cells_in_random_mask": 40,
             "pre_rules": [
                 encodings.naked_pairs,
                 encodings.hidden_pairs,
@@ -1992,7 +2362,6 @@ def prepend_from_preset(
             "maximize_filled_cells": True,
             "max_num_repeat": 4,
             "timeout": 300,
-            "num_filled_cells_in_random_mask": 40,
             "pre_rules": [
                 encodings.naked_pairs,
                 encodings.hidden_pairs,
