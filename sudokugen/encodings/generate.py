@@ -576,3 +576,59 @@ def use_mask(
             except ValueError:
                 pass
     return asp_code
+
+
+def arrangeable_left_right_symmetry(
+        instance: SquareSudoku
+    ) -> str:
+    """
+    Returns the encoding that requires that the pattern of non-empty cells in
+    the (square) puzzle instance is left-right symmetric (possibly after
+    rearranging the columns).
+    """
+
+    if instance.size != 9:
+        raise NotImplementedError()
+
+    asp_code = ""
+    for col in range(1, 10):
+        asp_code += f"column({col}).\n"
+    for col_band in range(1, 4):
+        asp_code += f"column_band({col_band}).\n"
+        for col_inside in range(1, 4):
+            col = (col_band - 1) * 3 + col_inside
+            asp_code += f"column_in_band({col},{col_band}).\n"
+    for col1, col2 in itertools.combinations(range(1, 10), r=2):
+        for row in range(1, 10):
+            cell1 = instance.cell_encoding((col1, row))
+            cell2 = instance.cell_encoding((col2, row))
+            asp_code += f"""
+                cells_same_pattern({cell1},{cell2}) :-
+                    columns_same_pattern({col1},{col2}).
+                columns_same_pattern({col1},{col2}) :-
+                    columns_same_pattern({col2},{col1}).
+                :- cells_same_pattern({cell1},{cell2}),
+                    not erase({cell1}), erase({cell2}).
+                :- cells_same_pattern({cell1},{cell2}),
+                    erase({cell1}), not erase({cell2}).
+            """
+    asp_code += """
+        1 { middle_column_band(B) : column_band(B) } 1.
+        1 { columns_same_pattern(C1,C2) :
+            column_in_band(C1,B), column_in_band(C2,B), C1 < C2 } 1 :-
+            middle_column_band(B).
+    """
+    asp_code += """
+        1 { columns_same_pattern(C1,C2) :
+            column(C2), column_in_band(C2,B2) } 1 :-
+            column_band(B1), column_band(B2), B1 < B2,
+            not middle_column_band(B1), not middle_column_band(B2),
+            column_in_band(C1,B1).
+        1 { columns_same_pattern(C2,C1) :
+            column(C1), column_in_band(C1,B1) } 1 :-
+            column_band(B1), column_band(B2), B1 < B2,
+            not middle_column_band(B1), not middle_column_band(B2),
+            column_in_band(C2,B2).
+    """
+
+    return asp_code
