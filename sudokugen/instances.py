@@ -307,13 +307,21 @@ class RectangleBlockSudoku(SquareSudoku):
         Randomly permutes the values of the instance.
         """
 
+        # Construct and apply value permutation
+        value_list = list(range(1,self.size+1))
+        random.shuffle(value_list)
+        self.apply_value_permutation(value_list)
+
+    def apply_value_permutation(self, value_list):
+        """
+        Applies a given value permutation to the instance.
+        """
+
         # Construct value permutation
-        values = list(range(1,self.size+1))
-        random.shuffle(values)
         def val_permutation(value):
             if value == 0:
                 return 0
-            return values[value-1]
+            return value_list[value-1]
 
         # Apply permutation
         new_puzzle = {
@@ -732,22 +740,19 @@ class BasicInterfaceSudoku(RegularSudoku):
                 row_permutation_inverse(j)
             )
 
-    def shuffle_values(self):
+    def apply_value_permutation(self, value_list):
         """
-        Randomly permutes the values of the instance.
+        Applies a given value permutation to the instance.
         """
 
-        # Construct value permutation
-        values = list(range(1,self.size+1))
-        random.shuffle(values)
         def val_permutation(value):
             if value == 0:
                 return 0
-            return values[value-1]
+            return value_list[value-1]
         # def val_permutation_inverse(value):
         #     if value == 0:
         #         return 0
-        #     return values.index(value)+1
+        #     return value_list.index(value)+1
 
         # Apply permutation
         new_puzzle = {
