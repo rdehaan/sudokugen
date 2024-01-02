@@ -252,6 +252,7 @@ def make_pdf(
         instance_dict,
         meta_info,
         puzzle_set_id,
+        two_page=True,
         directory="output",
         executable="pdflatex",
     ):
@@ -274,6 +275,11 @@ def make_pdf(
             pass
 
     # Construct LaTeX source
+    if two_page:
+        backside_source = ""
+        with open("template-backside.tex", 'r', encoding="utf-8") as file:
+            backside_source = "".join(file.readlines())
+
     latex_source = ""
     with open("template.tex", 'r', encoding="utf-8") as file:
         latex_source = "".join(file.readlines())
@@ -306,6 +312,18 @@ def make_pdf(
                 f", NUMBER {puzzle_no}]%%%",
                 f"{level_str}%"
             )
+
+    if "subtitle" in meta_info:
+        latex_source = latex_source.replace(
+            "%%%[SUBTITLE HERE]%%%",
+            meta_info["subtitle"]
+        )
+
+    if two_page:
+        latex_source = latex_source.replace(
+            "%%%[BACKSIDE HERE]%%%",
+            backside_source
+        )
 
     # Save LaTeX representation to [filename].tex
     filepath = os.path.join(cwd, f"{filename}.tex")
