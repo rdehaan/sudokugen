@@ -1,0 +1,616 @@
+\documentclass[10pt]{article}
+\usepackage[margin=1cm]{geometry}
+\geometry{a4paper}
+
+\usepackage{fontawesome}
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage{tikz}
+\usetikzlibrary{patterns}
+\usetikzlibrary{patterns.meta}
+
+\pagestyle{empty}
+
+\begin{document}
+
+\begin{center}
+\begin{tikzpicture}
+  % PLAYER A
+  \node[] at (-5,-0.5) {\parbox{5cm}{\centering \sffamily \Large \color{BrickRed} \textbf{Player A}}};
+  \node[] at (-5,-1.25) {\parbox{5cm}{\centering \sffamily \large \color{BrickRed} \textbf{
+  (Pick one to solve)	
+  }}};
+  % PLAYER A, NUMBER 1
+  \node[] at (-5,-2.75) {\parbox{5cm}{\sffamily \large \color{BrickRed}
+  \textbf{Level 1} \hfill {\faGear}%
+  }};
+  \node[] at (-5,-6) {%
+  \begin{tikzpicture}[scale=0.6]
+\node[anchor=center] at (0.5,8.5) {};
+\node[anchor=center] at (0.5,7.5) {};
+\node[anchor=center] at (0.5,6.5) {};
+\node[anchor=center] at (0.5,5.5) {};
+\node[anchor=center] at (0.5,4.5) {};
+\node[anchor=center] at (0.5,3.5) {};
+\node[anchor=center] at (0.5,2.5) {};
+\node[anchor=center] at (0.5,1.5) {};
+\node[anchor=center] at (0.5,0.5) {\Large 4};
+\node[anchor=center] at (1.5,8.5) {};
+\node[anchor=center] at (1.5,7.5) {};
+\node[anchor=center] at (1.5,6.5) {\Large 5};
+\node[anchor=center] at (1.5,5.5) {\Large 9};
+\node[anchor=center] at (1.5,4.5) {};
+\node[anchor=center] at (1.5,3.5) {};
+\node[anchor=center] at (1.5,2.5) {\Large 7};
+\node[anchor=center] at (1.5,1.5) {};
+\node[anchor=center] at (1.5,0.5) {\Large 3};
+\node[anchor=center] at (2.5,8.5) {};
+\node[anchor=center, minimum width=17pt, minimum height=17pt, pattern=north west lines, pattern color=BrickRed!40] at (2.5,7.5) {};
+\node[anchor=center] at (2.5,6.5) {};
+\node[anchor=center] at (2.5,5.5) {\Large 2};
+\node[anchor=center] at (2.5,4.5) {\Large 5};
+\node[anchor=center] at (2.5,3.5) {};
+\node[anchor=center] at (2.5,2.5) {};
+\node[anchor=center] at (2.5,1.5) {};
+\node[anchor=center] at (2.5,0.5) {};
+\node[anchor=center] at (3.5,8.5) {};
+\node[anchor=center] at (3.5,7.5) {};
+\node[anchor=center] at (3.5,6.5) {};
+\node[anchor=center] at (3.5,5.5) {\Large 7};
+\node[anchor=center] at (3.5,4.5) {};
+\node[anchor=center] at (3.5,3.5) {};
+\node[anchor=center] at (3.5,2.5) {\Large 1};
+\node[anchor=center, minimum width=17pt, minimum height=17pt, pattern={Lines[distance=1.5pt,yshift=0.85pt]}, pattern color=NavyBlue!60] at (3.5,1.5) {};
+\node[anchor=center] at (3.5,0.5) {};
+\node[anchor=center] at (4.5,8.5) {\Large 3};
+\node[anchor=center] at (4.5,7.5) {\Large 2};
+\node[anchor=center] at (4.5,6.5) {};
+\node[anchor=center] at (4.5,5.5) {};
+\node[anchor=center] at (4.5,4.5) {};
+\node[anchor=center] at (4.5,3.5) {};
+\node[anchor=center] at (4.5,2.5) {};
+\node[anchor=center] at (4.5,1.5) {};
+\node[anchor=center] at (4.5,0.5) {};
+\node[anchor=center] at (5.5,8.5) {};
+\node[anchor=center] at (5.5,7.5) {};
+\node[anchor=center] at (5.5,6.5) {};
+\node[anchor=center] at (5.5,5.5) {};
+\node[anchor=center] at (5.5,4.5) {\Large 8};
+\node[anchor=center] at (5.5,3.5) {\Large 6};
+\node[anchor=center] at (5.5,2.5) {};
+\node[anchor=center] at (5.5,1.5) {};
+\node[anchor=center] at (5.5,0.5) {};
+\node[anchor=center] at (6.5,8.5) {};
+\node[anchor=center] at (6.5,7.5) {};
+\node[anchor=center] at (6.5,6.5) {};
+\node[anchor=center] at (6.5,5.5) {};
+\node[anchor=center] at (6.5,4.5) {\Large 7};
+\node[anchor=center] at (6.5,3.5) {\Large 8};
+\node[anchor=center] at (6.5,2.5) {};
+\node[anchor=center] at (6.5,1.5) {};
+\node[anchor=center] at (6.5,0.5) {};
+\node[anchor=center] at (7.5,8.5) {};
+\node[anchor=center] at (7.5,7.5) {};
+\node[anchor=center] at (7.5,6.5) {};
+\node[anchor=center] at (7.5,5.5) {\Large 5};
+\node[anchor=center] at (7.5,4.5) {};
+\node[anchor=center] at (7.5,3.5) {\Large 4};
+\node[anchor=center] at (7.5,2.5) {\Large 8};
+\node[anchor=center] at (7.5,1.5) {};
+\node[anchor=center] at (7.5,0.5) {\Large 6};
+\node[anchor=center] at (8.5,8.5) {};
+\node[anchor=center] at (8.5,7.5) {};
+\node[anchor=center] at (8.5,6.5) {\Large 1};
+\node[anchor=center] at (8.5,5.5) {};
+\node[anchor=center] at (8.5,4.5) {};
+\node[anchor=center] at (8.5,3.5) {};
+\node[anchor=center] at (8.5,2.5) {\Large 9};
+\node[anchor=center] at (8.5,1.5) {};
+\node[anchor=center] at (8.5,0.5) {};
+
+        \draw[ultra thick, scale=3] (0, 0) grid (3, 3);
+        \draw (0, 0) grid (9, 9);
+        \end{tikzpicture}%
+    
+        % short form: 000030000000020000050000001092700050005008700000006840070100089000000000430000060
+    %
+  };
+  % PLAYER A, NUMBER 2
+  \node[] at (-5,-10.75) {\parbox{5cm}{\sffamily \large \color{BrickRed}
+  \textbf{Level 2} \hfill {\faGear\ \faGear}%
+  }};
+  \node[] at (-5,-14) {%
+  \begin{tikzpicture}[scale=0.6]
+\node[anchor=center] at (0.5,8.5) {};
+\node[anchor=center] at (0.5,7.5) {};
+\node[anchor=center] at (0.5,6.5) {};
+\node[anchor=center] at (0.5,5.5) {};
+\node[anchor=center] at (0.5,4.5) {\Large 9};
+\node[anchor=center] at (0.5,3.5) {};
+\node[anchor=center] at (0.5,2.5) {};
+\node[anchor=center] at (0.5,1.5) {};
+\node[anchor=center] at (0.5,0.5) {\Large 3};
+\node[anchor=center] at (1.5,8.5) {};
+\node[anchor=center] at (1.5,7.5) {\Large 7};
+\node[anchor=center] at (1.5,6.5) {};
+\node[anchor=center] at (1.5,5.5) {};
+\node[anchor=center] at (1.5,4.5) {};
+\node[anchor=center] at (1.5,3.5) {};
+\node[anchor=center] at (1.5,2.5) {};
+\node[anchor=center] at (1.5,1.5) {\Large 2};
+\node[anchor=center] at (1.5,0.5) {};
+\node[anchor=center] at (2.5,8.5) {\Large 9};
+\node[anchor=center] at (2.5,7.5) {};
+\node[anchor=center] at (2.5,6.5) {\Large 3};
+\node[anchor=center] at (2.5,5.5) {};
+\node[anchor=center] at (2.5,4.5) {\Large 2};
+\node[anchor=center, minimum width=17pt, minimum height=17pt, pattern=north west lines, pattern color=BrickRed!40] at (2.5,3.5) {};
+\node[anchor=center] at (2.5,2.5) {\Large 5};
+\node[anchor=center] at (2.5,1.5) {};
+\node[anchor=center] at (2.5,0.5) {\Large 1};
+\node[anchor=center] at (3.5,8.5) {};
+\node[anchor=center] at (3.5,7.5) {};
+\node[anchor=center] at (3.5,6.5) {};
+\node[anchor=center] at (3.5,5.5) {};
+\node[anchor=center] at (3.5,4.5) {};
+\node[anchor=center] at (3.5,3.5) {\Large 1};
+\node[anchor=center] at (3.5,2.5) {\Large 6};
+\node[anchor=center] at (3.5,1.5) {};
+\node[anchor=center] at (3.5,0.5) {};
+\node[anchor=center] at (4.5,8.5) {};
+\node[anchor=center] at (4.5,7.5) {\Large 5};
+\node[anchor=center] at (4.5,6.5) {};
+\node[anchor=center] at (4.5,5.5) {\Large 3};
+\node[anchor=center] at (4.5,4.5) {};
+\node[anchor=center] at (4.5,3.5) {\Large 2};
+\node[anchor=center] at (4.5,2.5) {\Large 1};
+\node[anchor=center] at (4.5,1.5) {\Large 9};
+\node[anchor=center] at (4.5,0.5) {};
+\node[anchor=center] at (5.5,8.5) {};
+\node[anchor=center] at (5.5,7.5) {};
+\node[anchor=center] at (5.5,6.5) {\Large 2};
+\node[anchor=center] at (5.5,5.5) {};
+\node[anchor=center] at (5.5,4.5) {\Large 8};
+\node[anchor=center] at (5.5,3.5) {};
+\node[anchor=center, minimum width=17pt, minimum height=17pt, pattern={Lines[distance=1.5pt,yshift=0.85pt]}, pattern color=NavyBlue!60] at (5.5,2.5) {};
+\node[anchor=center] at (5.5,1.5) {\Large 5};
+\node[anchor=center] at (5.5,0.5) {};
+\node[anchor=center] at (6.5,8.5) {\Large 4};
+\node[anchor=center] at (6.5,7.5) {};
+\node[anchor=center] at (6.5,6.5) {};
+\node[anchor=center] at (6.5,5.5) {\Large 8};
+\node[anchor=center] at (6.5,4.5) {};
+\node[anchor=center] at (6.5,3.5) {\Large 6};
+\node[anchor=center] at (6.5,2.5) {};
+\node[anchor=center] at (6.5,1.5) {};
+\node[anchor=center] at (6.5,0.5) {};
+\node[anchor=center] at (7.5,8.5) {};
+\node[anchor=center] at (7.5,7.5) {};
+\node[anchor=center] at (7.5,6.5) {};
+\node[anchor=center] at (7.5,5.5) {};
+\node[anchor=center] at (7.5,4.5) {};
+\node[anchor=center] at (7.5,3.5) {};
+\node[anchor=center] at (7.5,2.5) {};
+\node[anchor=center] at (7.5,1.5) {\Large 1};
+\node[anchor=center] at (7.5,0.5) {\Large 9};
+\node[anchor=center] at (8.5,8.5) {\Large 1};
+\node[anchor=center] at (8.5,7.5) {};
+\node[anchor=center] at (8.5,6.5) {};
+\node[anchor=center] at (8.5,5.5) {};
+\node[anchor=center] at (8.5,4.5) {\Large 3};
+\node[anchor=center] at (8.5,3.5) {\Large 5};
+\node[anchor=center] at (8.5,2.5) {\Large 4};
+\node[anchor=center] at (8.5,1.5) {};
+\node[anchor=center] at (8.5,0.5) {\Large 6};
+
+        \draw[ultra thick, scale=3] (0, 0) grid (3, 3);
+        \draw (0, 0) grid (9, 9);
+        \end{tikzpicture}%
+    
+        % short form: 009000401070050000003002000000030800902008003000120605005610004020095010301000096
+    %
+  };
+  % PLAYER A, NUMBER 3
+  \node[] at (-5,-18.75) {\parbox{5cm}{\sffamily \large \color{BrickRed}
+  \textbf{Level 3} \hfill {\faGear\ \faGear\ \faGear}%
+  }};
+  \node[] at (-5,-22) {%
+  \begin{tikzpicture}[scale=0.6]
+\node[anchor=center] at (0.5,8.5) {};
+\node[anchor=center] at (0.5,7.5) {\Large 1};
+\node[anchor=center] at (0.5,6.5) {};
+\node[anchor=center] at (0.5,5.5) {\Large 3};
+\node[anchor=center] at (0.5,4.5) {\Large 5};
+\node[anchor=center] at (0.5,3.5) {};
+\node[anchor=center] at (0.5,2.5) {\Large 4};
+\node[anchor=center] at (0.5,1.5) {\Large 8};
+\node[anchor=center] at (0.5,0.5) {};
+\node[anchor=center] at (1.5,8.5) {};
+\node[anchor=center] at (1.5,7.5) {};
+\node[anchor=center] at (1.5,6.5) {};
+\node[anchor=center] at (1.5,5.5) {};
+\node[anchor=center] at (1.5,4.5) {};
+\node[anchor=center] at (1.5,3.5) {};
+\node[anchor=center] at (1.5,2.5) {\Large 2};
+\node[anchor=center] at (1.5,1.5) {};
+\node[anchor=center] at (1.5,0.5) {};
+\node[anchor=center] at (2.5,8.5) {};
+\node[anchor=center] at (2.5,7.5) {};
+\node[anchor=center] at (2.5,6.5) {\Large 4};
+\node[anchor=center] at (2.5,5.5) {};
+\node[anchor=center] at (2.5,4.5) {\Large 9};
+\node[anchor=center] at (2.5,3.5) {};
+\node[anchor=center] at (2.5,2.5) {};
+\node[anchor=center] at (2.5,1.5) {\Large 5};
+\node[anchor=center] at (2.5,0.5) {\Large 6};
+\node[anchor=center] at (3.5,8.5) {\Large 2};
+\node[anchor=center] at (3.5,7.5) {};
+\node[anchor=center, minimum width=17pt, minimum height=17pt, pattern={Lines[distance=1.5pt,yshift=0.85pt]}, pattern color=NavyBlue!60] at (3.5,6.5) {};
+\node[anchor=center] at (3.5,5.5) {};
+\node[anchor=center] at (3.5,4.5) {};
+\node[anchor=center] at (3.5,3.5) {};
+\node[anchor=center] at (3.5,2.5) {};
+\node[anchor=center] at (3.5,1.5) {};
+\node[anchor=center] at (3.5,0.5) {\Large 8};
+\node[anchor=center] at (4.5,8.5) {};
+\node[anchor=center] at (4.5,7.5) {\Large 6};
+\node[anchor=center] at (4.5,6.5) {\Large 5};
+\node[anchor=center] at (4.5,5.5) {\Large 8};
+\node[anchor=center] at (4.5,4.5) {};
+\node[anchor=center] at (4.5,3.5) {};
+\node[anchor=center] at (4.5,2.5) {};
+\node[anchor=center] at (4.5,1.5) {};
+\node[anchor=center] at (4.5,0.5) {};
+\node[anchor=center] at (5.5,8.5) {\Large 1};
+\node[anchor=center] at (5.5,7.5) {};
+\node[anchor=center] at (5.5,6.5) {};
+\node[anchor=center] at (5.5,5.5) {};
+\node[anchor=center] at (5.5,4.5) {};
+\node[anchor=center] at (5.5,3.5) {};
+\node[anchor=center] at (5.5,2.5) {};
+\node[anchor=center] at (5.5,1.5) {\Large 7};
+\node[anchor=center] at (5.5,0.5) {};
+\node[anchor=center] at (6.5,8.5) {\Large 3};
+\node[anchor=center] at (6.5,7.5) {};
+\node[anchor=center] at (6.5,6.5) {};
+\node[anchor=center] at (6.5,5.5) {\Large 5};
+\node[anchor=center] at (6.5,4.5) {\Large 2};
+\node[anchor=center] at (6.5,3.5) {};
+\node[anchor=center] at (6.5,2.5) {\Large 8};
+\node[anchor=center] at (6.5,1.5) {};
+\node[anchor=center] at (6.5,0.5) {};
+\node[anchor=center] at (7.5,8.5) {};
+\node[anchor=center] at (7.5,7.5) {};
+\node[anchor=center] at (7.5,6.5) {\Large 9};
+\node[anchor=center] at (7.5,5.5) {\Large 6};
+\node[anchor=center, minimum width=17pt, minimum height=17pt, pattern=north west lines, pattern color=BrickRed!40] at (7.5,4.5) {};
+\node[anchor=center] at (7.5,3.5) {};
+\node[anchor=center] at (7.5,2.5) {};
+\node[anchor=center] at (7.5,1.5) {};
+\node[anchor=center] at (7.5,0.5) {};
+\node[anchor=center] at (8.5,8.5) {\Large 7};
+\node[anchor=center] at (8.5,7.5) {};
+\node[anchor=center] at (8.5,6.5) {};
+\node[anchor=center] at (8.5,5.5) {\Large 1};
+\node[anchor=center] at (8.5,4.5) {};
+\node[anchor=center] at (8.5,3.5) {};
+\node[anchor=center] at (8.5,2.5) {};
+\node[anchor=center] at (8.5,1.5) {\Large 2};
+\node[anchor=center] at (8.5,0.5) {};
+
+        \draw[ultra thick, scale=3] (0, 0) grid (3, 3);
+        \draw (0, 0) grid (9, 9);
+        \end{tikzpicture}%
+    
+        % short form: 000201307100060000004050090300080561509000200000000000420000800805007002006800000
+    %
+  };
+  %
+  \node[] at (-5,-26.5) {\parbox{5cm}{\centering \sffamily Puzzle~\#%
+  1-28-A%
+  }};
+  % PLAYER B
+  \node[] at (5,-0.5) {\parbox{5cm}{\centering \sffamily \Large \color{BrickRed} \textbf{Player B}}};
+  \node[] at (5,-1.25) {\parbox{5cm}{\centering \sffamily \large \color{BrickRed} \textbf{
+  (Pick one to solve)
+  }}};
+  % PLAYER B, NUMBER 1
+  \node[] at (5,-2.75) {\parbox{5cm}{\sffamily \large \color{BrickRed}
+  \textbf{Level 2} \hfill {\faGear\ \faGear}%
+  }};
+  \node[] at (5,-6) {%
+  \begin{tikzpicture}[scale=0.6]
+\node[anchor=center] at (0.5,8.5) {\Large 1};
+\node[anchor=center] at (0.5,7.5) {\Large 6};
+\node[anchor=center] at (0.5,6.5) {};
+\node[anchor=center] at (0.5,5.5) {};
+\node[anchor=center] at (0.5,4.5) {};
+\node[anchor=center] at (0.5,3.5) {\Large 4};
+\node[anchor=center] at (0.5,2.5) {};
+\node[anchor=center] at (0.5,1.5) {\Large 3};
+\node[anchor=center] at (0.5,0.5) {};
+\node[anchor=center, minimum width=17pt, minimum height=17pt, pattern=north west lines, pattern color=BrickRed!40] at (1.5,8.5) {};
+\node[anchor=center] at (1.5,7.5) {};
+\node[anchor=center] at (1.5,6.5) {};
+\node[anchor=center] at (1.5,5.5) {\Large 3};
+\node[anchor=center] at (1.5,4.5) {};
+\node[anchor=center] at (1.5,3.5) {\Large 6};
+\node[anchor=center] at (1.5,2.5) {\Large 9};
+\node[anchor=center] at (1.5,1.5) {};
+\node[anchor=center] at (1.5,0.5) {};
+\node[anchor=center] at (2.5,8.5) {};
+\node[anchor=center] at (2.5,7.5) {};
+\node[anchor=center] at (2.5,6.5) {};
+\node[anchor=center] at (2.5,5.5) {};
+\node[anchor=center] at (2.5,4.5) {\Large 7};
+\node[anchor=center] at (2.5,3.5) {};
+\node[anchor=center] at (2.5,2.5) {};
+\node[anchor=center] at (2.5,1.5) {};
+\node[anchor=center] at (2.5,0.5) {};
+\node[anchor=center] at (3.5,8.5) {};
+\node[anchor=center] at (3.5,7.5) {\Large 2};
+\node[anchor=center] at (3.5,6.5) {};
+\node[anchor=center] at (3.5,5.5) {\Large 9};
+\node[anchor=center] at (3.5,4.5) {};
+\node[anchor=center] at (3.5,3.5) {\Large 8};
+\node[anchor=center] at (3.5,2.5) {};
+\node[anchor=center] at (3.5,1.5) {\Large 6};
+\node[anchor=center] at (3.5,0.5) {\Large 7};
+\node[anchor=center] at (4.5,8.5) {\Large 5};
+\node[anchor=center] at (4.5,7.5) {\Large 7};
+\node[anchor=center] at (4.5,6.5) {};
+\node[anchor=center] at (4.5,5.5) {};
+\node[anchor=center] at (4.5,4.5) {\Large 6};
+\node[anchor=center] at (4.5,3.5) {};
+\node[anchor=center] at (4.5,2.5) {};
+\node[anchor=center] at (4.5,1.5) {\Large 8};
+\node[anchor=center] at (4.5,0.5) {};
+\node[anchor=center] at (5.5,8.5) {\Large 6};
+\node[anchor=center] at (5.5,7.5) {};
+\node[anchor=center] at (5.5,6.5) {};
+\node[anchor=center] at (5.5,5.5) {};
+\node[anchor=center] at (5.5,4.5) {};
+\node[anchor=center, minimum width=17pt, minimum height=17pt, pattern={Lines[distance=1.5pt,yshift=0.85pt]}, pattern color=NavyBlue!60] at (5.5,3.5) {};
+\node[anchor=center] at (5.5,2.5) {};
+\node[anchor=center] at (5.5,1.5) {};
+\node[anchor=center] at (5.5,0.5) {};
+\node[anchor=center] at (6.5,8.5) {\Large 7};
+\node[anchor=center] at (6.5,7.5) {};
+\node[anchor=center] at (6.5,6.5) {};
+\node[anchor=center] at (6.5,5.5) {\Large 5};
+\node[anchor=center] at (6.5,4.5) {};
+\node[anchor=center] at (6.5,3.5) {};
+\node[anchor=center] at (6.5,2.5) {};
+\node[anchor=center] at (6.5,1.5) {};
+\node[anchor=center] at (6.5,0.5) {\Large 9};
+\node[anchor=center] at (7.5,8.5) {\Large 2};
+\node[anchor=center] at (7.5,7.5) {\Large 9};
+\node[anchor=center] at (7.5,6.5) {};
+\node[anchor=center] at (7.5,5.5) {};
+\node[anchor=center] at (7.5,4.5) {};
+\node[anchor=center] at (7.5,3.5) {};
+\node[anchor=center] at (7.5,2.5) {\Large 8};
+\node[anchor=center] at (7.5,1.5) {\Large 1};
+\node[anchor=center] at (7.5,0.5) {};
+\node[anchor=center] at (8.5,8.5) {};
+\node[anchor=center] at (8.5,7.5) {\Large 3};
+\node[anchor=center] at (8.5,6.5) {};
+\node[anchor=center] at (8.5,5.5) {};
+\node[anchor=center] at (8.5,4.5) {};
+\node[anchor=center] at (8.5,3.5) {};
+\node[anchor=center] at (8.5,2.5) {};
+\node[anchor=center] at (8.5,1.5) {};
+\node[anchor=center] at (8.5,0.5) {\Large 2};
+
+        \draw[ultra thick, scale=3] (0, 0) grid (3, 3);
+        \draw (0, 0) grid (9, 9);
+        \end{tikzpicture}%
+    
+        % short form: 100056720600270093000000000030900500007060000460800000090000080300680010000700902
+    %
+  };
+  % PLAYER B, NUMBER 2
+  \node[] at (5,-10.75) {\parbox{5cm}{\sffamily \large \color{BrickRed}
+  \textbf{Level 3} \hfill {\faGear\ \faGear\ \faGear}%
+  }};
+  \node[] at (5,-14) {%
+  \begin{tikzpicture}[scale=0.6]
+\node[anchor=center] at (0.5,8.5) {\Large 5};
+\node[anchor=center] at (0.5,7.5) {};
+\node[anchor=center] at (0.5,6.5) {};
+\node[anchor=center] at (0.5,5.5) {};
+\node[anchor=center] at (0.5,4.5) {};
+\node[anchor=center] at (0.5,3.5) {\Large 4};
+\node[anchor=center] at (0.5,2.5) {};
+\node[anchor=center] at (0.5,1.5) {};
+\node[anchor=center] at (0.5,0.5) {};
+\node[anchor=center] at (1.5,8.5) {};
+\node[anchor=center] at (1.5,7.5) {\Large 6};
+\node[anchor=center, minimum width=17pt, minimum height=17pt, pattern={Lines[distance=1.5pt,yshift=0.85pt]}, pattern color=NavyBlue!60] at (1.5,6.5) {};
+\node[anchor=center] at (1.5,5.5) {};
+\node[anchor=center] at (1.5,4.5) {\Large 8};
+\node[anchor=center] at (1.5,3.5) {};
+\node[anchor=center] at (1.5,2.5) {};
+\node[anchor=center] at (1.5,1.5) {};
+\node[anchor=center] at (1.5,0.5) {};
+\node[anchor=center] at (2.5,8.5) {};
+\node[anchor=center] at (2.5,7.5) {};
+\node[anchor=center] at (2.5,6.5) {\Large 2};
+\node[anchor=center] at (2.5,5.5) {\Large 3};
+\node[anchor=center] at (2.5,4.5) {\Large 6};
+\node[anchor=center] at (2.5,3.5) {};
+\node[anchor=center] at (2.5,2.5) {};
+\node[anchor=center] at (2.5,1.5) {\Large 7};
+\node[anchor=center] at (2.5,0.5) {};
+\node[anchor=center] at (3.5,8.5) {\Large 8};
+\node[anchor=center] at (3.5,7.5) {};
+\node[anchor=center] at (3.5,6.5) {};
+\node[anchor=center] at (3.5,5.5) {\Large 9};
+\node[anchor=center] at (3.5,4.5) {};
+\node[anchor=center] at (3.5,3.5) {\Large 1};
+\node[anchor=center] at (3.5,2.5) {};
+\node[anchor=center] at (3.5,1.5) {\Large 3};
+\node[anchor=center] at (3.5,0.5) {};
+\node[anchor=center] at (4.5,8.5) {};
+\node[anchor=center] at (4.5,7.5) {};
+\node[anchor=center] at (4.5,6.5) {};
+\node[anchor=center] at (4.5,5.5) {\Large 8};
+\node[anchor=center] at (4.5,4.5) {};
+\node[anchor=center] at (4.5,3.5) {};
+\node[anchor=center] at (4.5,2.5) {\Large 6};
+\node[anchor=center] at (4.5,1.5) {};
+\node[anchor=center] at (4.5,0.5) {};
+\node[anchor=center] at (5.5,8.5) {};
+\node[anchor=center] at (5.5,7.5) {\Large 7};
+\node[anchor=center] at (5.5,6.5) {\Large 1};
+\node[anchor=center] at (5.5,5.5) {};
+\node[anchor=center] at (5.5,4.5) {};
+\node[anchor=center] at (5.5,3.5) {};
+\node[anchor=center] at (5.5,2.5) {};
+\node[anchor=center] at (5.5,1.5) {};
+\node[anchor=center] at (5.5,0.5) {\Large 4};
+\node[anchor=center] at (6.5,8.5) {\Large 1};
+\node[anchor=center, minimum width=17pt, minimum height=17pt, pattern=north west lines, pattern color=BrickRed!40] at (6.5,7.5) {};
+\node[anchor=center] at (6.5,6.5) {\Large 9};
+\node[anchor=center] at (6.5,5.5) {};
+\node[anchor=center] at (6.5,4.5) {};
+\node[anchor=center] at (6.5,3.5) {\Large 5};
+\node[anchor=center] at (6.5,2.5) {\Large 2};
+\node[anchor=center] at (6.5,1.5) {};
+\node[anchor=center] at (6.5,0.5) {\Large 7};
+\node[anchor=center] at (7.5,8.5) {};
+\node[anchor=center] at (7.5,7.5) {};
+\node[anchor=center] at (7.5,6.5) {};
+\node[anchor=center] at (7.5,5.5) {};
+\node[anchor=center] at (7.5,4.5) {};
+\node[anchor=center] at (7.5,3.5) {};
+\node[anchor=center] at (7.5,2.5) {\Large 1};
+\node[anchor=center] at (7.5,1.5) {\Large 4};
+\node[anchor=center] at (7.5,0.5) {};
+\node[anchor=center] at (8.5,8.5) {};
+\node[anchor=center] at (8.5,7.5) {};
+\node[anchor=center] at (8.5,6.5) {\Large 5};
+\node[anchor=center] at (8.5,5.5) {};
+\node[anchor=center] at (8.5,4.5) {};
+\node[anchor=center] at (8.5,3.5) {};
+\node[anchor=center] at (8.5,2.5) {};
+\node[anchor=center] at (8.5,1.5) {\Large 9};
+\node[anchor=center] at (8.5,0.5) {};
+
+        \draw[ultra thick, scale=3] (0, 0) grid (3, 3);
+        \draw (0, 0) grid (9, 9);
+        \end{tikzpicture}%
+    
+        % short form: 500800100060007000002001905003980000086000000400100500000060210007300049000004700
+    %
+  };
+  % PLAYER B, NUMBER 3
+  \node[] at (5,-18.75) %{\parbox{5cm}{\sffamily \large \color{BrickRed} }};
+  {\parbox{5cm}{\sffamily \large \color{BrickRed}
+  \textbf{Level 4} \hfill {\faGear\ \faGear\ \faGear\ \faGear}%
+  }};
+  \node[] at (5,-22) {%
+  \begin{tikzpicture}[scale=0.6]
+\node[anchor=center] at (0.5,8.5) {\Large 1};
+\node[anchor=center] at (0.5,7.5) {};
+\node[anchor=center] at (0.5,6.5) {\Large 4};
+\node[anchor=center] at (0.5,5.5) {};
+\node[anchor=center] at (0.5,4.5) {};
+\node[anchor=center] at (0.5,3.5) {};
+\node[anchor=center] at (0.5,2.5) {};
+\node[anchor=center] at (0.5,1.5) {};
+\node[anchor=center] at (0.5,0.5) {\Large 6};
+\node[anchor=center] at (1.5,8.5) {\Large 6};
+\node[anchor=center] at (1.5,7.5) {\Large 7};
+\node[anchor=center] at (1.5,6.5) {};
+\node[anchor=center] at (1.5,5.5) {\Large 4};
+\node[anchor=center] at (1.5,4.5) {};
+\node[anchor=center] at (1.5,3.5) {\Large 9};
+\node[anchor=center] at (1.5,2.5) {\Large 5};
+\node[anchor=center] at (1.5,1.5) {};
+\node[anchor=center] at (1.5,0.5) {};
+\node[anchor=center] at (2.5,8.5) {};
+\node[anchor=center] at (2.5,7.5) {};
+\node[anchor=center] at (2.5,6.5) {};
+\node[anchor=center] at (2.5,5.5) {};
+\node[anchor=center] at (2.5,4.5) {};
+\node[anchor=center] at (2.5,3.5) {\Large 8};
+\node[anchor=center] at (2.5,2.5) {};
+\node[anchor=center] at (2.5,1.5) {\Large 7};
+\node[anchor=center] at (2.5,0.5) {};
+\node[anchor=center] at (3.5,8.5) {\Large 8};
+\node[anchor=center] at (3.5,7.5) {};
+\node[anchor=center] at (3.5,6.5) {};
+\node[anchor=center] at (3.5,5.5) {};
+\node[anchor=center] at (3.5,4.5) {};
+\node[anchor=center] at (3.5,3.5) {};
+\node[anchor=center] at (3.5,2.5) {\Large 1};
+\node[anchor=center] at (3.5,1.5) {\Large 5};
+\node[anchor=center] at (3.5,0.5) {\Large 2};
+\node[anchor=center] at (4.5,8.5) {};
+\node[anchor=center] at (4.5,7.5) {\Large 1};
+\node[anchor=center] at (4.5,6.5) {};
+\node[anchor=center] at (4.5,5.5) {};
+\node[anchor=center] at (4.5,4.5) {};
+\node[anchor=center] at (4.5,3.5) {};
+\node[anchor=center] at (4.5,2.5) {};
+\node[anchor=center] at (4.5,1.5) {};
+\node[anchor=center] at (4.5,0.5) {};
+\node[anchor=center] at (5.5,8.5) {};
+\node[anchor=center] at (5.5,7.5) {};
+\node[anchor=center] at (5.5,6.5) {};
+\node[anchor=center] at (5.5,5.5) {};
+\node[anchor=center] at (5.5,4.5) {};
+\node[anchor=center] at (5.5,3.5) {\Large 3};
+\node[anchor=center] at (5.5,2.5) {};
+\node[anchor=center, minimum width=17pt, minimum height=17pt, pattern=north west lines, pattern color=BrickRed!40] at (5.5,1.5) {};
+\node[anchor=center] at (5.5,0.5) {\Large 9};
+\node[anchor=center] at (6.5,8.5) {\Large 7};
+\node[anchor=center] at (6.5,7.5) {};
+\node[anchor=center] at (6.5,6.5) {};
+\node[anchor=center] at (6.5,5.5) {};
+\node[anchor=center] at (6.5,4.5) {\Large 8};
+\node[anchor=center] at (6.5,3.5) {\Large 4};
+\node[anchor=center] at (6.5,2.5) {};
+\node[anchor=center] at (6.5,1.5) {};
+\node[anchor=center] at (6.5,0.5) {};
+\node[anchor=center] at (7.5,8.5) {};
+\node[anchor=center] at (7.5,7.5) {};
+\node[anchor=center] at (7.5,6.5) {\Large 8};
+\node[anchor=center] at (7.5,5.5) {};
+\node[anchor=center] at (7.5,4.5) {\Large 2};
+\node[anchor=center] at (7.5,3.5) {};
+\node[anchor=center, minimum width=17pt, minimum height=17pt, pattern={Lines[distance=1.5pt,yshift=0.85pt]}, pattern color=NavyBlue!60] at (7.5,2.5) {};
+\node[anchor=center] at (7.5,1.5) {\Large 1};
+\node[anchor=center] at (7.5,0.5) {};
+\node[anchor=center] at (8.5,8.5) {};
+\node[anchor=center] at (8.5,7.5) {};
+\node[anchor=center] at (8.5,6.5) {};
+\node[anchor=center] at (8.5,5.5) {\Large 5};
+\node[anchor=center] at (8.5,4.5) {};
+\node[anchor=center] at (8.5,3.5) {};
+\node[anchor=center] at (8.5,2.5) {};
+\node[anchor=center] at (8.5,1.5) {\Large 9};
+\node[anchor=center] at (8.5,0.5) {\Large 4};
+
+        \draw[ultra thick, scale=3] (0, 0) grid (3, 3);
+        \draw (0, 0) grid (9, 9);
+        \end{tikzpicture}%
+    
+        % short form: 160800700070010000400000080040000005000000820098003400050100000007500019600209004
+    %
+  };
+  %
+  \node[] at (5,-26.5) {\parbox{5cm}{\centering \sffamily Puzzle~\#%
+  1-28-B%
+  }};
+  %
+  \draw[] (0,0.5) edge[ultra thick, dashed] (0,-27);
+  \node[fill=white,inner sep=0pt] at (0,-26.2) {\rotatebox{90}{\Huge \faScissors}};
+  %
+\end{tikzpicture}
+\end{center}
+
+%%%[BACKSIDE HERE]%%%
+
+\end{document}
