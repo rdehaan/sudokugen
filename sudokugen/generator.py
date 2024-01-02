@@ -24,6 +24,9 @@ def generate_puzzle(
 
     new_instance = deepcopy(instance)
 
+    if not cl_arguments:
+        cl_arguments = []
+
     # Put together the basic encoding with any additional constraints given
     asp_code = generate_basic(new_instance)
     asp_code += "".join(constraints)

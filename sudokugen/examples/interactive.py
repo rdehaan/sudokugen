@@ -1597,6 +1597,28 @@ def initial_from_preset(
             "post_rules": [],
         },
         #
+        "xyz wing protected *": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 600,
+            "num_filled_cells_in_random_mask": 40,
+            "pre_rules": [
+                encodings.naked_pairs,
+                encodings.hidden_pairs,
+                encodings.locked_candidates,
+                encodings.closed_under_naked_singles,
+                encodings.closed_under_hidden_singles,
+                encodings.turbot_fish_not_applicable_chained,
+                encodings.empty_rectangle_not_applicable_chained,
+                encodings.bug1_protection_chained,
+                encodings.remote_pairs_protection_chained,
+            ],
+            "chain_point_rules": [
+                encodings.xyz_wing_forced_shot_chained,
+            ],
+            "post_rules": [],
+        },
+        #
         "w wing": {
             "maximize_filled_cells": True,
             "max_num_repeat": 4,
@@ -2212,6 +2234,23 @@ def prepend_from_preset(
     # pylint: disable=too-many-arguments,too-many-locals
 
     presets = {
+        #
+        "naked pairs": {
+            "maximize_filled_cells": True,
+            "max_num_repeat": 4,
+            "timeout": 60,
+            "use_strong_connection": True,
+            "pre_rules": [],
+            "chain_point_rules": [
+                encodings.naked_pairs,
+            ],
+            "post_rules": [],
+            "strong_connection_rules": [
+                encodings.basic_deduction,
+                encodings.naked_singles,
+                encodings.hidden_singles,
+            ]
+        },
         #
         "locked candidates": {
             "maximize_filled_cells": True,
